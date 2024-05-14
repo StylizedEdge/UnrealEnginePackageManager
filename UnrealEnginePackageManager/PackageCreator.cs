@@ -24,8 +24,6 @@ namespace UnrealEnginePackageManager
         string SourceFiles = "";
 
 
-
-
         public PackageCreator()
         {
             InitializeComponent();
@@ -40,6 +38,8 @@ namespace UnrealEnginePackageManager
             this.backgroundWorker.ProgressChanged += BackgroundWorker_ProgressChanged;
             this.backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
         }
+
+
         #region Files Transfer
         private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -84,7 +84,6 @@ namespace UnrealEnginePackageManager
 
         #endregion
 
-
         #region Extract ContentPack from Resource Folder
         private void button1_Click(object sender, EventArgs e)
         {
@@ -109,7 +108,7 @@ namespace UnrealEnginePackageManager
                         pathassignedChecker.Checked = true;
                         pathemptyChecker.Checked = !MethodBook.IsFolderEmpty(selectedPath);
 
-                        MethodBook.ExtractRar(MethodBook.GetFileInFolder("ContentPack.dll", MethodBook.ImportantFolders.Resources), selectedPath);
+                        MethodBook.ExtractRar(GetFileInFolder("ContentPack.dll", MethodBook.ImportantFolders.Resources), selectedPath);
 
                         if (Directory.Exists(Path.Combine(selectedPath, packnameText.Text)))
                         {
@@ -120,6 +119,8 @@ namespace UnrealEnginePackageManager
             }
         }
         #endregion
+
+        #region Package Creation
         private void button4_Click(object sender, EventArgs e)
         {
 
@@ -130,119 +131,11 @@ namespace UnrealEnginePackageManager
             CreatePack();
         }
 
-        //Thumbnail button click function
-        private void thumbnailImage_Click(object sender, EventArgs e)
+        void CreatePack()
         {
-            // Create and configure the OpenFileDialog
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Title = "Select an Image";
-                openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
-
-                // Show the file dialog and get the selected file
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    // Resize the selected image to 64x64
-                    Image selectedImage = ResizeImage(Image.FromFile(openFileDialog.FileName), new Size(64, 64));
-
-                    // Get the file name from the selected file path
-                    string fileName = Path.GetFileName(openFileDialog.FileName);
-
-                    // Save the resized image to the same directory as the selected file
-                    string imagePath = Path.Combine(selectedPath, fileName);
-                    selectedImage.Save(imagePath);
-
-                    // Display the resized image in the thumbnail box
-                    thumbnailImage.Image = selectedImage;
-
-                    // Copy the resized image to the destination directory
-                    string destinationPath = Path.Combine(selectedPath, packnameText.Text, "ContentSettings", "Media", fileName);
-                    MethodBook.CopyFile(imagePath, destinationPath, false);
-
-                    Console.WriteLine("Thumbnail File Selected, resized, and copied to the Working directory");
-                }
-            }
+            AssignPackageDestinationName();
         }
 
-
-        //Screenshot button click function
-
-        private void pictureBox2_Click(object sender, EventArgs e)
-        {
-            // Create and configure the OpenFileDialog
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.Title = "Select an Image";
-                openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
-
-                // Show the file dialog and get the selected file
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    // Resize the selected image to 64x64
-                    Image selectedImage = ResizeImage(Image.FromFile(openFileDialog.FileName), new Size(400, 200));
-
-                    // Get the file name from the selected file path
-                    string fileName = Path.GetFileName(openFileDialog.FileName);
-
-                    // Save the resized image to the same directory as the selected file
-                    string imagePath = Path.Combine(selectedPath, fileName);
-                    selectedImage.Save(imagePath);
-
-                    // Display the resized image in the ScreenshotImage PictureBox
-                    ScreenshotImage.Image = selectedImage;
-
-                    // Construct the destination path for copying the image to the destination directory
-                    string destinationPath = Path.Combine(selectedPath, packnameText.Text, "ContentSettings", "Media", fileName);
-
-                    // Copy the resized image to the destination directory
-                    MethodBook.CopyFile(imagePath, destinationPath, false);
-
-                    Console.WriteLine("Screen Shot Image Selected, resized, and copied to the Working directory");
-                }
-            }
-        }
-
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            string packageFolderPath = Path.Combine(MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages), packnameText.Text);
-            string DefaultContent = Path.Combine(MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages), "ContentPack");
-            // Delete Samples folder
-            if (Directory.Exists(packageFolderPath))
-            {
-                Directory.Delete(packageFolderPath, true);
-                Console.WriteLine($"Package Creation Canceled, Temporary Files deleted");
-            }else if(Directory.Exists(DefaultContent))
-            {
-                Directory.Delete(DefaultContent,true);
-                Console.WriteLine("package Creation Canceled, temporary Files deleted");
-            }
-            this.Close();
-        }
-
-        string oldFolderPath;
-        string newFolderPath;
-
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.ValidateNames = false;
-                openFileDialog.CheckFileExists = false; // Avoid validation
-                openFileDialog.CheckPathExists = true;
-                openFileDialog.FileName = "Get Pack Files Folder"; // A trick to select folders
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    // Get the selected path (folder) and display it in the textbox
-                    SourceFiles = System.IO.Path.GetDirectoryName(openFileDialog.FileName);
-                    filespackText.Text = openFileDialog.FileName;
-                    Console.WriteLine("Unreal Files selected");
-                }
-            }
-
-        }
 
         void AssignPackageDestinationName()
         {
@@ -325,22 +218,139 @@ namespace UnrealEnginePackageManager
             //thumbnail
             if (ThumbPath != null)
             {
-                jsonObject["Thumbnail"] = Path.GetFileName(ThumbPath);
+                jsonObject["Thumbnail"] = Path.GetFileName(ThumbdestinationPath);
             }
 
 
                 //Screenshot
                 ((JArray)jsonObject["Screenshots"]).Clear();
-            ((JArray)jsonObject["Screenshots"]).Add(Path.GetFileName(ScreenShotPath));
+            ((JArray)jsonObject["Screenshots"]).Add(Path.GetFileName(ScreenshotdestinationPath));
 
             // Write the modified JSON back to the file
             File.WriteAllText(filePath, jsonObject.ToString());
 
         }
 
-        void CreatePack()
+
+
+#endregion
+
+        #region Thumbnail and Screenshots
+        //Thumbnail button click function
+        private void thumbnailImage_Click(object sender, EventArgs e)
         {
-            AssignPackageDestinationName();
+            // Create and configure the OpenFileDialog
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Title = "Select an Image";
+                openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+
+                // Show the file dialog and get the selected file
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Resize the selected image to 64x64
+                    Image selectedImage = ResizeImage(Image.FromFile(openFileDialog.FileName), new Size(64, 64));
+
+                    // Get the file name from the selected file path
+                    string fileName = Path.GetFileName(openFileDialog.FileName);
+
+                    // Save the resized image to the same directory as the selected file
+                    string imagePath = Path.Combine(selectedPath, fileName);
+                    selectedImage.Save(imagePath);
+
+                    // Display the resized image in the thumbnail box
+                    thumbnailImage.Image = selectedImage;
+
+                    // Copy the resized image to the destination directory
+                    ThumbdestinationPath  = Path.Combine(selectedPath, packnameText.Text, "ContentSettings", "Media", fileName);
+                    MethodBook.CopyFile(imagePath, ThumbdestinationPath, false);
+
+                    Console.WriteLine("Thumbnail File Selected, resized, and copied to the Working directory");
+                }
+            }
+        }
+        string ThumbdestinationPath;
+        string ScreenshotdestinationPath;
+
+        //Screenshot button click function
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            // Create and configure the OpenFileDialog
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Title = "Select an Image";
+                openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+
+                // Show the file dialog and get the selected file
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Resize the selected image to 64x64
+                    Image selectedImage = ResizeImage(Image.FromFile(openFileDialog.FileName), new Size(400, 200));
+
+                    // Get the file name from the selected file path
+                    string fileName = Path.GetFileName(openFileDialog.FileName);
+
+                    // Save the resized image to the same directory as the selected file
+                    string imagePath = Path.Combine(selectedPath, fileName);
+                    selectedImage.Save(imagePath);
+
+                    // Display the resized image in the ScreenshotImage PictureBox
+                    ScreenshotImage.Image = selectedImage;
+
+                    // Construct the destination path for copying the image to the destination directory
+                    ScreenshotdestinationPath = Path.Combine(selectedPath, packnameText.Text, "ContentSettings", "Media", fileName);
+
+                    // Copy the resized image to the destination directory
+                    MethodBook.CopyFile(imagePath, ScreenshotdestinationPath, false);
+
+                    Console.WriteLine("Screen Shot Image Selected, resized, and copied to the Working directory");
+                }
+            }
+        }
+        #endregion
+
+        #region Package Renaming process
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string packageFolderPath = Path.Combine(MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages), packnameText.Text);
+            string DefaultContent = Path.Combine(MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages), "ContentPack");
+            // Delete Samples folder
+            if (Directory.Exists(packageFolderPath))
+            {
+                Directory.Delete(packageFolderPath, true);
+                Console.WriteLine($"Package Creation Canceled, Temporary Files deleted");
+            }else if(Directory.Exists(DefaultContent))
+            {
+                Directory.Delete(DefaultContent,true);
+                Console.WriteLine("package Creation Canceled, temporary Files deleted");
+            }
+            this.Close();
+        }
+
+        string oldFolderPath;
+        string newFolderPath;
+
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.ValidateNames = false;
+                openFileDialog.CheckFileExists = false; // Avoid validation
+                openFileDialog.CheckPathExists = true;
+                openFileDialog.FileName = "Get Pack Files Folder"; // A trick to select folders
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Get the selected path (folder) and display it in the textbox
+                    SourceFiles = System.IO.Path.GetDirectoryName(openFileDialog.FileName);
+                    filespackText.Text = openFileDialog.FileName;
+                    Console.WriteLine("Unreal Files selected");
+                }
+            }
+
         }
 
 
@@ -381,6 +391,6 @@ namespace UnrealEnginePackageManager
             button3.Enabled = false;
             packnameText.Enabled = false;
         }
-
+#endregion
     }
 }

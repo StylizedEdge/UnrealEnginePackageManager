@@ -1,27 +1,33 @@
-﻿using SharpCompress.Archives.Rar;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Newtonsoft.Json;
-using System.Windows.Forms;
-using System.Runtime.CompilerServices;
-using System.Linq;
-using Newtonsoft.Json.Linq;
-using System.ComponentModel;
-using System.Threading;
-using SharpCompress.Archives.Zip;
-using System.Drawing;
-using System.Numerics;
-using System.Drawing.Drawing2D;
-using SharpCompress.Archives;
-using SharpCompress.Common;
-
-namespace UnrealEnginePackageManager
+﻿namespace UnrealEnginePackageManager
 {
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using SharpCompress.Archives;
+    using SharpCompress.Archives.Zip;
+    using SharpCompress.Common;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Drawing;
+    using System.Drawing.Drawing2D;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Windows.Forms;
+
+    /// <summary>
+    /// Defines the <see cref="MethodBook" />
+    /// </summary>
     public class MethodBook
     {
-        #region RAR Methods
+        #region Rar Files Extraction
         //Rar extractor
+
+        /// <summary>
+        /// The ExtractRar
+        /// </summary>
+        /// <param name="rarFilePath">The Rar source to extract<see cref="string"/></param>
+        /// <param name="destinationPath">The Path where all rar files will be extracted<see cref="string"/></param>
         public static void ExtractRar(string rarFilePath, string destinationPath)
         {
             // Ensure the destination directory exists
@@ -58,6 +64,12 @@ namespace UnrealEnginePackageManager
         }
 
         // ZIP creator
+
+        /// <summary>
+        /// The CreateZip
+        /// </summary>
+        /// <param name="sourcePaths">The sourcePaths<see cref="string[]"/></param>
+        /// <param name="zipFilePath">The zipFilePath<see cref="string"/></param>
         public static void CreateZip(string[] sourcePaths, string zipFilePath)
         {
             // Create a new ZIP archive
@@ -89,17 +101,38 @@ namespace UnrealEnginePackageManager
                 archive.SaveTo(zipFilePath, CompressionType.Deflate);
             }
         }
+
         #endregion
 
-
+        /// <summary>
+        /// Defines the ImportantFolders
+        /// </summary>
         public enum ImportantFolders
         {
+            /// <summary>
+            /// Resource is the folder in the install directory where all resources are stored
+            /// </summary>
             Resources,
+
+            /// <summary>
+            /// Package folder where all packages are stored
+            /// </summary>
             Packages
         }
+
+        /// <summary>
+        /// The 2 base folders of the unreal engine package manager app
+        /// </summary>
         public ImportantFolders InstalledFolders;
 
         //File Oparation
+
+        /// <summary>
+        /// Method created to get a file in the 2 main folders of the UEPM
+        /// </summary>
+        /// <param name="SelectedFile">The SelectedFile<see cref="string"/></param>
+        /// <param name="Folders">The Folders<see cref="ImportantFolders"/></param>
+        /// <returns>The <see cref="string"/></returns>
         public static string GetFileInFolder(string SelectedFile, ImportantFolders Folders)
         {
             // Get the current working directory (usually the bin/Debug/ folder)
@@ -118,7 +151,6 @@ namespace UnrealEnginePackageManager
                 default:
                     break;
             }
-            
 
             // Ensure the resources folder exists
             if (!Directory.Exists(resourcesFolderPath))
@@ -137,6 +169,12 @@ namespace UnrealEnginePackageManager
             return contentPackPath;
         }
 
+        /// <summary>
+        /// Get a folder in the 2 main base folders of the UEPM
+        /// </summary>
+        /// <param name="folderName">The folderName<see cref="string"/></param>
+        /// <param name="parentFolder">The parentFolder<see cref="ImportantFolders"/></param>
+        /// <returns>The <see cref="string"/></returns>
         public static string GetFolderInFolder(string folderName, ImportantFolders parentFolder)
         {
             // Get the current working directory (usually the bin/Debug/ folder)
@@ -174,9 +212,13 @@ namespace UnrealEnginePackageManager
             return folderPath;
         }
 
-
-
         //Folder content checker
+
+        /// <summary>
+        /// The IsFolderEmpty
+        /// </summary>
+        /// <param name="folderPath">The folderPath<see cref="string"/></param>
+        /// <returns>The <see cref="bool"/></returns>
         public static bool IsFolderEmpty(string folderPath)
         {
             if (!Directory.Exists(folderPath))
@@ -192,6 +234,12 @@ namespace UnrealEnginePackageManager
 
         //Folder rename
         // Rename Folder
+
+        /// <summary>
+        /// The RenameFolder
+        /// </summary>
+        /// <param name="oldFolderPath">The oldFolderPath<see cref="string"/></param>
+        /// <param name="newFolderPath">The newFolderPath<see cref="string"/></param>
         public static void RenameFolder(string oldFolderPath, string newFolderPath)
         {
             if (!Directory.Exists(oldFolderPath))
@@ -214,8 +262,13 @@ namespace UnrealEnginePackageManager
             Directory.Move(oldFolderPath, newFolderFullPath);
         }
 
-
         //Copy Folder
+
+        /// <summary>
+        /// The CopyFolder
+        /// </summary>
+        /// <param name="sourceFolderPath">The sourceFolderPath<see cref="string"/></param>
+        /// <param name="destinationFolderPath">The destinationFolderPath<see cref="string"/></param>
         public static void CopyFolder(string sourceFolderPath, string destinationFolderPath)
         {
             if (!Directory.Exists(sourceFolderPath))
@@ -242,8 +295,14 @@ namespace UnrealEnginePackageManager
             }
         }
 
-
         //GetRelativePath
+
+        /// <summary>
+        /// The GetRelativePath
+        /// </summary>
+        /// <param name="fromPath">The fromPath<see cref="string"/></param>
+        /// <param name="toPath">The toPath<see cref="string"/></param>
+        /// <returns>The <see cref="string"/></returns>
         public static string GetRelativePath(string fromPath, string toPath)
         {
             // Ensure both paths are absolute
@@ -287,6 +346,12 @@ namespace UnrealEnginePackageManager
         }
 
         //Write text to file
+
+        /// <summary>
+        /// The WriteText
+        /// </summary>
+        /// <param name="filePath">The filePath<see cref="string"/></param>
+        /// <param name="text">The text<see cref="string"/></param>
         public static void WriteText(string filePath, string text)
         {
             try
@@ -301,8 +366,13 @@ namespace UnrealEnginePackageManager
             }
         }
 
-
         //Rename File
+
+        /// <summary>
+        /// The RenameFile
+        /// </summary>
+        /// <param name="oldFilePath">The oldFilePath<see cref="string"/></param>
+        /// <param name="newFilePath">The newFilePath<see cref="string"/></param>
         public static void RenameFile(string oldFilePath, string newFilePath)
         {
             if (!File.Exists(oldFilePath))
@@ -319,8 +389,15 @@ namespace UnrealEnginePackageManager
         }
 
         //Copy File
-        public static void CopyFile(string sourceFilePath, string destinationFilePath, bool overwrite = false)
-        {
+
+        /// <summary>
+        /// The CopyFile
+        /// </summary>
+        /// <param name="sourceFilePath">The sourceFilePath<see cref="string"/></param>
+        /// <param name="destinationFilePath">The destinationFilePath<see cref="string"/></param>
+        /// <param name="overwrite">The overwrite<see cref="bool"/></param>
+        ///public static void CopyFile(string sourceFilePath, string destinationFilePath, bool overwrite = false)
+        /*{
             if (!File.Exists(sourceFilePath))
             {
                 throw new FileNotFoundException($"Source file '{sourceFilePath}' does not exist.");
@@ -333,9 +410,29 @@ namespace UnrealEnginePackageManager
             File.Copy(sourceFilePath, destinationFilePath + Path.GetFileName(sourceFilePath), overwrite);
 
             System.Console.WriteLine($"File copied to '{destinationFilePath}'.");
+        }*/
+
+        public static void CopyFile(string sourceFilePath, string destinationFilePath, bool overwrite = false)
+        {
+            if (!File.Exists(sourceFilePath))
+            {
+                throw new FileNotFoundException($"Source file '{sourceFilePath}' does not exist.");
+            }
+
+            // Ensure the parent directories for the destination file exist
+            Directory.CreateDirectory(Path.GetDirectoryName(destinationFilePath));
+
+            // Copy the file, with optional overwrite
+            File.Copy(sourceFilePath, destinationFilePath, overwrite);
+
+            System.Console.WriteLine($"File copied to '{destinationFilePath}'.");
         }
 
 
+        /// <summary>
+        /// The OpenGetPath
+        /// </summary>
+        /// <param name="path">The path<see cref="string"/></param>
         public static void OpenGetPath(string path)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -353,8 +450,10 @@ namespace UnrealEnginePackageManager
             }
         }
 
-
-
+        /// <summary>
+        /// The FindInstalledUnrealEngineVersions
+        /// </summary>
+        /// <returns>The <see cref="List{string}"/></returns>
         public static List<string> FindInstalledUnrealEngineVersions()
         {
             List<string> unrealEnginePaths = new List<string>();
@@ -380,8 +479,11 @@ namespace UnrealEnginePackageManager
             return unrealEnginePaths;
         }
 
-
-        #region File Size
+        /// <summary>
+        /// The GetPackageSize
+        /// </summary>
+        /// <param name="folderPath">The folderPath<see cref="string"/></param>
+        /// <returns>The <see cref="long"/></returns>
         public static long GetPackageSize(string folderPath)
         {
             DirectoryInfo directory = new DirectoryInfo(folderPath);
@@ -389,21 +491,35 @@ namespace UnrealEnginePackageManager
             return packageSize;
         }
 
+        /// <summary>
+        /// The GetPackageSizeInMegabytes
+        /// </summary>
+        /// <param name="folderPath">The folderPath<see cref="string"/></param>
+        /// <returns>The <see cref="double"/></returns>
         public static double GetPackageSizeInMegabytes(string folderPath)
         {
             long packageSize = GetPackageSize(folderPath);
             return Math.Round(packageSize / (1024.0 * 1024.0), 1); // Convert bytes to megabytes and round to 1 decimal place
         }
 
+        /// <summary>
+        /// The GetPackageSizeInGigabytes
+        /// </summary>
+        /// <param name="folderPath">The folderPath<see cref="string"/></param>
+        /// <returns>The <see cref="double"/></returns>
         public static double GetPackageSizeInGigabytes(string folderPath)
         {
             double packageSizeInMegabytes = GetPackageSizeInMegabytes(folderPath);
             return Math.Round(packageSizeInMegabytes / 1024.0, 1); // Convert megabytes to gigabytes and round to 1 decimal place
         }
-        #endregion
 
         //Save and load functions
-        #region Save and Load Settings
+
+        /// <summary>
+        /// The SaveParameters
+        /// </summary>
+        /// <param name="filePath">The filePath<see cref="string"/></param>
+        /// <param name="parameters">The parameters<see cref="Dictionary{string, string}"/></param>
         public static void SaveParameters(string filePath, Dictionary<string, string> parameters)
         {
             using (StreamWriter writer = new StreamWriter(filePath))
@@ -417,6 +533,11 @@ namespace UnrealEnginePackageManager
             System.Console.WriteLine($"Parameters saved to {filePath}.");
         }
 
+        /// <summary>
+        /// The LoadParameters
+        /// </summary>
+        /// <param name="filePath">The filePath<see cref="string"/></param>
+        /// <returns>The <see cref="Dictionary{string, string}"/></returns>
         public static Dictionary<string, string> LoadParameters(string filePath)
         {
             var parameters = new Dictionary<string, string>();
@@ -445,6 +566,11 @@ namespace UnrealEnginePackageManager
             return parameters;
         }
 
+        /// <summary>
+        /// The WriteParameters
+        /// </summary>
+        /// <param name="parameters">The parameters<see cref="Dictionary{string, string}"/></param>
+        /// <param name="filePath">The filePath<see cref="string"/></param>
         public static void WriteParameters(Dictionary<string, string> parameters, string filePath)
         {
             try
@@ -471,11 +597,11 @@ namespace UnrealEnginePackageManager
             }
         }
 
-        #endregion
-
-
-
-
+        /// <summary>
+        /// The UpdatePackageInstallationState
+        /// </summary>
+        /// <param name="packageName">The packageName<see cref="string"/></param>
+        /// <param name="installed">The installed<see cref="bool"/></param>
         public static void UpdatePackageInstallationState(string packageName, bool installed)
         {
             // Get the path to the Preferences file
@@ -529,17 +655,22 @@ namespace UnrealEnginePackageManager
             }
         }
 
-
+        /// <summary>
+        /// The GetManifestFilePath
+        /// </summary>
+        /// <param name="packageName">The packageName<see cref="string"/></param>
+        /// <returns>The <see cref="string"/></returns>
         public static string GetManifestFilePath(string packageName)
         {
             string packageFolderPath = Path.Combine(MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages), packageName);
             return Path.Combine(packageFolderPath, "ContentSettings", "manifest.json");
         }
 
-        #region Save and load Json Files and packageListFile
-
-
-
+        /// <summary>
+        /// The LoadManifestJson
+        /// </summary>
+        /// <param name="filePath">The filePath<see cref="string"/></param>
+        /// <returns>The <see cref="JObject"/></returns>
         public static JObject LoadManifestJson(string filePath)
         {
             if (File.Exists(filePath))
@@ -554,15 +685,24 @@ namespace UnrealEnginePackageManager
             }
         }
 
+        /// <summary>
+        /// The SaveManifestJson
+        /// </summary>
+        /// <param name="filePath">The filePath<see cref="string"/></param>
+        /// <param name="manifestJson">The manifestJson<see cref="JObject"/></param>
         public static void SaveManifestJson(string filePath, JObject manifestJson)
         {
             string jsonString = manifestJson.ToString(Formatting.Indented);
             File.WriteAllText(filePath, jsonString);
         }
 
-
-
         // Function to update package manifest with new package ID
+
+        /// <summary>
+        /// The UpdatePackageManifest
+        /// </summary>
+        /// <param name="packageId">The packageId<see cref="int"/></param>
+        /// <param name="packageName">The packageName<see cref="string"/></param>
         public static void UpdatePackageManifest(int packageId, string packageName)
         {
             // Assuming you have a method to load and update the package manifest
@@ -576,8 +716,13 @@ namespace UnrealEnginePackageManager
             SaveManifestJson(manifestFilePath, manifestJson);
         }
 
-
-        public static void AddPackage(Dictionary<string, string> packageNames, string packageName,string PackageListPath)
+        /// <summary>
+        /// The AddPackage
+        /// </summary>
+        /// <param name="packageNames">The packageNames<see cref="Dictionary{string, string}"/></param>
+        /// <param name="packageName">The packageName<see cref="string"/></param>
+        /// <param name="PackageListPath">The PackageListPath<see cref="string"/></param>
+        public static void AddPackage(Dictionary<string, string> packageNames, string packageName, string PackageListPath)
         {
             // Find the next available package number
             int nextPackageNumber = 1;
@@ -594,7 +739,11 @@ namespace UnrealEnginePackageManager
             UpdatePackageManifest(nextPackageNumber, packageName);
         }
 
-
+        /// <summary>
+        /// The RemovePackage
+        /// </summary>
+        /// <param name="packageNames">The packageNames<see cref="Dictionary{string, string}"/></param>
+        /// <param name="packageNumber">The packageNumber<see cref="int"/></param>
         public static void RemovePackage(Dictionary<string, string> packageNames, int packageNumber)
         {
             // Remove the package from the package list
@@ -627,8 +776,13 @@ namespace UnrealEnginePackageManager
             }
         }
 
-        #endregion
-
+        /// <summary>
+        /// The CopyFolderWithProgress
+        /// </summary>
+        /// <param name="worker">The worker<see cref="BackgroundWorker"/></param>
+        /// <param name="sourceFolderPath">The sourceFolderPath<see cref="string"/></param>
+        /// <param name="destinationFolderPath">The destinationFolderPath<see cref="string"/></param>
+        /// <param name="totalDurationInSeconds">The totalDurationInSeconds<see cref="int"/></param>
         public static void CopyFolderWithProgress(BackgroundWorker worker, string sourceFolderPath, string destinationFolderPath, int totalDurationInSeconds)
         {
             // Create the destination folder
@@ -677,7 +831,12 @@ namespace UnrealEnginePackageManager
             }
         }
 
-
+        /// <summary>
+        /// The AreFilesDoneCopying
+        /// </summary>
+        /// <param name="sourceFolderPath">The sourceFolderPath<see cref="string"/></param>
+        /// <param name="destinationFolderPath">The destinationFolderPath<see cref="string"/></param>
+        /// <returns>The <see cref="bool"/></returns>
         public static bool AreFilesDoneCopying(string sourceFolderPath, string destinationFolderPath)
         {
             // Get all files and subfolders in the source folder
@@ -699,6 +858,13 @@ namespace UnrealEnginePackageManager
         }
 
         // Function to resize the image to a specified size
+
+        /// <summary>
+        /// The ResizeImage
+        /// </summary>
+        /// <param name="imgToResize">The imgToResize<see cref="Image"/></param>
+        /// <param name="size">The size<see cref="Size"/></param>
+        /// <returns>The <see cref="Image"/></returns>
         public static Image ResizeImage(Image imgToResize, Size size)
         {
             int sourceWidth = imgToResize.Width;
@@ -727,6 +893,12 @@ namespace UnrealEnginePackageManager
         }
 
         // Function to save the resized image to a specified path
+
+        /// <summary>
+        /// The SaveResizedImage
+        /// </summary>
+        /// <param name="resizedImage">The resizedImage<see cref="Image"/></param>
+        /// <param name="filePath">The filePath<see cref="string"/></param>
         public static void SaveResizedImage(Image resizedImage, string filePath)
         {
             // Save the resized image to the specified file path

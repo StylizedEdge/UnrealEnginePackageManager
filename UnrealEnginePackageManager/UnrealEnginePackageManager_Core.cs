@@ -40,6 +40,8 @@ namespace UnrealEnginePackageManager
 
 
 
+
+        #region Load package Function
         private void LoadPackages()
         {
             // Get the path to the package list file
@@ -87,13 +89,19 @@ namespace UnrealEnginePackageManager
                         string name = packageJson["Name"][0]["Text"].Value<string>();
                         string version = packageJson["Version"].Value<string>();
                         string description = packageJson["Description"][0]["Text"].Value<string>();
-                        string thumbnail = packageJson["Thumbnail"].Value<string>();
+
+
+                        string thumbnail = "";
+                        if (packageJson.ContainsKey("Thumbnail") && packageJson["Thumbnail"].Type == JTokenType.String)
+                        {
+                            thumbnail = packageJson["Thumbnail"].Value<string>();
+                        }
+                        // Construct the full path to the thumbnail image
+                        string fullThumbnailPath = Path.Combine(packageFolderPath, $"{packageName}\\ContentSettings", "Media", thumbnail);
+
                         string UeVersion = packageJson["UEVersion"].Value<string>();
 
 
-
-                        // Construct the full path to the thumbnail image
-                        string fullThumbnailPath = Path.Combine(packageFolderPath, $"{packageName}\\ContentSettings", "Media", thumbnail);
 
                         // Create a new Package object with the extracted information
                         Package pack = new Package
@@ -115,7 +123,7 @@ namespace UnrealEnginePackageManager
                         CreatePackageButtons();
                     }
 
-                    if(packages.Count == 0)
+                    if (packages.Count == 0)
                     {
                         Console.WriteLine("Package list is empty");
                     }
@@ -125,6 +133,9 @@ namespace UnrealEnginePackageManager
 
 
         }
+        #endregion
+
+        #region Create package Function
 
         private void CreatePackageButtons()
         {
@@ -142,10 +153,25 @@ namespace UnrealEnginePackageManager
                     {
                         Console.WriteLine(package.Name + " Thumbnail missing");
                     }
+                    button.BackColor = System.Drawing.Color.Silver;
+                    button.Cursor = System.Windows.Forms.Cursors.Hand;
+                    button.Dock = System.Windows.Forms.DockStyle.Top;
+                    button.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+                    button.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    button.ForeColor = System.Drawing.SystemColors.ControlText;
+                    button.Location = new System.Drawing.Point(3, 3);
+                    button.Name = package.Name;
+                    button.Size = new System.Drawing.Size(120, 120);
+                    button.TabIndex = 0;
+                    button.Text = package.Name;
+                    button.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+                    button.UseVisualStyleBackColor = false;
+
+
                     button.BackgroundImageLayout = ImageLayout.Stretch;
                     button.Dock = DockStyle.Top;
                     button.Name = package.Name; // Assign the package name to the button name
-                    button.Size = new Size(80, 80);
+                    button.Size = new Size(120, 120);
                     button.Text = package.Name;
                     button.TextAlign = ContentAlignment.BottomCenter;
                     button.UseVisualStyleBackColor = true;
@@ -156,6 +182,8 @@ namespace UnrealEnginePackageManager
                 }
             }
         }
+
+        #endregion
 
         Package selectedPackage;
         private void Button_Click(Package package)
@@ -289,74 +317,134 @@ namespace UnrealEnginePackageManager
 
 
 
+
+        /* private void DeletePackage(string folderPath)
+                {
+                    selectedPackage = null;
+
+                    if (Directory.Exists(folderPath))
+                    {
+                        try
+                        {
+                            // Attempt to delete the package folder
+                            Directory.Delete(folderPath, true);
+                            Console.WriteLine($"Package folder '{folderPath}' deleted.");
+
+                            // Remove the package from the list
+                            Package deletedPackage = packages.Find(p => Path.Combine(MethodBook.GetFolderInFolder("Packages", MethodBook.ImportantFolders.Packages), p.Name) == folderPath);
+                            if (deletedPackage != null)
+                            {
+                                packages.Remove(deletedPackage);
+                                Console.WriteLine($"Package '{deletedPackage.Name}' removed from the list.");
+                            }
+
+                            // Update the packageList.txt
+                            string packageListFilePath = MethodBook.GetFileInFolder("PackageList.txt", MethodBook.ImportantFolders.Packages);
+                            Dictionary<string, string> packageNames = MethodBook.LoadParameters(packageListFilePath);
+                            string packageName = deletedPackage.Name;
+                            packageNames = packageNames.Where(x => x.Value != packageName).ToDictionary(x => x.Key, x => x.Value);
+                            MethodBook.WriteParameters(packageNames, packageListFilePath);
+                            Console.WriteLine("Package list updated.");
+
+                            // Find the package number corresponding to the deleted package name
+                            string packageNumberStr = packageNames.FirstOrDefault(x => x.Value == deletedPackage.Name).Key.ToString();
+
+                            // If package number is found, remove the package from the package manifests
+                            if (!string.IsNullOrEmpty(packageNumberStr))
+                            {
+                                RemovePackage(packageNames, int.Parse(packageNumberStr));
+                            }
+                            else
+                            {
+                                Console.WriteLine("Package number not found for the deleted package name.");
+                            }
+                            string packageFolderPath = Path.Combine(MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages), selectedPackage.Name);
+
+                            // Close the application before restarting
+                            Application.Exit();
+
+                            //LauchUnrealEngine Path
+                            string deleteThis = $"{packageFolderPath}";
+                            Process.Start(deleteThis);
+                        }
+                        catch (IOException ex)
+                        {
+                            // Handle file access errors
+                            Console.WriteLine($"Error deleting package folder '{folderPath}': {ex.Message}");
+                        }
+                        catch (Exception ex)
+                        {
+                            // Handle other types of errors
+                            Console.WriteLine($"Error deleting package folder '{folderPath}': {ex.Message}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Package folder '{folderPath}' not found.");
+                    }
+                }
+
+         */
+
+
         private void DeletePackage(string folderPath)
         {
-            selectedPackage = null;
-
-            if (Directory.Exists(folderPath))
+            if (!Directory.Exists(folderPath))
             {
-                try
+                Console.WriteLine($"Package folder '{folderPath}' not found.");
+                return;
+            }
+
+            try
+            {
+                // Attempt to delete the package folder and all its contents
+                Directory.Delete(folderPath, true);
+                Console.WriteLine($"Package folder '{folderPath}' deleted.");
+
+                // Remove the package from the list
+                Package deletedPackage = packages.FirstOrDefault(p => Path.Combine(MethodBook.GetFolderInFolder("Packages", MethodBook.ImportantFolders.Packages), p.Name) == folderPath);
+                if (deletedPackage != null)
                 {
-                    // Attempt to delete the package folder
-                    Directory.Delete(folderPath, true);
-                    Console.WriteLine($"Package folder '{folderPath}' deleted.");
+                    packages.Remove(deletedPackage);
+                    Console.WriteLine($"Package '{deletedPackage.Name}' removed from the list.");
+                }
 
-                    // Remove the package from the list
-                    Package deletedPackage = packages.Find(p => Path.Combine(MethodBook.GetFolderInFolder("Packages", MethodBook.ImportantFolders.Packages), p.Name) == folderPath);
-                    if (deletedPackage != null)
-                    {
-                        packages.Remove(deletedPackage);
-                        Console.WriteLine($"Package '{deletedPackage.Name}' removed from the list.");
-                    }
-
-                    // Update the packageList.txt
-                    string packageListFilePath = MethodBook.GetFileInFolder("PackageList.txt", MethodBook.ImportantFolders.Packages);
-                    Dictionary<string, string> packageNames = MethodBook.LoadParameters(packageListFilePath);
-                    string packageName = deletedPackage.Name;
+                // Update the packageList.txt
+                string packageListFilePath = MethodBook.GetFileInFolder("PackageList.txt", MethodBook.ImportantFolders.Packages);
+                Dictionary<string, string> packageNames = MethodBook.LoadParameters(packageListFilePath);
+                string packageName = deletedPackage?.Name;
+                if (!string.IsNullOrEmpty(packageName))
+                {
                     packageNames = packageNames.Where(x => x.Value != packageName).ToDictionary(x => x.Key, x => x.Value);
                     MethodBook.WriteParameters(packageNames, packageListFilePath);
                     Console.WriteLine("Package list updated.");
 
                     // Find the package number corresponding to the deleted package name
-                    string packageNumberStr = packageNames.FirstOrDefault(x => x.Value == deletedPackage.Name).Key.ToString();
-
-                    // If package number is found, remove the package from the package manifests
+                    string packageNumberStr = packageNames.FirstOrDefault(x => x.Value == deletedPackage.Name).Key;
                     if (!string.IsNullOrEmpty(packageNumberStr))
                     {
+                        // If package number is found, remove the package from the package manifests
                         RemovePackage(packageNames, int.Parse(packageNumberStr));
                     }
                     else
                     {
                         Console.WriteLine("Package number not found for the deleted package name.");
                     }
-                    string packageFolderPath = Path.Combine(MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages), selectedPackage.Name);
+                }
 
-                    // Close the application before restarting
-                    Application.Exit();
+                // Close the application before restarting
+                Application.Exit();
+                Application.Restart();
 
-                    //LauchUnrealEngine Path
-                    string deleteThis = $"{packageFolderPath}";
-                    Process.Start(deleteThis);
-                }
-                catch (IOException ex)
-                {
-                    // Handle file access errors
-                    Console.WriteLine($"Error deleting package folder '{folderPath}': {ex.Message}");
-                }
-                catch (Exception ex)
-                {
-                    // Handle other types of errors
-                    Console.WriteLine($"Error deleting package folder '{folderPath}': {ex.Message}");
-                }
+                // Launch Unreal Engine (assuming you want to start it after deleting the package)
+                Process.Start(folderPath);
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine($"Package folder '{folderPath}' not found.");
+                // Handle errors
+                Console.WriteLine($"Error deleting package folder '{folderPath}': {ex.Message}");
             }
         }
-
-
-
 
 
 

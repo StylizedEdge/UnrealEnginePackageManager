@@ -149,6 +149,7 @@
             // previewPanel
             // 
             this.previewPanel.AutoScroll = true;
+            this.previewPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.previewPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.previewPanel.Location = new System.Drawing.Point(0, 24);
             this.previewPanel.Name = "previewPanel";
@@ -158,9 +159,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.OrangeRed;
             this.label1.Location = new System.Drawing.Point(12, 400);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(117, 13);
+            this.label1.Size = new System.Drawing.Size(154, 17);
             this.label1.TabIndex = 2;
             this.label1.Text = "Package installed state";
             // 
@@ -169,7 +172,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label2.Location = new System.Drawing.Point(135, 401);
+            this.label2.Location = new System.Drawing.Point(172, 401);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(48, 17);
             this.label2.TabIndex = 3;
@@ -178,9 +181,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.OrangeRed;
             this.label3.Location = new System.Drawing.Point(12, 425);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(60, 13);
+            this.label3.Size = new System.Drawing.Size(79, 17);
             this.label3.TabIndex = 4;
             this.label3.Text = "UE Version";
             // 
@@ -189,7 +194,7 @@
             this.pkgUnrealEngineVersion.AutoSize = true;
             this.pkgUnrealEngineVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pkgUnrealEngineVersion.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pkgUnrealEngineVersion.Location = new System.Drawing.Point(135, 425);
+            this.pkgUnrealEngineVersion.Location = new System.Drawing.Point(172, 425);
             this.pkgUnrealEngineVersion.Name = "pkgUnrealEngineVersion";
             this.pkgUnrealEngineVersion.Size = new System.Drawing.Size(48, 17);
             this.pkgUnrealEngineVersion.TabIndex = 5;
@@ -200,7 +205,7 @@
             this.pkgSize.AutoSize = true;
             this.pkgSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pkgSize.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pkgSize.Location = new System.Drawing.Point(135, 450);
+            this.pkgSize.Location = new System.Drawing.Point(172, 450);
             this.pkgSize.Name = "pkgSize";
             this.pkgSize.Size = new System.Drawing.Size(48, 17);
             this.pkgSize.TabIndex = 7;
@@ -209,9 +214,11 @@
             // label6
             // 
             this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.OrangeRed;
             this.label6.Location = new System.Drawing.Point(12, 450);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(73, 13);
+            this.label6.Size = new System.Drawing.Size(94, 17);
             this.label6.TabIndex = 6;
             this.label6.Text = "Package Size";
             // 
@@ -219,7 +226,7 @@
             // 
             this.pkgDescription.AutoSize = true;
             this.pkgDescription.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.pkgDescription.Location = new System.Drawing.Point(135, 473);
+            this.pkgDescription.Location = new System.Drawing.Point(172, 473);
             this.pkgDescription.Name = "pkgDescription";
             this.pkgDescription.Size = new System.Drawing.Size(19, 91);
             this.pkgDescription.TabIndex = 9;
@@ -228,9 +235,11 @@
             // label8
             // 
             this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.ForeColor = System.Drawing.Color.OrangeRed;
             this.label8.Location = new System.Drawing.Point(12, 473);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(106, 13);
+            this.label8.Size = new System.Drawing.Size(138, 17);
             this.label8.TabIndex = 8;
             this.label8.Text = "Package Description";
             // 
@@ -286,7 +295,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(469, 619);
             this.Controls.Add(this.pkgName);
             this.Controls.Add(this.button3);
