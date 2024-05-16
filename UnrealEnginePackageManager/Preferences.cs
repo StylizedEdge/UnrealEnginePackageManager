@@ -13,49 +13,78 @@ namespace UnrealEnginePackageManager
 {
     public partial class Preferences : Form
     {
-        string UEpath = "C:\\Program Files\\Epic Games\\UE_4.27\\Engine\\Binaries\\Win64";
-        string DefaultPackageCreationDirectory = MethodBook.GetFolderInFolder("Packages",MethodBook.ImportantFolders.Packages);
 
-
+        string DefaultPackageCreationDirectory = Book_Files.GetFolderInFolder("Packages",Book_Files.ImportantFolders.Packages);
         string PreferencePath = "Preferences.dll";
         public Preferences()
         {
             InitializeComponent();
 
             // Load the parameters from the text file
-            var loadedParameters = MethodBook.LoadParameters(MethodBook.GetFileInFolder(PreferencePath, MethodBook.ImportantFolders.Resources));
+            var loadedParameters = Book_Files.LoadParameters(Book_Files.GetFileInFolder(PreferencePath, Book_Files.ImportantFolders.Resources));
 
             Console.WriteLine("Preferences Loaded from file!");
-            UEPathText.Text = loadedParameters["UnrealEnginePreferedVersionPath"];
+
+            EnginesPath.Text = loadedParameters["EnginesPath"];
+            pkgCreationDir.Text = loadedParameters["PKGCreationDirectory"];
+            UESelectedVersion.SelectedItem = loadedParameters["SelectedVersionPath"];
             if (loadedParameters["PackageCreationDirectory"] != null)
             {
-                pkgCreationDir.Text = loadedParameters["PackageCreationDirectory"];
+                CntCreationDir.Text = loadedParameters["PackageCreationDirectory"];
             }
             else
             {
-                pkgCreationDir.Text = DefaultPackageCreationDirectory;
+                CntCreationDir.Text = DefaultPackageCreationDirectory;
             }
             Autopkg.Checked = Convert.ToBoolean(loadedParameters["AutoInstallPackages"]);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        //Apply All Settings
+        private void SaveAppliedSettings(object sender, EventArgs e)
         {
             // Define some parameters to save
             var parametersToSave = new Dictionary<string, string>
         {
-            { "UnrealEnginePreferedVersionPath", UEpath },
+                {"EnginesPath","C:\\Program Files\\Epic Games\\" },
+            { "SelectedVersionPath", UESelectedVersion.Text },
             { "AutoInstallPackages", Autopkg.Checked.ToString() },
-            { "PackageCreationDirectory", pkgCreationDir.Text }
+            { "PackageCreationDirectory", CntCreationDir.Text },
+            { "PKGCreationDirectory", pkgCreationDir.Text }
         };
 
             // Save the parameters to the text file
-            MethodBook.SaveParameters(MethodBook.GetFileInFolder(PreferencePath, MethodBook.ImportantFolders.Resources), parametersToSave);
+            Book_Files.SaveParameters(Book_Files.GetFileInFolder(PreferencePath, Book_Files.ImportantFolders.Resources), parametersToSave);
             Close();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+
+        private void GetContentCreationPath(object sender, EventArgs e)
         {
-            string dir = MethodBook.GetFolderInFolder("Packages", MethodBook.ImportantFolders.Packages);
+            string dir = Book_Files.GetFolderInFolder("Packages", Book_Files.ImportantFolders.Packages);
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.ValidateNames = false;
+                openFileDialog.CheckFileExists = false; // Avoid validation
+                openFileDialog.CheckPathExists = true;
+                openFileDialog.FileName = "Select Pack folder"; // A trick to select folders
+                openFileDialog.InitialDirectory = dir;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    // Get the selected path (folder) and display it in the textbox
+                    string selectedPath = System.IO.Path.GetDirectoryName(openFileDialog.FileName);
+
+                    if (Directory.Exists(selectedPath))
+                    {
+                        CntCreationDir.Text = selectedPath;
+                    }
+                }
+            }
+        }
+
+        private void GetPackageCreationPath(object sender, EventArgs e)
+        {
+            string dir = Book_Files.GetFolderInFolder("Packages", Book_Files.ImportantFolders.Packages);
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.ValidateNames = false;

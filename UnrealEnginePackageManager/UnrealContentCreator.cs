@@ -8,23 +8,25 @@ using System.IO;
 using System.IO.Packaging;
 using System.Threading;
 using System.Windows.Forms;
-using static UnrealEnginePackageManager.MethodBook;
+using static UnrealEnginePackageManager.Book_Files;
 
 
 
 namespace UnrealEnginePackageManager
 {
-    public partial class PackageCreator : Form
+    public partial class UnrealContentCreator : Form
     {
+        string PreferenceData;
+        Dictionary<string, string> preferenceRawData;
+
         string selectedPath = "";
         string ThumbPath = "";
-        string ScreenShotPath = "";
 
         string SamplesFilesPathContent = "";
         string SourceFiles = "";
 
 
-        public PackageCreator()
+        public UnrealContentCreator()
         {
             InitializeComponent();
 
@@ -37,6 +39,13 @@ namespace UnrealEnginePackageManager
             this.backgroundWorker.DoWork += BackgroundWorker_DoWork;
             this.backgroundWorker.ProgressChanged += BackgroundWorker_ProgressChanged;
             this.backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
+
+
+            PreferenceData = GetFileInFolder("Preferences.dll", ImportantFolders.Resources);
+            if (PreferenceData != null)
+            {
+                preferenceRawData = LoadParameters(PreferenceData);
+            }
         }
 
 
@@ -44,8 +53,6 @@ namespace UnrealEnginePackageManager
         private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             var worker = sender as BackgroundWorker;
-            var args = e.Argument as string[];
-
             CopyFolderWithProgress(worker, SourceFiles, SamplesFilesPathContent, 4);
         }
         
@@ -57,23 +64,21 @@ namespace UnrealEnginePackageManager
             this.currentFileLabel.Text = $"Current file: {e.UserState}";
 
 
-            //LauchUnrealEngine Path
-            string CMDcommand = $"\"C:\\Program Files\\Epic Games\\UE_4.27\\Engine\\Binaries\\Win64\\UnrealPak.exe\" -Create=\"{selectedPath}\\{packnameText.Text}\\ContentToPack.txt\" \"{selectedPath}\\{packnameText.Text}\\FeaturePacks\\{packnameText.Text}.upack\"\n@pause";
+                //LauchUnrealEngine Path
+                string CMDcommand = $"\"{preferenceRawData["EnginesPath"]}\\{preferenceRawData["SelectedVersionPath"]}\\Engine\\Binaries\\Win64\\UnrealPak.exe\" -Create=\"{selectedPath}\\{packnameText.Text}\\ContentToPack.txt\" \"{selectedPath}\\{packnameText.Text}\\FeaturePacks\\{packnameText.Text}.upack\"\n@pause";
+                if (e.ProgressPercentage >= 96)
+                {
+                    File.WriteAllText(Path.Combine(selectedPath, packnameText.Text, "UnrealComand.bat"), CMDcommand);
+                    Process.Start(Path.Combine(selectedPath, packnameText.Text, "UnrealComand.bat"));
+                    MessageBox.Show("AssetPack Created!");
+                    Close();
+                }
+                Book_Files.UpdatePackageInstallationState(packnameText.Text, false);
+                if (AreFilesDoneCopying(SourceFiles, SamplesFilesPathContent) == true)
+                {
+                    Console.WriteLine("Files Done Copying");
+                }
 
-
-
-            if (e.ProgressPercentage >= 96)
-            {
-                File.WriteAllText(Path.Combine(selectedPath, packnameText.Text, "UnrealComand.bat"), CMDcommand);
-                Process.Start(Path.Combine(selectedPath, packnameText.Text, "UnrealComand.bat"));
-                MessageBox.Show("AssetPack Created!");
-                Close();
-            }
-            MethodBook.UpdatePackageInstallationState(packnameText.Text, false);
-            if(AreFilesDoneCopying(SourceFiles, SamplesFilesPathContent) == true)
-            {
-                Console.WriteLine("Files Done Copying");
-            }
         }
 
         private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -85,9 +90,9 @@ namespace UnrealEnginePackageManager
         #endregion
 
         #region Extract ContentPack from Resource Folder
-        private void button1_Click(object sender, EventArgs e)
+        private void AssignPackageCreationPath(object sender, EventArgs e)
         {
-            string dir = MethodBook.GetFolderInFolder("Packages", MethodBook.ImportantFolders.Packages);
+            string dir = Book_Files.GetFolderInFolder("Packages", Book_Files.ImportantFolders.Packages);
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.ValidateNames = false;
@@ -106,9 +111,9 @@ namespace UnrealEnginePackageManager
                     if (Directory.Exists(selectedPath))
                     {
                         pathassignedChecker.Checked = true;
-                        pathemptyChecker.Checked = !MethodBook.IsFolderEmpty(selectedPath);
+                        pathemptyChecker.Checked = !Book_Files.IsFolderEmpty(selectedPath);
 
-                        MethodBook.ExtractRar(GetFileInFolder("ContentPack.dll", MethodBook.ImportantFolders.Resources), selectedPath);
+                        Book_Rar.ExtractRar(GetFileInFolder("ContentPack.dll", Book_Files.ImportantFolders.Resources), selectedPath);
 
                         if (Directory.Exists(Path.Combine(selectedPath, packnameText.Text)))
                         {
@@ -121,16 +126,27 @@ namespace UnrealEnginePackageManager
         #endregion
 
         #region Package Creation
-        private void button4_Click(object sender, EventArgs e)
+        private void CreateContentAndpackAllFiles(object sender, EventArgs e)
         {
 
-            string packageListFilePath = MethodBook.GetFileInFolder("PackageList.txt", MethodBook.ImportantFolders.Packages);
-            Dictionary<string, string> packageNames = MethodBook.LoadParameters(packageListFilePath);
-            AddPackage(packageNames, packnameText.Text,packageListFilePath);
-            
-            CreatePack();
+            if (Directory.Exists(Path.Combine(preferenceRawData["EnginesPath"], preferenceRawData["SelectedVersionPath"])))
+            {
+                string packageListFilePath = Book_Files.GetFileInFolder("ContentList.txt", Book_Files.ImportantFolders.Packages);
+                Dictionary<string, string> packageNames = Book_Files.LoadParameters(packageListFilePath);
+
+                AddPackage(packageNames, packnameText.Text, packageListFilePath, preferenceRawData["PackageCreationDirectory"]);
+
+                //Create the pack
+                CreatePack();
+            }
+            else
+            {
+                MessageBox.Show("Unreal Engine version Selected \nisn't installed, Check the settings");
+                Close();
+            }
         }
 
+        //PackCreationFunction
         void CreatePack()
         {
             AssignPackageDestinationName();
@@ -142,29 +158,30 @@ namespace UnrealEnginePackageManager
             //Assign the pack Folder
             if (packnameText.Text != null)
             {
-                if (Directory.Exists(selectedPath + "\\" + packnameText.Text))
+                if (!Directory.Exists(selectedPath + "\\" + packnameText.Text))
                 {
-                    AssignPackageJsonIni();
-
-                    if (!backgroundWorker.IsBusy)
-                    {
-                        string sourceFolder = SourceFiles;
-                        string destinationFolder = SamplesFilesPathContent;
-
-                        // Pass the source and destination to the worker
-                        backgroundWorker.RunWorkerAsync(new string[] { sourceFolder, destinationFolder });
-                    }
-
-                    string contentToPack = $"\"{selectedPath}\\{packnameText.Text}\\ContentSettings\\Config\\\"\r\n\"{selectedPath}\\{packnameText.Text}\\ContentSettings\\Media\\\"\r\n\"{selectedPath}\\{packnameText.Text}\\ContentSettings\\manifest.json\"";
-                    File.WriteAllText(selectedPath + $"\\{packnameText.Text}\\ContentToPack.txt", contentToPack);
+                    return;
                 }
+                AssignPackageJsonIni();
+
+                if (!backgroundWorker.IsBusy)
+                {
+                    string sourceFolder = SourceFiles;
+                    string destinationFolder = SamplesFilesPathContent;
+
+                    // Pass the source and destination to the worker
+                    backgroundWorker.RunWorkerAsync(new string[] { sourceFolder, destinationFolder });
+                }
+
+                string contentToPack = $"\"{selectedPath}\\{packnameText.Text}\\ContentSettings\\Config\\\"\r\n\"{selectedPath}\\{packnameText.Text}\\ContentSettings\\Media\\\"\r\n\"{selectedPath}\\{packnameText.Text}\\ContentSettings\\manifest.json\"";
+                File.WriteAllText(selectedPath + $"\\{packnameText.Text}\\ContentToPack.txt", contentToPack);
             }
         }
 
         void AssignPackageJsonIni()
         {
             //Config.ini file
-            MethodBook.WriteText(selectedPath + $"\\{packnameText.Text}\\ContentSettings\\Config\\config.ini", $"[AdditionalFilestoAdd]\n+Files=Samples\\{packnameText.Text}\\Content\\*.*");
+            Book_Files.WriteText(selectedPath + $"\\{packnameText.Text}\\ContentSettings\\Config\\config.ini", $"[AdditionalFilestoAdd]\n+Files=Samples\\{packnameText.Text}\\Content\\*.*");
             string filePath = selectedPath + $"\\{packnameText.Text}\\ContentSettings\\manifest.json";
 
 
@@ -179,6 +196,11 @@ namespace UnrealEnginePackageManager
 
             jsonObject["Version"] = versiontext.Text;
             jsonObject["UEVersion"] = UEVersions.Text;
+
+            if (DevName.Text!="")
+                jsonObject["Dev"] = DevName.Text;
+            if (DevWebsite.Text != "")
+                jsonObject["DevWebsite"] = DevWebsite.Text;
 
 
             JObject newTag = new JObject
@@ -237,7 +259,7 @@ namespace UnrealEnginePackageManager
 
         #region Thumbnail and Screenshots
         //Thumbnail button click function
-        private void thumbnailImage_Click(object sender, EventArgs e)
+        private void SetThumbnailImage(object sender, EventArgs e)
         {
             // Create and configure the OpenFileDialog
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -249,7 +271,7 @@ namespace UnrealEnginePackageManager
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     // Resize the selected image to 64x64
-                    Image selectedImage = ResizeImage(Image.FromFile(openFileDialog.FileName), new Size(64, 64));
+                    Image selectedImage = Book_Images.ResizeImage(Image.FromFile(openFileDialog.FileName), new Size(64, 64));
 
                     // Get the file name from the selected file path
                     string fileName = Path.GetFileName(openFileDialog.FileName);
@@ -263,7 +285,7 @@ namespace UnrealEnginePackageManager
 
                     // Copy the resized image to the destination directory
                     ThumbdestinationPath  = Path.Combine(selectedPath, packnameText.Text, "ContentSettings", "Media", fileName);
-                    MethodBook.CopyFile(imagePath, ThumbdestinationPath, false);
+                    Book_Files.CopyFile(imagePath, ThumbdestinationPath, false);
 
                     Console.WriteLine("Thumbnail File Selected, resized, and copied to the Working directory");
                 }
@@ -274,7 +296,7 @@ namespace UnrealEnginePackageManager
 
         //Screenshot button click function
 
-        private void pictureBox2_Click(object sender, EventArgs e)
+        private void SetScreenshotImage(object sender, EventArgs e)
         {
             // Create and configure the OpenFileDialog
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -286,7 +308,7 @@ namespace UnrealEnginePackageManager
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     // Resize the selected image to 64x64
-                    Image selectedImage = ResizeImage(Image.FromFile(openFileDialog.FileName), new Size(400, 200));
+                    Image selectedImage = Book_Images.ResizeImage(Image.FromFile(openFileDialog.FileName), new Size(400, 200));
 
                     // Get the file name from the selected file path
                     string fileName = Path.GetFileName(openFileDialog.FileName);
@@ -302,7 +324,7 @@ namespace UnrealEnginePackageManager
                     ScreenshotdestinationPath = Path.Combine(selectedPath, packnameText.Text, "ContentSettings", "Media", fileName);
 
                     // Copy the resized image to the destination directory
-                    MethodBook.CopyFile(imagePath, ScreenshotdestinationPath, false);
+                    Book_Files.CopyFile(imagePath, ScreenshotdestinationPath, false);
 
                     Console.WriteLine("Screen Shot Image Selected, resized, and copied to the Working directory");
                 }
@@ -312,28 +334,30 @@ namespace UnrealEnginePackageManager
 
         #region Package Renaming process
 
-        private void button5_Click(object sender, EventArgs e)
+        private void CancelPackageCreation(object sender, EventArgs e)
         {
-            string packageFolderPath = Path.Combine(MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages), packnameText.Text);
-            string DefaultContent = Path.Combine(MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages), "ContentPack");
-            // Delete Samples folder
-            if (Directory.Exists(packageFolderPath))
+            string packageFolderPath;
+            Dictionary<string, string> ExtractedPreferences = Book_Files.LoadParameters(PreferenceData);
+            if (File.Exists(PreferenceData))
             {
-                Directory.Delete(packageFolderPath, true);
-                Console.WriteLine($"Package Creation Canceled, Temporary Files deleted");
-            }else if(Directory.Exists(DefaultContent))
-            {
-                Directory.Delete(DefaultContent,true);
-                Console.WriteLine("package Creation Canceled, temporary Files deleted");
+                packageFolderPath = Path.Combine(ExtractedPreferences["PackageCreationDirectory"], packnameText.Text);
+
+                // Delete Samples folder
+                if (Directory.Exists(packageFolderPath))
+                {
+                    Directory.Delete(packageFolderPath, true);
+                    Console.WriteLine($"Package Creation Canceled, Temporary Files deleted");
+                }
+                this.Close();
             }
-            this.Close();
+
         }
 
         string oldFolderPath;
         string newFolderPath;
 
 
-        private void button2_Click(object sender, EventArgs e)
+        private void GetUnrealMigratedFiles(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -354,7 +378,7 @@ namespace UnrealEnginePackageManager
         }
 
 
-        private void button3_Click(object sender, EventArgs e)
+        private void AssignPackageName(object sender, EventArgs e)
         {
             // Define the old and new folder paths
             oldFolderPath = Path.Combine(selectedPath, "ContentPack");
@@ -363,7 +387,7 @@ namespace UnrealEnginePackageManager
             // Rename ContentPack folder if it exists
             if (Directory.Exists(oldFolderPath))
             {
-                MethodBook.RenameFolder(oldFolderPath, newFolderPath);
+                Book_Files.RenameFolder(oldFolderPath, newFolderPath);
                 oldFolderPath = newFolderPath;
             }
 
@@ -375,11 +399,11 @@ namespace UnrealEnginePackageManager
             if (Directory.Exists(samplesFolderOldPath))
             {
                 samplesFolderOldPath = samplesFolderNewPath;
-                MethodBook.RenameFolder(samplesFolderOldPath, samplesFolderNewPath);
+                Book_Files.RenameFolder(samplesFolderOldPath, samplesFolderNewPath);
             }else if(Directory.Exists(Path.Combine(selectedPath, packnameText.Text, "Samples", "Pack_Name")))
             {
                 samplesFolderOldPath = samplesFolderNewPath;
-                MethodBook.RenameFolder(Path.Combine(selectedPath, packnameText.Text, "Samples", "Pack_Name"), samplesFolderNewPath);
+                Book_Files.RenameFolder(Path.Combine(selectedPath, packnameText.Text, "Samples", "Pack_Name"), samplesFolderNewPath);
             }
 
             // Update the SamplesFilesPathContent
@@ -391,6 +415,40 @@ namespace UnrealEnginePackageManager
             button3.Enabled = false;
             packnameText.Enabled = false;
         }
-#endregion
+        #endregion
+
+
+        //PreferencePath
+
+        private void GetDefaultPath(object sender, EventArgs e)
+        {
+            Dictionary <string,string> ExtractedPreferences = Book_Files.LoadParameters(PreferenceData);
+
+            if (File.Exists(PreferenceData))
+            {
+                PackagePathText.Text = ExtractedPreferences["PackageCreationDirectory"];
+                selectedPath = ExtractedPreferences["PackageCreationDirectory"];
+                Fullpath.Text = PackagePathText.Text;
+
+                if (Directory.Exists(selectedPath))
+                {
+                    pathassignedChecker.Checked = true;
+                    pathemptyChecker.Checked = true;
+
+                    if (Directory.Exists(Path.Combine(selectedPath, "ContentPack")))
+                    {
+                        Directory.Delete(Path.Combine(selectedPath, "ContentPack"), true);
+                        Book_Rar.ExtractRar(GetFileInFolder("ContentPack.dll", Book_Files.ImportantFolders.Resources), selectedPath);
+                        systempFilesChecker.Checked = true;
+                    }
+                    else
+                    {
+                        systempFilesChecker.Checked = true;
+                        Book_Rar.ExtractRar(GetFileInFolder("ContentPack.dll", Book_Files.ImportantFolders.Resources), selectedPath);
+                    }
+
+                }
+            }
+        }
     }
 }

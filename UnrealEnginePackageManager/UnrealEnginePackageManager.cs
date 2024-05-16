@@ -6,69 +6,50 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Input;
-using static UnrealEnginePackageManager.MethodBook;
 
 namespace UnrealEnginePackageManager
 {
-    public partial class UnrealEnginePackageManager_Core : Form
+    public partial class UnrealEnginePackageManager : Form
     {
-        string UEpath = "C:\\Program Files\\Epic Games\\UE_4.27";
-        string PreferenceFileName = "Preferences.dll";
+        string UEpath;
+        private Dictionary<string, string> PrefencesData;
+        string packageFolderPath;
         List<Package> packages = new List<Package>();
 
 
-        public UnrealEnginePackageManager_Core()
+        public UnrealEnginePackageManager()
         {
             InitializeComponent();
-
-            //Load Preferences
             // Load the parameters from the text file
-            Dictionary<string, string> loadedParameters = MethodBook.LoadParameters(MethodBook.GetFileInFolder(PreferenceFileName, MethodBook.ImportantFolders.Resources));
+            PrefencesData = Book_Files.LoadParameters(Book_Files.GetFileInFolder("Preferences.dll", Book_Files.ImportantFolders.Resources));
 
-            // Display the loaded parameters
-            foreach (KeyValuePair<string, string> param in loadedParameters)
+            if(packageFolderPath == null)
             {
-                Console.WriteLine(param.Value);
+                packageFolderPath = PrefencesData["PackageCreationDirectory"];
             }
             // Check for deleted packages
             CheckDeletedPackages();
-
             // Load Package List
             LoadPackages();
         }
-
-
 
 
         #region Load package Function
         private void LoadPackages()
         {
             // Get the path to the package list file
-            string packageListFilePath = MethodBook.GetFileInFolder("PackageList.txt", ImportantFolders.Packages);
-            if (packageListFilePath != null)
-                Console.WriteLine("Package List Scanned");
-
+            string packageListFilePath = Book_Files.GetFileInFolder("ContentList.txt", Book_Files.ImportantFolders.Packages);
 
             // Read the package list file to get the names of all packages
-            Dictionary<string, string> packageNames = MethodBook.LoadParameters(packageListFilePath);
+            Dictionary<string, string> packageNames = Book_Files.LoadParameters(packageListFilePath);
 
             if (packageNames != null)
             {
                 foreach (var package in packageNames)
                 {
-                    Console.WriteLine(package.Value);
-
-
                     // Get the package name and folder path
                     string packageName = package.Value; // Extract package name from packageEntry.Value
-                    string packageFolderPath = MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages);
-
-                    Console.WriteLine("Packages are located in");
-                    Console.WriteLine(packageFolderPath);
-                    Console.WriteLine("package Manifest of  >>  " + packageName + " Located in \n");
-                    Console.WriteLine(packageFolderPath + "\\" + packageName + "\\" + "ContentSettings\\");
-
+                    string packageFolderPath = PrefencesData["PackageCreationDirectory"];
 
                     // Get the path to the JSON file containing package information
                     string jsonFilePath = Path.Combine(packageFolderPath, $"{packageName}\\ContentSettings", "manifest.json");
@@ -88,6 +69,9 @@ namespace UnrealEnginePackageManager
                         // Extract package information
                         string name = packageJson["Name"][0]["Text"].Value<string>();
                         string version = packageJson["Version"].Value<string>();
+                        string devname = packageJson["Dev"].Value<string>();
+                        string devwebsite = packageJson["DevWebsite"].Value<string>();
+
                         string description = packageJson["Description"][0]["Text"].Value<string>();
 
 
@@ -110,7 +94,9 @@ namespace UnrealEnginePackageManager
                             Description = description,
                             Thumbnail = fullThumbnailPath,
                             Version = version,
-                            UEVersion = UeVersion
+                            UEVersion = UeVersion,
+                            DevName = devname,
+                            DevWebsite = devwebsite,
                         };
 
                         // Initialize the list to store the loaded packages
@@ -146,7 +132,9 @@ namespace UnrealEnginePackageManager
                     Button button = new Button();
                     if (File.Exists(package.Thumbnail))
                     {
-                        button.BackgroundImage = Image.FromFile(package.Thumbnail); // Load the thumbnail image
+                        //Everything about button Image
+                        button.Image = Image.FromFile(package.Thumbnail); // Load the thumbnail image
+                        button.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
                         Console.WriteLine("Thumbnail Detected");
                     }
                     else
@@ -161,24 +149,22 @@ namespace UnrealEnginePackageManager
                     button.ForeColor = System.Drawing.SystemColors.ControlText;
                     button.Location = new System.Drawing.Point(3, 3);
                     button.Name = package.Name;
-                    button.Size = new System.Drawing.Size(120, 120);
+                    button.Size = new System.Drawing.Size(400, 50);
                     button.TabIndex = 0;
                     button.Text = package.Name;
                     button.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
                     button.UseVisualStyleBackColor = false;
-
-
-                    button.BackgroundImageLayout = ImageLayout.Stretch;
                     button.Dock = DockStyle.Top;
                     button.Name = package.Name; // Assign the package name to the button name
-                    button.Size = new Size(120, 120);
                     button.Text = package.Name;
                     button.TextAlign = ContentAlignment.BottomCenter;
                     button.UseVisualStyleBackColor = true;
 
 
+
+                    button.ContextMenuStrip = PackageOption;
                     button.Click += (sender, e) => Button_Click(package); // Assign click event handler
-                    previewPanel.Controls.Add(button);
+                    UnrealContent.Controls.Add(button);
                 }
             }
         }
@@ -189,9 +175,9 @@ namespace UnrealEnginePackageManager
         private void Button_Click(Package package)
         {
             // Handle button click event
-            string packageFolderPath = Path.Combine(MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages), package.Name);
-            double packageSizeMb = MethodBook.GetPackageSizeInMegabytes(packageFolderPath);
-            double packageSizeGb = MethodBook.GetPackageSizeInGigabytes(packageFolderPath);
+            string packageFolderPath = Path.Combine(PrefencesData["PackageCreationDirectory"], package.Name);
+            double packageSizeMb = Book_Files.GetPackageSizeInMegabytes(packageFolderPath);
+            double packageSizeGb = Book_Files.GetPackageSizeInGigabytes(packageFolderPath);
             selectedPackage = package;
 
             if (selectedPackage != null)
@@ -216,7 +202,7 @@ namespace UnrealEnginePackageManager
 
         private void createContentPackToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PackageCreator PackageCreatorWindow = new PackageCreator();
+            UnrealContentCreator PackageCreatorWindow = new UnrealContentCreator();
             PackageCreatorWindow.Show();
         }
 
@@ -265,7 +251,7 @@ namespace UnrealEnginePackageManager
 
         private void RefreshPackageButtons()
         {
-            previewPanel.Controls.Clear();
+            UnrealContent.Controls.Clear();
             // Load Package List
             LoadPackages();
             CreatePackageButtons();
@@ -275,7 +261,7 @@ namespace UnrealEnginePackageManager
         {
             if (selectedPackage != null)
             {
-                string packageFolderPath = Path.Combine(MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages), selectedPackage.Name);
+                string packageFolderPath = Path.Combine(PrefencesData["PackageCreationDirectory"], selectedPackage.Name);
 
                 // Display a confirmation dialog
                 DialogResult result = MessageBox.Show($"Are you sure you want to delete the package '{selectedPackage.Name}'?" +
@@ -402,7 +388,7 @@ namespace UnrealEnginePackageManager
                 Console.WriteLine($"Package folder '{folderPath}' deleted.");
 
                 // Remove the package from the list
-                Package deletedPackage = packages.FirstOrDefault(p => Path.Combine(MethodBook.GetFolderInFolder("Packages", MethodBook.ImportantFolders.Packages), p.Name) == folderPath);
+                Package deletedPackage = packages.FirstOrDefault(p => Path.Combine(packageFolderPath, p.Name) == folderPath);
                 if (deletedPackage != null)
                 {
                     packages.Remove(deletedPackage);
@@ -410,13 +396,13 @@ namespace UnrealEnginePackageManager
                 }
 
                 // Update the packageList.txt
-                string packageListFilePath = MethodBook.GetFileInFolder("PackageList.txt", MethodBook.ImportantFolders.Packages);
-                Dictionary<string, string> packageNames = MethodBook.LoadParameters(packageListFilePath);
+                string packageListFilePath = Book_Files.GetFileInFolder("ContentList.txt", Book_Files.ImportantFolders.Packages);
+                Dictionary<string, string> packageNames = Book_Files.LoadParameters(packageListFilePath);
                 string packageName = deletedPackage?.Name;
                 if (!string.IsNullOrEmpty(packageName))
                 {
                     packageNames = packageNames.Where(x => x.Value != packageName).ToDictionary(x => x.Key, x => x.Value);
-                    MethodBook.WriteParameters(packageNames, packageListFilePath);
+                    Book_Files.WriteParameters(packageNames, packageListFilePath);
                     Console.WriteLine("Package list updated.");
 
                     // Find the package number corresponding to the deleted package name
@@ -424,7 +410,7 @@ namespace UnrealEnginePackageManager
                     if (!string.IsNullOrEmpty(packageNumberStr))
                     {
                         // If package number is found, remove the package from the package manifests
-                        RemovePackage(packageNames, int.Parse(packageNumberStr));
+                        Book_Files.RemovePackage(packageNames, int.Parse(packageNumberStr), packageFolderPath);
                     }
                     else
                     {
@@ -471,7 +457,7 @@ namespace UnrealEnginePackageManager
             if (selectedPackage != null)
             {
                 // Get the path to the package folder
-                string packageFolderPath = Path.Combine(MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages), selectedPackage.Name);
+                string packageFolderPath = Path.Combine(Book_Files.GetFolderInFolder("Packages", Book_Files.ImportantFolders.Packages), selectedPackage.Name);
                 string featurePacksFiles = Path.Combine(packageFolderPath, "FeaturePacks");
                 string featuresDestination = Path.Combine(UEpath, "FeaturePacks");
 
@@ -537,7 +523,7 @@ namespace UnrealEnginePackageManager
                     }
 
                     // Update package installation state in Preferences
-                    UpdatePackageInstallationState(package.Name, false);
+                    Book_Files.UpdatePackageInstallationState(package.Name, false);
                 }
                 catch (Exception ex)
                 {
@@ -549,14 +535,14 @@ namespace UnrealEnginePackageManager
         private void CheckDeletedPackages()
         {
             // Get the path to the package list file
-            string packageListFilePath = MethodBook.GetFileInFolder("PackageList.txt", MethodBook.ImportantFolders.Packages);
+            string packageListFilePath = Book_Files.GetFileInFolder("ContentList.txt", Book_Files.ImportantFolders.Packages);
 
             if (packageListFilePath != null)
             {
                 try
                 {
                     // Read the package list file to get the names of all packages
-                    Dictionary<string, string> packageNames = MethodBook.LoadParameters(packageListFilePath);
+                    Dictionary<string, string> packageNames = Book_Files.LoadParameters(packageListFilePath);
 
                     // Create a list to store package numbers to be removed
                     List<string> packagesToRemove = new List<string>();
@@ -564,7 +550,8 @@ namespace UnrealEnginePackageManager
                     // Iterate through each package name
                     foreach (var kvp in packageNames)
                     {
-                        string packageFolderPath = Path.Combine(MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages), kvp.Value);
+                        
+                        string packageFolderPath = Path.Combine(PrefencesData["PackageCreationDirectory"], kvp.Value);
 
                         // Check if the package folder exists
                         if (!Directory.Exists(packageFolderPath))
@@ -582,12 +569,12 @@ namespace UnrealEnginePackageManager
                     }
 
                     // Write the updated package list back to the file
-                    MethodBook.WriteParameters(packageNames, packageListFilePath);
+                    Book_Files.WriteParameters(packageNames, packageListFilePath);
 
                     // Remove the deleted packages from the package manifests
                     foreach (string packageNumber in packagesToRemove)
                     {
-                        RemovePackage(packageNames, int.Parse(packageNumber));
+                        Book_Files.RemovePackage(packageNames, int.Parse(packageNumber), packageFolderPath);
                     }
 
                     Console.WriteLine("Package list updated.");
@@ -612,31 +599,31 @@ namespace UnrealEnginePackageManager
         private void UpdatePackageList()
         {
             // Get the path to the package list file
-            string packageListFilePath = MethodBook.GetFileInFolder("PackageList.txt", MethodBook.ImportantFolders.Packages);
+            string packageListFilePath = Book_Files.GetFileInFolder("ContentList.txt", Book_Files.ImportantFolders.Packages);
 
             if (packageListFilePath != null)
             {
                 try
                 {
                     // Read the package list file to get the names of all packages
-                    Dictionary<string, string> packageNames = MethodBook.LoadParameters(packageListFilePath);
+                    Dictionary<string, string> packageNames = Book_Files.LoadParameters(packageListFilePath);
 
                     // Remove the deleted package from the package list if selectedPackage is not null
                     if (selectedPackage != null && packageNames.ContainsKey(selectedPackage.Name))
                     {
                         packageNames.Remove(selectedPackage.Name);
                         // Write the updated package list back to the file
-                        MethodBook.WriteParameters(packageNames, packageListFilePath);
+                        Book_Files.WriteParameters(packageNames, packageListFilePath);
                         Console.WriteLine("Package list updated.");
 
                         // Save the updated package list to the file
-                        MethodBook.SaveParameters(packageListFilePath, packageNames);
+                        Book_Files.SaveParameters(packageListFilePath, packageNames);
 
                         Console.WriteLine("Package list updated.");
                     }
 
                     // Write the updated package list back to the file
-                    MethodBook.WriteParameters(packageNames, packageListFilePath);
+                    Book_Files.WriteParameters(packageNames, packageListFilePath);
                 }
                 catch (IOException ex)
                 {
@@ -655,6 +642,17 @@ namespace UnrealEnginePackageManager
             }
         }
 
+        private void uContentToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            UPackageInstaller uPackageInstaller = new UPackageInstaller();
+            uPackageInstaller.Show();
+        }
+
+        private void unrealPackageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UnrealPackageCreator unrealPackageCreator = new UnrealPackageCreator();
+            unrealPackageCreator.Show();
+        }
     }
 
     public class Package
@@ -665,6 +663,8 @@ namespace UnrealEnginePackageManager
         public string Thumbnail { get; set; }
         public string Version { get; set; }
         public string UEVersion { get; set; }
+        public string DevName{ get; set; }
+        public string DevWebsite { get; set; }
         // Add more properties as needed
     }
 

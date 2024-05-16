@@ -1,134 +1,47 @@
-﻿namespace UnrealEnginePackageManager
+﻿// Ignore Spelling: Rar Json
+
+namespace UnrealEnginePackageManager
 {
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
-    using SharpCompress.Archives;
-    using SharpCompress.Archives.Zip;
-    using SharpCompress.Common;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Drawing;
-    using System.Drawing.Drawing2D;
     using System.IO;
     using System.Linq;
+    using System.Text;
     using System.Threading;
     using System.Windows.Forms;
 
     /// <summary>
-    /// Defines the <see cref="MethodBook" />
+    /// Defines the <see cref="Book_Files" />
     /// </summary>
-    public class MethodBook
+    public class Book_Files
     {
-        #region Rar Files Extraction
-        //Rar extractor
-
-        /// <summary>
-        /// The ExtractRar
-        /// </summary>
-        /// <param name="rarFilePath">The Rar source to extract<see cref="string"/></param>
-        /// <param name="destinationPath">The Path where all rar files will be extracted<see cref="string"/></param>
-        public static void ExtractRar(string rarFilePath, string destinationPath)
-        {
-            // Ensure the destination directory exists
-            if (!Directory.Exists(destinationPath))
-            {
-                Directory.CreateDirectory(destinationPath);
-            }
-
-            // Open the RAR archive and extract all entries
-            using (var archive = ZipArchive.Open(rarFilePath))
-            {
-                foreach (var entry in archive.Entries)
-                {
-                    if (entry.IsDirectory)
-                    {
-                        // Create empty directories in the destination path
-                        string dirPath = Path.Combine(destinationPath, entry.Key);
-                        Directory.CreateDirectory(dirPath);
-                    }
-                    else
-                    {
-                        // Extract files and ensure parent directories are created
-                        string outputFilePath = Path.Combine(destinationPath, entry.Key);
-                        Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath));
-
-                        using (var entryStream = entry.OpenEntryStream())
-                        using (var outputStream = File.Create(outputFilePath))
-                        {
-                            entryStream.CopyTo(outputStream);
-                        }
-                    }
-                }
-            }
-        }
-
-        // ZIP creator
-
-        /// <summary>
-        /// The CreateZip
-        /// </summary>
-        /// <param name="sourcePaths">The sourcePaths<see cref="string[]"/></param>
-        /// <param name="zipFilePath">The zipFilePath<see cref="string"/></param>
-        public static void CreateZip(string[] sourcePaths, string zipFilePath)
-        {
-            // Create a new ZIP archive
-            using (var archive = ZipArchive.Create())
-            {
-                foreach (var sourcePath in sourcePaths)
-                {
-                    // Ensure the source directory exists
-                    if (!Directory.Exists(sourcePath))
-                    {
-                        throw new DirectoryNotFoundException($"Source directory not found: {sourcePath}");
-                    }
-
-                    // Add all files and directories from the source path to the ZIP archive
-                    foreach (var file in Directory.EnumerateFiles(sourcePath, "*", SearchOption.AllDirectories))
-                    {
-                        // Relative path of the file inside the ZIP archive
-                        string relativePath = GetRelativePath(sourcePath, file);
-
-                        // Add the file to the ZIP archive
-                        archive.AddEntry(relativePath, file);
-                    }
-
-                    // Delete the source directory
-                    Directory.Delete(sourcePath, true);
-                }
-
-                // Save the ZIP archive to the specified file path
-                archive.SaveTo(zipFilePath, CompressionType.Deflate);
-            }
-        }
-
-        #endregion
-
         /// <summary>
         /// Defines the ImportantFolders
         /// </summary>
         public enum ImportantFolders
         {
-            /// <summary>
-            /// Resource is the folder in the install directory where all resources are stored
+            ///<summary>
+            /// Defines the Resources
             /// </summary>
-            Resources,
 
             /// <summary>
-            /// Package folder where all packages are stored
+            /// Defines the Resources
+            /// </summary>
+        Resources,
+
+            /// <summary>
+            /// Defines the Packages
             /// </summary>
             Packages
         }
 
-        /// <summary>
-        /// The 2 base folders of the unreal engine package manager app
-        /// </summary>
-        public ImportantFolders InstalledFolders;
-
-        //File Oparation
 
         /// <summary>
-        /// Method created to get a file in the 2 main folders of the UEPM
+        /// The GetFileInFolder
         /// </summary>
         /// <param name="SelectedFile">The SelectedFile<see cref="string"/></param>
         /// <param name="Folders">The Folders<see cref="ImportantFolders"/></param>
@@ -170,7 +83,7 @@
         }
 
         /// <summary>
-        /// Get a folder in the 2 main base folders of the UEPM
+        /// The GetFolderInFolder
         /// </summary>
         /// <param name="folderName">The folderName<see cref="string"/></param>
         /// <param name="parentFolder">The parentFolder<see cref="ImportantFolders"/></param>
@@ -212,8 +125,6 @@
             return folderPath;
         }
 
-        //Folder content checker
-
         /// <summary>
         /// The IsFolderEmpty
         /// </summary>
@@ -231,9 +142,6 @@
 
             return files.Length == 0 && directories.Length == 0;
         }
-
-        //Folder rename
-        // Rename Folder
 
         /// <summary>
         /// The RenameFolder
@@ -261,8 +169,6 @@
             // Rename the old folder to the new folder path
             Directory.Move(oldFolderPath, newFolderFullPath);
         }
-
-        //Copy Folder
 
         /// <summary>
         /// The CopyFolder
@@ -294,8 +200,6 @@
                 File.Copy(file, destinationFilePath, overwrite: true);
             }
         }
-
-        //GetRelativePath
 
         /// <summary>
         /// The GetRelativePath
@@ -345,8 +249,6 @@
             return relativePath;
         }
 
-        //Write text to file
-
         /// <summary>
         /// The WriteText
         /// </summary>
@@ -365,8 +267,6 @@
                 System.Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
-
-        //Rename File
 
         /// <summary>
         /// The RenameFile
@@ -388,30 +288,12 @@
             File.Move(oldFilePath, newFilePath);
         }
 
-        //Copy File
-
         /// <summary>
         /// The CopyFile
         /// </summary>
         /// <param name="sourceFilePath">The sourceFilePath<see cref="string"/></param>
         /// <param name="destinationFilePath">The destinationFilePath<see cref="string"/></param>
         /// <param name="overwrite">The overwrite<see cref="bool"/></param>
-        ///public static void CopyFile(string sourceFilePath, string destinationFilePath, bool overwrite = false)
-        /*{
-            if (!File.Exists(sourceFilePath))
-            {
-                throw new FileNotFoundException($"Source file '{sourceFilePath}' does not exist.");
-            }
-
-            // Ensure the parent directories for the destination file exist
-            Directory.CreateDirectory(Path.GetDirectoryName(destinationFilePath));
-
-            // Copy the file, with optional overwrite
-            File.Copy(sourceFilePath, destinationFilePath + Path.GetFileName(sourceFilePath), overwrite);
-
-            System.Console.WriteLine($"File copied to '{destinationFilePath}'.");
-        }*/
-
         public static void CopyFile(string sourceFilePath, string destinationFilePath, bool overwrite = false)
         {
             if (!File.Exists(sourceFilePath))
@@ -427,7 +309,6 @@
 
             System.Console.WriteLine($"File copied to '{destinationFilePath}'.");
         }
-
 
         /// <summary>
         /// The OpenGetPath
@@ -459,21 +340,15 @@
             List<string> unrealEnginePaths = new List<string>();
 
             // Default Epic Games installation path on Windows
-            string epicGamesPath = @"C:\Program Files\Epic Games";
+            string epicGamesPath = "C:\\Program Files\\Epic Games";
 
             if (Directory.Exists(epicGamesPath))
             {
                 // Get all subdirectories in the Epic Games path
                 string[] subdirectories = Directory.GetDirectories(epicGamesPath);
-
-                foreach (var subdirectory in subdirectories)
-                {
-                    // Check if the subdirectory name matches typical Unreal Engine versioning (e.g., "UE_4.25", "UE_5.0")
-                    if (subdirectory.Contains("UE_"))
-                    {
-                        unrealEnginePaths.Add(subdirectory);
-                    }
-                }
+                unrealEnginePaths.AddRange(from subdirectory in subdirectories// Check if the subdirectory name matches typical Unreal Engine versioning (e.g., "UE_4.25", "UE_5.0")
+                                           where subdirectory.Contains("UE_")
+                                           select subdirectory);
             }
 
             return unrealEnginePaths;
@@ -513,7 +388,38 @@
             return Math.Round(packageSizeInMegabytes / 1024.0, 1); // Convert megabytes to gigabytes and round to 1 decimal place
         }
 
-        //Save and load functions
+        /// <summary>
+        /// The GetFileSize
+        /// </summary>
+        /// <param name="filePath">The filePath<see cref="string"/></param>
+        /// <returns>The <see cref="long"/></returns>
+        public static long GetFileSize(string filePath)
+        {
+            FileInfo fileInfo = new FileInfo(filePath);
+            return fileInfo.Length;
+        }
+
+        /// <summary>
+        /// The GetFileSizeInMegabytes
+        /// </summary>
+        /// <param name="filePath">The filePath<see cref="string"/></param>
+        /// <returns>The <see cref="double"/></returns>
+        public static double GetFileSizeInMegabytes(string filePath)
+        {
+            long fileSize = GetFileSize(filePath);
+            return Math.Round(fileSize / (1024.0 * 1024.0), 1); // Convert bytes to megabytes and round to 1 decimal place
+        }
+
+        /// <summary>
+        /// The GetFileSizeInGigabytes
+        /// </summary>
+        /// <param name="filePath">The filePath<see cref="string"/></param>
+        /// <returns>The <see cref="double"/></returns>
+        public static double GetFileSizeInGigabytes(string filePath)
+        {
+            double fileSizeInMegabytes = GetFileSizeInMegabytes(filePath);
+            return Math.Round(fileSizeInMegabytes / 1024.0, 1); // Convert megabytes to gigabytes and round to 1 decimal place
+        }
 
         /// <summary>
         /// The SaveParameters
@@ -605,14 +511,14 @@
         public static void UpdatePackageInstallationState(string packageName, bool installed)
         {
             // Get the path to the Preferences file
-            string preferencesFilePath = MethodBook.GetFileInFolder("PackagesPreferences.txt", MethodBook.ImportantFolders.Packages);
+            string preferencesFilePath = Book_Files.GetFileInFolder("PackagesPreferences.txt", Book_Files.ImportantFolders.Packages);
 
             if (preferencesFilePath != null)
             {
                 try
                 {
                     // Load Preferences
-                    Dictionary<string, string> preferences = MethodBook.LoadParameters(preferencesFilePath);
+                    Dictionary<string, string> preferences = Book_Files.LoadParameters(preferencesFilePath);
 
                     // Check if the package already exists in preferences
                     if (!preferences.ContainsKey(packageName))
@@ -630,7 +536,7 @@
                         preferences[$"{packageName}.InstalledInEngineState"] = installed.ToString();
 
                         // Write updated Preferences back to file
-                        MethodBook.WriteParameters(preferences, preferencesFilePath);
+                        Book_Files.WriteParameters(preferences, preferencesFilePath);
                         Console.WriteLine($"Package '{packageName}' added to the package list with number '{newPackageNumber}'.");
                     }
                     else
@@ -639,7 +545,7 @@
                         preferences[$"{packageName}.InstalledInEngineState"] = installed.ToString();
 
                         // Write updated Preferences back to file
-                        MethodBook.WriteParameters(preferences, preferencesFilePath);
+                        Book_Files.WriteParameters(preferences, preferencesFilePath);
                         Console.WriteLine($"Package '{packageName}' installation state updated.");
                     }
                 }
@@ -659,10 +565,11 @@
         /// The GetManifestFilePath
         /// </summary>
         /// <param name="packageName">The packageName<see cref="string"/></param>
+        /// <param name="PackageFolder">The PackageFolder<see cref="string"/></param>
         /// <returns>The <see cref="string"/></returns>
-        public static string GetManifestFilePath(string packageName)
+        public static string GetManifestFilePath(string packageName, string PackageFolder)
         {
-            string packageFolderPath = Path.Combine(MethodBook.GetFolderInFolder("Packages", ImportantFolders.Packages), packageName);
+            string packageFolderPath = Path.Combine(PackageFolder, packageName);
             return Path.Combine(packageFolderPath, "ContentSettings", "manifest.json");
         }
 
@@ -696,17 +603,16 @@
             File.WriteAllText(filePath, jsonString);
         }
 
-        // Function to update package manifest with new package ID
-
         /// <summary>
         /// The UpdatePackageManifest
         /// </summary>
         /// <param name="packageId">The packageId<see cref="int"/></param>
         /// <param name="packageName">The packageName<see cref="string"/></param>
-        public static void UpdatePackageManifest(int packageId, string packageName)
+        /// <param name="packageFolder">The packageFolder<see cref="string"/></param>
+        public static void UpdatePackageManifest(int packageId, string packageName, string packageFolder)
         {
             // Assuming you have a method to load and update the package manifest
-            string manifestFilePath = GetManifestFilePath(packageName);
+            string manifestFilePath = GetManifestFilePath(packageName, packageFolder);
             JObject manifestJson = LoadManifestJson(manifestFilePath);
 
             // Update the package ID in the manifest
@@ -722,7 +628,8 @@
         /// <param name="packageNames">The packageNames<see cref="Dictionary{string, string}"/></param>
         /// <param name="packageName">The packageName<see cref="string"/></param>
         /// <param name="PackageListPath">The PackageListPath<see cref="string"/></param>
-        public static void AddPackage(Dictionary<string, string> packageNames, string packageName, string PackageListPath)
+        /// <param name="packageFolderPath">The packageFolderPath<see cref="string"/></param>
+        public static void AddPackage(Dictionary<string, string> packageNames, string packageName, string PackageListPath, string packageFolderPath)
         {
             // Find the next available package number
             int nextPackageNumber = 1;
@@ -736,7 +643,7 @@
             SaveParameters(PackageListPath, packageNames);
 
             // Update the manifest for the new package
-            UpdatePackageManifest(nextPackageNumber, packageName);
+            UpdatePackageManifest(nextPackageNumber, packageName, packageFolderPath);
         }
 
         /// <summary>
@@ -744,7 +651,8 @@
         /// </summary>
         /// <param name="packageNames">The packageNames<see cref="Dictionary{string, string}"/></param>
         /// <param name="packageNumber">The packageNumber<see cref="int"/></param>
-        public static void RemovePackage(Dictionary<string, string> packageNames, int packageNumber)
+        /// <param name="packageFolderPath">The packageFolderPath<see cref="string"/></param>
+        public static void RemovePackage(Dictionary<string, string> packageNames, int packageNumber, string packageFolderPath)
         {
             // Remove the package from the package list
             string packageNumberStr = packageNumber.ToString();
@@ -767,7 +675,7 @@
                 // Update the manifests for all packages
                 foreach (var kvp in packageNames)
                 {
-                    UpdatePackageManifest(int.Parse(kvp.Key), kvp.Value);
+                    UpdatePackageManifest(int.Parse(kvp.Key), kvp.Value, packageFolderPath);
                 }
             }
             else
@@ -798,7 +706,7 @@
             int totalItems = allItems.Length;
 
             // Calculate the delay required to make the total copy process last approximately 10 seconds
-            int delayPerItem = (int)((totalDurationInSeconds * 1000) / totalItems);
+            int delayPerItem = ((totalDurationInSeconds * 1000) / totalItems);
 
             for (int i = 0; i < totalItems; i++)
             {
@@ -808,7 +716,7 @@
                 }
 
                 string sourceItemPath = allItems[i];
-                string relativePath = MethodBook.GetRelativePath(sourceFolderPath, sourceItemPath);
+                string relativePath = Book_Files.GetRelativePath(sourceFolderPath, sourceItemPath);
                 string destinationItemPath = Path.Combine(destinationFolderFullPath, relativePath);
 
                 if (File.Exists(sourceItemPath))
@@ -845,7 +753,7 @@
             // Check if all files exist in the destination folder
             foreach (string sourceItemPath in allItems)
             {
-                string relativePath = MethodBook.GetRelativePath(sourceFolderPath, sourceItemPath);
+                string relativePath = Book_Files.GetRelativePath(sourceFolderPath, sourceItemPath);
                 string destinationItemPath = Path.Combine(destinationFolderPath, relativePath);
 
                 if (!File.Exists(destinationItemPath) && !Directory.Exists(destinationItemPath))
@@ -856,53 +764,7 @@
 
             return true;
         }
-
-        // Function to resize the image to a specified size
-
-        /// <summary>
-        /// The ResizeImage
-        /// </summary>
-        /// <param name="imgToResize">The imgToResize<see cref="Image"/></param>
-        /// <param name="size">The size<see cref="Size"/></param>
-        /// <returns>The <see cref="Image"/></returns>
-        public static Image ResizeImage(Image imgToResize, Size size)
-        {
-            int sourceWidth = imgToResize.Width;
-            int sourceHeight = imgToResize.Height;
-
-            // Calculate the scaling factor for width and height
-            float nPercent = Math.Min((float)size.Width / sourceWidth, (float)size.Height / sourceHeight);
-
-            int destWidth = (int)(sourceWidth * nPercent);
-            int destHeight = (int)(sourceHeight * nPercent);
-
-            // Create a new bitmap with the resized dimensions
-            Bitmap b = new Bitmap(destWidth, destHeight);
-
-            // Create a Graphics object from the bitmap
-            using (Graphics g = Graphics.FromImage(b))
-            {
-                // Set the interpolation mode to high quality bicubic
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
-                // Draw the resized image onto the Graphics object
-                g.DrawImage(imgToResize, 0, 0, destWidth, destHeight);
-            }
-
-            return b;
-        }
-
-        // Function to save the resized image to a specified path
-
-        /// <summary>
-        /// The SaveResizedImage
-        /// </summary>
-        /// <param name="resizedImage">The resizedImage<see cref="Image"/></param>
-        /// <param name="filePath">The filePath<see cref="string"/></param>
-        public static void SaveResizedImage(Image resizedImage, string filePath)
-        {
-            // Save the resized image to the specified file path
-            resizedImage.Save(filePath);
-        }
     }
 }
+
+

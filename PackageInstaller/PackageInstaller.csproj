@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7BCACD39-EA07-4BA8-84DD-9627F8F00C43}</ProjectGuid>
+    <ProjectGuid>{CE1DF387-4E56-497F-9E30-03B03B9410DA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>UnrealEnginePackageManager</RootNamespace>
-    <AssemblyName>UnrealEnginePackageManager</AssemblyName>
+    <RootNamespace>PackageInstaller</RootNamespace>
+    <AssemblyName>PackageInstaller</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\UnrealEnginePackageManager\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,44 +27,21 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\UnrealEnginePackageManager\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>UPackageIcon_256 copy.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BK.JsonParseField, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BK.JsonParseField.1.0.3\lib\netstandard2.0\BK.JsonParseField.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetZip, Version=1.16.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.16.0\lib\net40\DotNetZip.dll</HintPath>
-    </Reference>
-    <Reference Include="JsonControls, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\JsonControls.JsonViewer.1.1.2\lib\net40\JsonControls.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Nevron.Nov.Barcode, Version=23.11.6.12, Culture=neutral, PublicKeyToken=b33b1a04bb5ca8ad" />
-    <Reference Include="Nevron.Nov.Chart, Version=23.11.6.12, Culture=neutral, PublicKeyToken=b33b1a04bb5ca8ad" />
-    <Reference Include="Nevron.Nov.Diagram, Version=23.11.6.12, Culture=neutral, PublicKeyToken=b33b1a04bb5ca8ad" />
-    <Reference Include="Nevron.Nov.Grid, Version=23.11.6.12, Culture=neutral, PublicKeyToken=b33b1a04bb5ca8ad" />
-    <Reference Include="Nevron.Nov.Host.WinForm, Version=23.11.6.12, Culture=neutral, PublicKeyToken=b33b1a04bb5ca8ad" />
-    <Reference Include="Nevron.Nov.Presentation, Version=23.11.6.12, Culture=neutral, PublicKeyToken=b33b1a04bb5ca8ad" />
-    <Reference Include="Nevron.Nov.Schedule, Version=23.11.6.12, Culture=neutral, PublicKeyToken=b33b1a04bb5ca8ad" />
-    <Reference Include="Nevron.Nov.Text, Version=23.11.6.12, Culture=neutral, PublicKeyToken=b33b1a04bb5ca8ad" />
-    <Reference Include="Nevron.Nov.WinFormControls, Version=23.11.6.12, Culture=neutral, PublicKeyToken=b33b1a04bb5ca8ad, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="SharpCompress, Version=0.37.2.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpCompress.0.37.2\lib\net462\SharpCompress.dll</HintPath>
     </Reference>
@@ -89,7 +66,6 @@
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -99,74 +75,32 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="UIAutomationProvider" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="WindowsFormsIntegration" />
     <Reference Include="ZstdSharp, Version=0.8.0.0, Culture=neutral, PublicKeyToken=8d151af33a4ad5cf, processorArchitecture=MSIL">
       <HintPath>..\packages\ZstdSharp.Port.0.8.0\lib\net462\ZstdSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Book_Images.cs" />
-    <Compile Include="Book_Rar.cs" />
-    <Compile Include="Preferences.cs">
+    <Compile Include="Installer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Preferences.Designer.cs">
-      <DependentUpon>Preferences.cs</DependentUpon>
+    <Compile Include="Installer.Designer.cs">
+      <DependentUpon>Installer.cs</DependentUpon>
     </Compile>
-    <Compile Include="UnrealEnginePackageManager.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UnrealEnginePackageManager.Designer.cs">
-      <DependentUpon>UnrealEnginePackageManager.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Book_Files.cs" />
-    <Compile Include="UnrealContentCreator.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UnrealContentCreator.Designer.cs">
-      <DependentUpon>UnrealContentCreator.cs</DependentUpon>
-    </Compile>
+    <Compile Include="MethodBook.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnrealPackageCreator.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UnrealPackageCreator.Designer.cs">
-      <DependentUpon>UnrealPackageCreator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UPackageInstaller.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UPackageInstaller.Designer.cs">
-      <DependentUpon>UPackageInstaller.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Preferences.resx">
-      <DependentUpon>Preferences.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UnrealEnginePackageManager.resx">
-      <DependentUpon>UnrealEnginePackageManager.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UnrealContentCreator.resx">
-      <DependentUpon>UnrealContentCreator.cs</DependentUpon>
+    <EmbeddedResource Include="Installer.resx">
+      <DependentUpon>Installer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UnrealPackageCreator.resx">
-      <DependentUpon>UnrealPackageCreator.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UPackageInstaller.resx">
-      <DependentUpon>UPackageInstaller.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -180,44 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_Image_File_Add_50px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\64x64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\400x200.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_wastebasket_192px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\64x641.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_counterclockwise_arrows_192px_1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_cl_button_192px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_new_button_192px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_settings_400px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_question_mark_192px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_donate_480px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="icons8_unreal_engine.ico" />
-    <Content Include="UPackageIcon_256 copy.ico" />
-    <None Include="Resources\icons8_software_installer_50px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

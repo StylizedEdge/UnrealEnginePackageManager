@@ -1,6 +1,6 @@
 ﻿namespace UnrealEnginePackageManager
 {
-    partial class PackageCreator
+    partial class UnrealContentCreator
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PackageCreator));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UnrealContentCreator));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.packnameText = new System.Windows.Forms.TextBox();
@@ -69,6 +69,12 @@
             this.ScreenshotImage = new System.Windows.Forms.PictureBox();
             this.thumbnailImage = new System.Windows.Forms.PictureBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.Fullpath = new System.Windows.Forms.Label();
+            this.DevName = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.DevWebsite = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ScreenshotImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).BeginInit();
             this.SuspendLayout();
@@ -128,7 +134,7 @@
             this.descriptionText.Multiline = true;
             this.descriptionText.Name = "descriptionText";
             this.descriptionText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.descriptionText.Size = new System.Drawing.Size(483, 101);
+            this.descriptionText.Size = new System.Drawing.Size(483, 65);
             this.descriptionText.TabIndex = 6;
             // 
             // label4
@@ -213,7 +219,7 @@
             this.PackagePathText.Enabled = false;
             this.PackagePathText.Location = new System.Drawing.Point(119, 38);
             this.PackagePathText.Name = "PackagePathText";
-            this.PackagePathText.Size = new System.Drawing.Size(410, 20);
+            this.PackagePathText.Size = new System.Drawing.Size(319, 20);
             this.PackagePathText.TabIndex = 17;
             this.toolTip1.SetToolTip(this.PackagePathText, "Please Assign in an empty folder");
             // 
@@ -242,19 +248,19 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(532, 36);
+            this.button1.Location = new System.Drawing.Point(445, 35);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(70, 23);
             this.button1.TabIndex = 19;
             this.button1.Text = "Assign";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.AssignPackageCreationPath);
             // 
             // pathassignedChecker
             // 
             this.pathassignedChecker.AutoCheck = false;
             this.pathassignedChecker.AutoSize = true;
-            this.pathassignedChecker.Location = new System.Drawing.Point(119, 64);
+            this.pathassignedChecker.Location = new System.Drawing.Point(119, 80);
             this.pathassignedChecker.Name = "pathassignedChecker";
             this.pathassignedChecker.Size = new System.Drawing.Size(94, 17);
             this.pathassignedChecker.TabIndex = 22;
@@ -265,7 +271,7 @@
             // 
             this.pathemptyChecker.AutoCheck = false;
             this.pathemptyChecker.AutoSize = true;
-            this.pathemptyChecker.Location = new System.Drawing.Point(275, 65);
+            this.pathemptyChecker.Location = new System.Drawing.Point(275, 81);
             this.pathemptyChecker.Name = "pathemptyChecker";
             this.pathemptyChecker.Size = new System.Drawing.Size(80, 17);
             this.pathemptyChecker.TabIndex = 23;
@@ -276,7 +282,7 @@
             // 
             this.systempFilesChecker.AutoCheck = false;
             this.systempFilesChecker.AutoSize = true;
-            this.systempFilesChecker.Location = new System.Drawing.Point(421, 65);
+            this.systempFilesChecker.Location = new System.Drawing.Point(421, 81);
             this.systempFilesChecker.Name = "systempFilesChecker";
             this.systempFilesChecker.Size = new System.Drawing.Size(125, 17);
             this.systempFilesChecker.TabIndex = 24;
@@ -292,7 +298,7 @@
             this.CreatePackage.TabIndex = 27;
             this.CreatePackage.Text = "Create Package";
             this.CreatePackage.UseVisualStyleBackColor = false;
-            this.CreatePackage.Click += new System.EventHandler(this.button4_Click);
+            this.CreatePackage.Click += new System.EventHandler(this.CreateContentAndpackAllFiles);
             // 
             // label11
             // 
@@ -329,7 +335,7 @@
             this.button5.TabIndex = 31;
             this.button5.Text = "Cancel";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.button5.Click += new System.EventHandler(this.CancelPackageCreation);
             // 
             // backgroundWorker
             // 
@@ -371,7 +377,7 @@
             this.button2.TabIndex = 37;
             this.button2.Text = "Assign";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.GetUnrealMigratedFiles);
             // 
             // label14
             // 
@@ -420,7 +426,7 @@
             this.ScreenshotImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.ScreenshotImage.TabIndex = 14;
             this.ScreenshotImage.TabStop = false;
-            this.ScreenshotImage.Click += new System.EventHandler(this.pictureBox2_Click);
+            this.ScreenshotImage.Click += new System.EventHandler(this.SetScreenshotImage);
             // 
             // thumbnailImage
             // 
@@ -432,7 +438,7 @@
             this.thumbnailImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.thumbnailImage.TabIndex = 12;
             this.thumbnailImage.TabStop = false;
-            this.thumbnailImage.Click += new System.EventHandler(this.thumbnailImage_Click);
+            this.thumbnailImage.Click += new System.EventHandler(this.SetThumbnailImage);
             // 
             // button3
             // 
@@ -442,13 +448,74 @@
             this.button3.TabIndex = 40;
             this.button3.Text = "Assign";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.AssignPackageName);
             // 
-            // PackageCreator
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(521, 35);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(70, 23);
+            this.button4.TabIndex = 41;
+            this.button4.Text = "GetDefault";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.GetDefaultPath);
+            // 
+            // Fullpath
+            // 
+            this.Fullpath.AutoSize = true;
+            this.Fullpath.Location = new System.Drawing.Point(18, 64);
+            this.Fullpath.Name = "Fullpath";
+            this.Fullpath.Size = new System.Drawing.Size(41, 13);
+            this.Fullpath.TabIndex = 42;
+            this.Fullpath.Text = "label16";
+            // 
+            // DevName
+            // 
+            this.DevName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.DevName.Location = new System.Drawing.Point(119, 239);
+            this.DevName.Name = "DevName";
+            this.DevName.Size = new System.Drawing.Size(189, 20);
+            this.DevName.TabIndex = 46;
+            // 
+            // label16
+            // 
+            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(2, 242);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(27, 13);
+            this.label16.TabIndex = 45;
+            this.label16.Text = "Dev";
+            // 
+            // DevWebsite
+            // 
+            this.DevWebsite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.DevWebsite.Location = new System.Drawing.Point(407, 239);
+            this.DevWebsite.Name = "DevWebsite";
+            this.DevWebsite.Size = new System.Drawing.Size(189, 20);
+            this.DevWebsite.TabIndex = 48;
+            // 
+            // label17
+            // 
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(328, 242);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(46, 13);
+            this.label17.TabIndex = 47;
+            this.label17.Text = "Website";
+            // 
+            // UnrealContentCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(608, 696);
+            this.Controls.Add(this.DevWebsite);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.DevName);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.Fullpath);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.UEVersions);
             this.Controls.Add(this.label15);
@@ -489,9 +556,9 @@
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(624, 735);
             this.MinimumSize = new System.Drawing.Size(624, 735);
-            this.Name = "PackageCreator";
+            this.Name = "UnrealContentCreator";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Package Creator Box";
+            this.Text = "Create Unreal Content";
             this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.ScreenshotImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
@@ -541,5 +608,11 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ComboBox UEVersions;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Label Fullpath;
+        private System.Windows.Forms.TextBox DevName;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox DevWebsite;
+        private System.Windows.Forms.Label label17;
     }
 }
