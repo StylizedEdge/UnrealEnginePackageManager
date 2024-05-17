@@ -3,19 +3,11 @@
 namespace UnrealEnginePackageManager
 {
     using Ionic.Zip;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
     using SharpCompress.Archives.Zip;
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Drawing;
-    using System.Drawing.Drawing2D;
     using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading;
-    using System.Windows.Forms;
 
     public class Book_Rar
     {

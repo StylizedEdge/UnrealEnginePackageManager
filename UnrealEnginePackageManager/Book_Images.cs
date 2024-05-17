@@ -2,30 +2,13 @@
 
 namespace UnrealEnginePackageManager
 {
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Drawing;
     using System.Drawing.Drawing2D;
     using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading;
-    using System.Windows.Forms;
 
-    /// <summary>
-    /// Defines the <see cref="Book_Files" />
-    /// </summary>
     public class Book_Images
     {
-        /// <summary>
-        /// The AreFilesDoneCopying
-        /// </summary>
-        /// <param name="sourceFolderPath">The sourceFolderPath<see cref="string"/></param>
-        /// <param name="destinationFolderPath">The destinationFolderPath<see cref="string"/></param>
-        /// <returns>The <see cref="bool"/></returns>
         public static bool AreFilesDoneCopying(string sourceFolderPath, string destinationFolderPath)
         {
             // Get all files and subfolders in the source folder
@@ -46,12 +29,6 @@ namespace UnrealEnginePackageManager
             return true;
         }
 
-        /// <summary>
-        /// The ResizeImage
-        /// </summary>
-        /// <param name="ImageToResize">The imgToResize<see cref="Image"/></param>
-        /// <param name="size">The size<see cref="Size"/></param>
-        /// <returns>The <see cref="Image"/></returns>
         public static Image ResizeImage(Image ImageToResize, Size size)
         {
             int sourceWidth = ImageToResize.Width;
@@ -79,11 +56,6 @@ namespace UnrealEnginePackageManager
             return b;
         }
 
-        /// <summary>
-        /// The SaveResizedImage
-        /// </summary>
-        /// <param name="resizedImage">The resizedImage<see cref="Image"/></param>
-        /// <param name="filePath">The filePath<see cref="string"/></param>
         public static void SaveResizedImage(Image resizedImage, string filePath)
         {
             // Save the resized image to the specified file path
@@ -91,5 +63,3 @@ namespace UnrealEnginePackageManager
         }
     }
 }
-
-

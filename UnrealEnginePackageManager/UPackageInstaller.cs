@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace UnrealEnginePackageManager
 {
@@ -125,5 +127,33 @@ namespace UnrealEnginePackageManager
             }
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var processes = Process.GetProcessesByName("UE4Editor");
+            foreach (var process in processes)
+            {
+                string commandLine = Book_Unreal.GetCommandLine(process);
+                MessageBox.Show($"Process ID: {process.Id}, Command Line: {commandLine}");
+
+                // Extract the .uproject path from the command line
+                string projectPath = Book_Unreal.ExtractProjectPath(commandLine);
+                if (!string.IsNullOrEmpty(projectPath))
+                {
+                    // Derive the content directory path from the .uproject path
+                    string contentPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(projectPath), "Content");
+
+                    // Display the results
+                    MessageBox.Show($"Unreal Engine project path: {projectPath}\nContent directory: {contentPath}", "Project Path Detected");
+                    // Use dialog.SelectedPath to access the selected folder path
+                    string selectedFolderPath = contentPath;
+                    button2.Text = Path.GetFileNameWithoutExtension(contentPath);
+                    DesPAth = contentPath;
+                    des.Text = "Destination :" + contentPath;
+
+                    break; // Stop after finding the first valid project path
+                }
+            }
+        }
+        
     }
 }

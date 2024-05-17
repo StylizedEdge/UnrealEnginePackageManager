@@ -69,8 +69,6 @@ namespace UnrealEnginePackageManager
                         // Extract package information
                         string name = packageJson["Name"][0]["Text"].Value<string>();
                         string version = packageJson["Version"].Value<string>();
-                        string devname = packageJson["Dev"].Value<string>();
-                        string devwebsite = packageJson["DevWebsite"].Value<string>();
 
                         string description = packageJson["Description"][0]["Text"].Value<string>();
 
@@ -85,6 +83,8 @@ namespace UnrealEnginePackageManager
 
                         string UeVersion = packageJson["UEVersion"].Value<string>();
 
+                        string devname = packageJson["Dev"].Value<string>();
+                        string devwebsite = packageJson["DevWebsite"].Value<string>();
 
 
                         // Create a new Package object with the extracted information
@@ -186,6 +186,8 @@ namespace UnrealEnginePackageManager
                 pkgSize.Text = $"{packageSizeMb} MB (   {packageSizeGb}GB)";
                 pkgDescription.Text = package.Description;
                 pkgUnrealEngineVersion.Text = package.UEVersion;
+                DevName.Text = package.DevName;
+                DevWebsite.Text = package.DevWebsite;
             }
             else
             {
@@ -193,6 +195,8 @@ namespace UnrealEnginePackageManager
                 pkgSize.Text = null;
                 pkgDescription.Text = null;
                 pkgUnrealEngineVersion.Text = null;
+                DevName.Text = null;
+                DevWebsite.Text = null;
             }
 
             Console.WriteLine("Selected Package is " + package.Name, Color.White);
@@ -652,6 +656,11 @@ namespace UnrealEnginePackageManager
         {
             UnrealPackageCreator unrealPackageCreator = new UnrealPackageCreator();
             unrealPackageCreator.Show();
+        }
+
+        private void DevWebsite_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(DevWebsite.Text);
         }
     }
 

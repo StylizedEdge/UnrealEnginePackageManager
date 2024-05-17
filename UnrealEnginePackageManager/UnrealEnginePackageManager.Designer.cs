@@ -108,13 +108,13 @@
             this.createContentPackToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_new_button_192px;
             this.createContentPackToolStripMenuItem.Name = "createContentPackToolStripMenuItem";
             this.createContentPackToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.createContentPackToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.createContentPackToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.createContentPackToolStripMenuItem.Text = "New";
             // 
             // uContentToolStripMenuItem
             // 
             this.uContentToolStripMenuItem.Name = "uContentToolStripMenuItem";
-            this.uContentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.uContentToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.uContentToolStripMenuItem.Text = ".UContent";
             this.uContentToolStripMenuItem.ToolTipText = "packages that the user will install in his engine and will always remain in his F" +
     "eature Content ";
@@ -123,7 +123,7 @@
             // unrealPackageToolStripMenuItem
             // 
             this.unrealPackageToolStripMenuItem.Name = "unrealPackageToolStripMenuItem";
-            this.unrealPackageToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.unrealPackageToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.unrealPackageToolStripMenuItem.Text = ".UnrealPackage";
             this.unrealPackageToolStripMenuItem.ToolTipText = "package that the user will click on it from the file explorer and it will be inst" +
     "alled directly in the projects.";
@@ -134,7 +134,7 @@
             this.installToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.uContentToolStripMenuItem1});
             this.installToolStripMenuItem.Name = "installToolStripMenuItem";
-            this.installToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.installToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.installToolStripMenuItem.Text = "Install";
             // 
             // uContentToolStripMenuItem1
@@ -149,7 +149,7 @@
             this.managePacksToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_counterclockwise_arrows_192px_1;
             this.managePacksToolStripMenuItem.Name = "managePacksToolStripMenuItem";
             this.managePacksToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.managePacksToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.managePacksToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.managePacksToolStripMenuItem.Text = "Refrensh List";
             this.managePacksToolStripMenuItem.Click += new System.EventHandler(this.managePacksToolStripMenuItem_Click);
             // 
@@ -158,7 +158,7 @@
             this.closeToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_cl_button_192px;
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
             this.closeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -516,6 +516,7 @@
             this.DevWebsite.TabIndex = 3;
             this.DevWebsite.TabStop = true;
             this.DevWebsite.Text = "_____";
+            this.DevWebsite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DevWebsite_LinkClicked);
             // 
             // DevName
             // 
