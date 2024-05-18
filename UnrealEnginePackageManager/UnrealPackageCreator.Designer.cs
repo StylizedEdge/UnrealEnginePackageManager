@@ -54,9 +54,9 @@
             this.currentFileLabel = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.button5 = new System.Windows.Forms.Button();
-            this.CreatePackage = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button2
@@ -297,17 +297,6 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // CreatePackage
-            // 
-            this.CreatePackage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.CreatePackage.Location = new System.Drawing.Point(14, 449);
-            this.CreatePackage.Name = "CreatePackage";
-            this.CreatePackage.Size = new System.Drawing.Size(192, 41);
-            this.CreatePackage.TabIndex = 67;
-            this.CreatePackage.Text = "Create Package";
-            this.CreatePackage.UseVisualStyleBackColor = false;
-            this.CreatePackage.Click += new System.EventHandler(this.CreatePackageButton);
-            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -328,15 +317,28 @@
             this.label5.TabIndex = 70;
             this.label5.Text = "Tag";
             // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.PaleGreen;
+            this.button3.Cursor = System.Windows.Forms.Cursors.Default;
+            this.button3.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.button3.Location = new System.Drawing.Point(15, 453);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(205, 35);
+            this.button3.TabIndex = 71;
+            this.button3.Text = "Create";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.CreatePackageButton);
+            // 
             // UnrealPackageCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(621, 500);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.CreatePackage);
             this.Controls.Add(this.copyPercentageLabel);
             this.Controls.Add(this.currentFileLabel);
             this.Controls.Add(this.progressBar);
@@ -398,8 +400,8 @@
         private System.Windows.Forms.Label currentFileLabel;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button CreatePackage;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button button3;
     }
 }

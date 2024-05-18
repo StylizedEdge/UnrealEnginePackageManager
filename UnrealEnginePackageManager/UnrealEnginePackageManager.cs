@@ -13,9 +13,14 @@ namespace UnrealEnginePackageManager
     {
         string UEpath;
         private Dictionary<string, string> PrefencesData;
-        string packageFolderPath;
+        string ContentFolderPath;
+        List<Content> contents = new List<Content>();
         List<Package> packages = new List<Package>();
 
+
+        Content SelectedContent;
+        Package SelectedPackage;
+        
 
         public UnrealEnginePackageManager()
         {
@@ -23,72 +28,75 @@ namespace UnrealEnginePackageManager
             // Load the parameters from the text file
             PrefencesData = Book_Files.LoadParameters(Book_Files.GetFileInFolder("Preferences.dll", Book_Files.ImportantFolders.Resources));
 
-            if(packageFolderPath == null)
+            if(PrefencesData!= null)
             {
-                packageFolderPath = PrefencesData["PackageCreationDirectory"];
+                ContentFolderPath = PrefencesData["ContentCreationDirectory"];
+
+                UEpath = Path.Combine(PrefencesData["EnginesPath"], PrefencesData["SelectedVersionPath"]);
             }
             // Check for deleted packages
             CheckDeletedPackages();
             // Load Package List
+            LoadContents();
             LoadPackages();
         }
 
-
-        #region Load package Function
-        private void LoadPackages()
+        #region Content
+        #region Load Content Function
+        private void LoadContents()
         {
             // Get the path to the package list file
-            string packageListFilePath = Book_Files.GetFileInFolder("ContentList.txt", Book_Files.ImportantFolders.Packages);
+            string contentListFilePath = Book_Files.GetFileInFolder("ContentList.txt", Book_Files.ImportantFolders.Packages);
 
             // Read the package list file to get the names of all packages
-            Dictionary<string, string> packageNames = Book_Files.LoadParameters(packageListFilePath);
+            Dictionary<string, string> contentNames = Book_Files.LoadParameters(contentListFilePath);
 
-            if (packageNames != null)
+            if (contentNames != null)
             {
-                foreach (var package in packageNames)
+                foreach (var content in contentNames)
                 {
                     // Get the package name and folder path
-                    string packageName = package.Value; // Extract package name from packageEntry.Value
-                    string packageFolderPath = PrefencesData["PackageCreationDirectory"];
+                    string contentName = content.Value; // Extract package name from packageEntry.Value
+                    string contentFolderPath = PrefencesData["ContentCreationDirectory"];
 
                     // Get the path to the JSON file containing package information
-                    string jsonFilePath = Path.Combine(packageFolderPath, $"{packageName}\\ContentSettings", "manifest.json");
+                    string jsonFilePath = Path.Combine(contentFolderPath, $"{contentName}\\ContentSettings", "manifest.json");
 
                     Console.WriteLine(jsonFilePath);
 
                     if (File.Exists(jsonFilePath))
                     {
-                        Console.WriteLine("Package Manifest Detect", Color.Green);
+                        Console.WriteLine("Content Manifest Detect");
 
                         // Read the JSON content from the file
                         string jsonContent = File.ReadAllText(jsonFilePath);
 
                         // Parse JSON content
-                        JObject packageJson = JObject.Parse(jsonContent);
+                        JObject contentJson = JObject.Parse(jsonContent);
 
                         // Extract package information
-                        string name = packageJson["Name"][0]["Text"].Value<string>();
-                        string version = packageJson["Version"].Value<string>();
+                        string name = contentJson["Name"][0]["Text"].Value<string>();
+                        string version = contentJson["Version"].Value<string>();
 
-                        string description = packageJson["Description"][0]["Text"].Value<string>();
+                        string description = contentJson["Description"][0]["Text"].Value<string>();
 
 
                         string thumbnail = "";
-                        if (packageJson.ContainsKey("Thumbnail") && packageJson["Thumbnail"].Type == JTokenType.String)
+                        if (contentJson.ContainsKey("Thumbnail") && contentJson["Thumbnail"].Type == JTokenType.String)
                         {
-                            thumbnail = packageJson["Thumbnail"].Value<string>();
+                            thumbnail = contentJson["Thumbnail"].Value<string>();
                         }
                         // Construct the full path to the thumbnail image
-                        string fullThumbnailPath = Path.Combine(packageFolderPath, $"{packageName}\\ContentSettings", "Media", thumbnail);
+                        string fullThumbnailPath = Path.Combine(contentFolderPath, $"{contentName}\\ContentSettings", "Media", thumbnail);
 
-                        string UeVersion = packageJson["UEVersion"].Value<string>();
+                        string UeVersion = contentJson["UEVersion"].Value<string>();
 
-                        string devname = packageJson["Dev"].Value<string>();
-                        string devwebsite = packageJson["DevWebsite"].Value<string>();
+                        string devname = contentJson["Dev"].Value<string>();
+                        string devwebsite = contentJson["DevWebsite"].Value<string>();
 
 
                         // Create a new Package object with the extracted information
-                        Package pack = new Package
+                        Content m_content = new Content
                         {
                             Name = name,
                             Description = description,
@@ -100,18 +108,18 @@ namespace UnrealEnginePackageManager
                         };
 
                         // Initialize the list to store the loaded packages
-                        packages = new List<Package>
+                        contents = new List<Content>
                         {
                             // Add the package to the list
-                            pack
+                            m_content
                         };
                         Console.WriteLine("Buttons Initialized");
-                        CreatePackageButtons();
+                        CreateContentButtons();
                     }
 
-                    if (packages.Count == 0)
+                    if (contents.Count == 0)
                     {
-                        Console.WriteLine("Package list is empty");
+                        Console.WriteLine("Content list is empty");
                     }
 
                 }
@@ -121,26 +129,148 @@ namespace UnrealEnginePackageManager
         }
         #endregion
 
-        #region Create package Function
+        #region Create Content Function
 
-        private void CreatePackageButtons()
+        private void CreateContentButtons()
         {
-            if (packages.Count != 0)
+            if (contents.Count != 0)
             {
-                foreach (var package in packages)
+                foreach (var content in contents)
                 {
                     Button button = new Button();
-                    if (File.Exists(package.Thumbnail))
+                    if (File.Exists(content.Thumbnail))
                     {
                         //Everything about button Image
-                        button.Image = Image.FromFile(package.Thumbnail); // Load the thumbnail image
+                        button.Image = Image.FromFile(content.Thumbnail); // Load the thumbnail image
                         button.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
                         Console.WriteLine("Thumbnail Detected");
                     }
                     else
                     {
-                        Console.WriteLine(package.Name + " Thumbnail missing");
+                        Console.WriteLine(content.Name + " Thumbnail missing");
                     }
+                    button.BackColor = System.Drawing.Color.Silver;
+                    button.Cursor = System.Windows.Forms.Cursors.Hand;
+                    button.Dock = System.Windows.Forms.DockStyle.Top;
+                    button.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+                    button.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    button.ForeColor = System.Drawing.SystemColors.ControlText;
+                    button.Location = new System.Drawing.Point(3, 3);
+                    button.Name = content.Name;
+                    button.Size = new System.Drawing.Size(400, 50);
+                    button.TabIndex = 0;
+                    button.Text = content.Name;
+                    button.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+                    button.UseVisualStyleBackColor = false;
+                    button.Dock = DockStyle.Top;
+                    button.Name = content.Name; // Assign the package name to the button name
+                    button.Text = content.Name;
+                    button.TextAlign = ContentAlignment.BottomCenter;
+                    button.UseVisualStyleBackColor = true;
+
+
+
+                    button.ContextMenuStrip = PackageOption;
+                    button.Click += (sender, e) => ContentSelect_Click(content); // Assign click event handler
+                    UnrealContent.Controls.Add(button);
+                }
+            }
+        }
+
+        #endregion
+
+
+        private void ContentSelect_Click(Content content)
+        {
+            // Handle button click event
+            string packageFolderPath = Path.Combine(PrefencesData["ContentCreationDirectory"], content.Name);
+            double packageSizeMb = Book_Files.GetFolderSizeInMegabytes(packageFolderPath);
+            double packageSizeGb = Book_Files.GetFolderSizeInGigabytes(packageFolderPath);
+            SelectedContent = content;
+            SelectedPackage = null;
+
+            if (SelectedContent != null)
+            {
+                pkgName.Text = content.Name;
+                pkgSize.Text = $"{packageSizeMb} MB (   {packageSizeGb}GB)";
+                pkgDescription.Text = content.Description;
+                pkgUnrealEngineVersion.Text = content.UEVersion;
+                DevName.Text = content.DevName;
+                DevWebsite.Text = content.DevWebsite;
+            }
+            else
+            {
+                pkgName.Text = null;
+                pkgSize.Text = null;
+                pkgDescription.Text = null;
+                pkgUnrealEngineVersion.Text = null;
+                DevName.Text = null;
+                DevWebsite.Text = null;
+            }
+
+            Console.WriteLine("Selected Package is " + content.Name, Color.White);
+            checkInstallation();
+        }
+
+
+
+        #endregion
+
+        #region packages
+        #region Load package Function
+        private void LoadPackages()
+        {
+            // Get the path to the package list file
+            string packageListFilePath = Book_Files.GetFileInFolder("PackageList.txt", Book_Files.ImportantFolders.Packages);
+
+            // Read the package list file to get the names of all packages
+            Dictionary<string, string> packageNames = Book_Files.LoadParameters(packageListFilePath);
+
+            if (packageNames != null)
+            {
+                foreach (var package in packageNames)
+                {
+                    // Get the package name and folder path
+                    string packageName = package.Value;
+
+                    // Extract package information
+                    string name = package.Value;
+
+                    // Create a new Package object with the extracted information
+                    Package pack = new Package
+                    {
+                        Name = name
+                    };
+
+                    // Initialize the list to store the loaded packages
+                    packages = new List<Package>
+                                {
+                                    // Add the package to the list
+                                    pack
+                                };
+                    Console.WriteLine("Buttons Initialized");
+                    CreatePackageButtons();
+
+                    if (contents.Count == 0)
+                    {
+                        Console.WriteLine("Package list is empty");
+                    }
+                }
+            }
+        }
+        #endregion
+
+
+        #region Create package Function
+
+
+        private void CreatePackageButtons()
+        {
+            if (contents.Count != 0)
+            {
+                foreach (var package in packages)
+                {
+                    Button button = new Button();
                     button.BackColor = System.Drawing.Color.Silver;
                     button.Cursor = System.Windows.Forms.Cursors.Hand;
                     button.Dock = System.Windows.Forms.DockStyle.Top;
@@ -163,31 +293,33 @@ namespace UnrealEnginePackageManager
 
 
                     button.ContextMenuStrip = PackageOption;
-                    button.Click += (sender, e) => Button_Click(package); // Assign click event handler
-                    UnrealContent.Controls.Add(button);
+                    button.Click += (sender, e) => PackageSelect_Click(package); // Assign click event handler
+                    UnrealPackage.Controls.Add(button);
                 }
             }
         }
 
+
         #endregion
 
-        Package selectedPackage;
-        private void Button_Click(Package package)
+
+        private void PackageSelect_Click(Package package)
         {
             // Handle button click event
-            string packageFolderPath = Path.Combine(PrefencesData["PackageCreationDirectory"], package.Name);
-            double packageSizeMb = Book_Files.GetPackageSizeInMegabytes(packageFolderPath);
-            double packageSizeGb = Book_Files.GetPackageSizeInGigabytes(packageFolderPath);
-            selectedPackage = package;
+            string packageFolderPath = Path.Combine(PrefencesData["PackageCreationDirectory"], package.Name + ".UnrealEngine");
+            double packageSizeMb = Book_Files.GetFileSizeInMegabytes(packageFolderPath);
+            double packageSizeGb = Book_Files.GetFileSizeInGigabytes(packageFolderPath);
+            SelectedPackage = package;
+            SelectedContent = null;
 
-            if (selectedPackage != null)
+            if (SelectedPackage != null)
             {
                 pkgName.Text = package.Name;
                 pkgSize.Text = $"{packageSizeMb} MB (   {packageSizeGb}GB)";
-                pkgDescription.Text = package.Description;
-                pkgUnrealEngineVersion.Text = package.UEVersion;
-                DevName.Text = package.DevName;
-                DevWebsite.Text = package.DevWebsite;
+                pkgDescription.Text = "";
+                pkgUnrealEngineVersion.Text = "";
+                DevName.Text = "";
+                DevWebsite.Text = "";
             }
             else
             {
@@ -201,8 +333,23 @@ namespace UnrealEnginePackageManager
 
             Console.WriteLine("Selected Package is " + package.Name, Color.White);
         }
+        #endregion
 
-
+        private void checkInstallation()
+        {
+            if (File.Exists(Path.Combine(UEpath, "FeaturePacks", SelectedContent.Name + ".upack"))  && Directory.Exists(Path.Combine(UEpath, "Samples", SelectedContent.Name)))
+            {
+                InstallButton.Text = "Already Installed";
+                UninstallButton.Enabled = true;
+                InstallButton.Enabled = false;
+            }
+            else
+            {
+                InstallButton.Text = "Install";
+                UninstallButton.Enabled = false;
+                InstallButton.Enabled = true;
+            }
+        }
 
         private void createContentPackToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -236,20 +383,20 @@ namespace UnrealEnginePackageManager
         private void ReinstallButton_Click(object sender, EventArgs e)
         {
             // Handle reinstall button click event for the selected package
-            if (selectedPackage != null)
+            if (SelectedContent != null)
             {
                 // Implement reinstall logic here
-                Console.WriteLine($"Reinstalling package '{selectedPackage.Name}'...");
+                Console.WriteLine($"Reinstalling package '{SelectedContent.Name}'...");
             }
         }
 
         private void InstallUnrealButton_Click(object sender, EventArgs e)
         {
             // Handle install in Unreal Engine button click event for the selected package
-            if (selectedPackage != null)
+            if (SelectedContent != null)
             {
                 // Implement install in Unreal Engine logic here
-                Console.WriteLine($"Installing package '{selectedPackage.Name}' in Unreal Engine...");
+                Console.WriteLine($"Installing package '{SelectedContent.Name}' in Unreal Engine...");
             }
         }
 
@@ -257,18 +404,22 @@ namespace UnrealEnginePackageManager
         {
             UnrealContent.Controls.Clear();
             // Load Package List
+            LoadContents();
+            CreateContentButtons();
+
+
             LoadPackages();
             CreatePackageButtons();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (selectedPackage != null)
+            if (SelectedContent != null)
             {
-                string packageFolderPath = Path.Combine(PrefencesData["PackageCreationDirectory"], selectedPackage.Name);
+                string contentFolderPath = Path.Combine(PrefencesData["PackageCreationDirectory"], SelectedContent.Name);
 
                 // Display a confirmation dialog
-                DialogResult result = MessageBox.Show($"Are you sure you want to delete the package '{selectedPackage.Name}'?" +
+                DialogResult result = MessageBox.Show($"Are you sure you want to delete the package '{SelectedContent.Name}'?" +
                     $"Automatic restart will occur", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 // Check if the user confirmed the deletion
@@ -276,26 +427,65 @@ namespace UnrealEnginePackageManager
                 {
                     try
                     {
-                        Console.WriteLine($"Package '{selectedPackage.Name}' deleted.");
+                        Console.WriteLine($"Package '{SelectedContent.Name}' deleted.");
                         // Attempt to delete the package folder
-                        DeletePackage(packageFolderPath);
-                        if (selectedPackage != null)
-                            selectedPackage.Thumbnail = null;
+                        DeletePackage(contentFolderPath);
+                        if (SelectedContent != null)
+                            SelectedContent.Thumbnail = null;
 
                         // Remove the package from the list and update UI
-                        packages.Remove(selectedPackage);
+                        contents.Remove(SelectedContent);
                         RefreshPackageButtons();
                         UpdatePackageList();
                     }
                     catch (IOException ex)
                     {
                         // Handle file access errors
-                        Console.WriteLine($"Error deleting package '{selectedPackage.Name}': {ex.Message}");
+                        Console.WriteLine($"Error deleting package '{SelectedContent.Name}': {ex.Message}");
                     }
                     catch (Exception ex)
                     {
                         // Handle other types of errors
-                        Console.WriteLine($"Error deleting package '{selectedPackage.Name}': {ex.Message}");
+                        Console.WriteLine($"Error deleting package '{SelectedContent.Name}': {ex.Message}");
+                    }
+                }
+            }
+            else
+            {
+                Console.Write("No Selected Package to delete");
+            }
+
+            if (SelectedPackage != null)
+            {
+                string packageFolderPath = Path.Combine(PrefencesData["PackageCreationDirectory"], SelectedPackage.Name + ".UnrealEngine");
+
+                // Display a confirmation dialog
+                DialogResult result = MessageBox.Show($"Are you sure you want to delete the package '{SelectedPackage.Name}'?" +
+                    $"Automatic restart will occur", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                // Check if the user confirmed the deletion
+                if (result == DialogResult.Yes)
+                {
+                    try
+                    {
+                        Console.WriteLine($"Package '{SelectedPackage.Name}' deleted.");
+                        // Attempt to delete the package folder
+                        File.Delete(packageFolderPath);
+                        
+                        // Remove the package from the list and update UI
+                        packages.Remove(SelectedPackage);
+                        RefreshPackageButtons();
+                        UpdatePackageList();
+                    }
+                    catch (IOException ex)
+                    {
+                        // Handle file access errors
+                        Console.WriteLine($"Error deleting package '{SelectedPackage.Name}': {ex.Message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle other types of errors
+                        Console.WriteLine($"Error deleting package '{SelectedPackage.Name}': {ex.Message}");
                     }
                 }
             }
@@ -392,10 +582,10 @@ namespace UnrealEnginePackageManager
                 Console.WriteLine($"Package folder '{folderPath}' deleted.");
 
                 // Remove the package from the list
-                Package deletedPackage = packages.FirstOrDefault(p => Path.Combine(packageFolderPath, p.Name) == folderPath);
+                Content deletedPackage = contents.FirstOrDefault(p => Path.Combine(ContentFolderPath, p.Name) == folderPath);
                 if (deletedPackage != null)
                 {
-                    packages.Remove(deletedPackage);
+                    contents.Remove(deletedPackage);
                     Console.WriteLine($"Package '{deletedPackage.Name}' removed from the list.");
                 }
 
@@ -414,7 +604,7 @@ namespace UnrealEnginePackageManager
                     if (!string.IsNullOrEmpty(packageNumberStr))
                     {
                         // If package number is found, remove the package from the package manifests
-                        Book_Files.RemovePackage(packageNames, int.Parse(packageNumberStr), packageFolderPath);
+                        Book_Files.RemovePackage(packageNames, int.Parse(packageNumberStr), ContentFolderPath);
                     }
                     else
                     {
@@ -458,65 +648,88 @@ namespace UnrealEnginePackageManager
 
         private void InstallPackageContent_Click(object sender, EventArgs e)
         {
-            if (selectedPackage != null)
+            if (SelectedPackage!=null)
+            {
+                installPack();
+            }
+
+            if(SelectedContent != null)
+            {
+                installCont(SelectedContent);
+            }
+        }
+
+        void installPack()
+        {
+
+        }
+        void installCont(Content Sel)
+        {
+            if (Sel != null)
             {
                 // Get the path to the package folder
-                string packageFolderPath = Path.Combine(Book_Files.GetFolderInFolder("Packages", Book_Files.ImportantFolders.Packages), selectedPackage.Name);
-                string featurePacksFiles = Path.Combine(packageFolderPath, "FeaturePacks");
-                string featuresDestination = Path.Combine(UEpath, "FeaturePacks");
+                string featurePacksFile = Path.Combine(ContentFolderPath, Sel.Name, "FeaturePacks", Sel.Name + ".upack");
+                string featuresDestination = Path.Combine(UEpath, "FeaturePacks", Sel.Name + ".upack");
 
-                string samplesFolder = Path.Combine(packageFolderPath, "Samples", selectedPackage.Name);
-                string destinationPath = Path.Combine(UEpath, "Samples", selectedPackage.Name);
+                string samplesFolder = Path.Combine(ContentFolderPath, Sel.Name, "Samples", Sel.Name);
+                string destinationPath = Path.Combine(UEpath, "Samples", Sel.Name);
 
 
-                Console.WriteLine($"{packageFolderPath} will be installed in \n {UEpath}");
-                /*
-                try
+                if (File.Exists(featurePacksFile) && Directory.Exists(destinationPath))
                 {
-                    // Copy files from FeaturePacks to destination
-                    MethodBook.CopyFile(featurePacksFiles, featuresDestination);
-                    SConsole.WriteLine($"Copied '{selectedPackage}.upackage' to '{featuresDestination}'.");
-
-                    // Copy files from Samples to destination
-                    MethodBook.CopyFolder(samplesFolder, destinationPath);
-                    SConsole.WriteLine($"Copied '{selectedPackage}.SamplePackage' to '{destinationPath}'.");
-
-
-                    // Update package installation state in Preferences
-                    UpdatePackageInstallationState(selectedPackage.Name, true);
+                    MessageBox.Show($"{Sel.Name} ready Installed");
                 }
-                catch (Exception ex)
+                else
                 {
-                    // Handle errors
-                    SConsole.WriteLine($"Error installing package content: {ex.Message}");
-                }
+                    Console.WriteLine($"{ContentFolderPath} will be installed in \n {UEpath}");
+                    try
+                    {
+                        // Copy files from FeaturePacks to destination
+                        Book_Files.CopyFile(featurePacksFile, featuresDestination);
+                        Console.WriteLine($"Copied '{Sel}.upackage' to '{featuresDestination}'.");
 
-                */
+                        // Copy files from Samples to destination
+                        Book_Files.CopyFolder(samplesFolder, destinationPath);
+                        Console.WriteLine($"Copied '{Sel}.SamplePackage' to '{destinationPath}'.");
+
+
+                        // Update package installation state in Preferences
+                        Book_Files.UpdatePackageInstallationState(Sel.Name, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle errors
+                        Console.WriteLine($"Error installing package content: {ex.Message}");
+                    }
+                }
+                checkInstallation();
             }
         }
 
 
 
+
+
+
         private void button2_Click(object sender, EventArgs e)
         {
-            UninstallPackageFromEngine(selectedPackage);
+            UninstallPackageFromEngine(SelectedContent);
         }
 
-        private void UninstallPackageFromEngine(Package package)
+        private void UninstallPackageFromEngine(Content package)
         {
             if (package != null)
             {
                 // Get the paths to the FeaturePacks and Samples in the engine directory
-                string featurePacksPath = Path.Combine(UEpath, "FeaturePacks", package.Name);
-                string samplesPath = Path.Combine(UEpath, "Samples", package.Name);
-
+                string featurePacksPath = Path.Combine(UEpath, "FeaturePacks", SelectedContent.Name + ".upack");
+                string samplesPath = Path.Combine(UEpath, "Samples", SelectedContent.Name);
                 try
                 {
                     // Delete FeaturePacks folder
-                    if (Directory.Exists(featurePacksPath))
+                    if (File.Exists(featurePacksPath))
                     {
-                        Directory.Delete(featurePacksPath, true);
-                        Console.WriteLine($"FeaturePacks folder for package '{package.Name}' deleted from the engine.");
+                        File.Delete(featurePacksPath);
+                        Console.WriteLine($"FeaturePacks file for package '{package.Name}' deleted from the engine.");
                     }
 
                     // Delete Samples folder
@@ -534,6 +747,7 @@ namespace UnrealEnginePackageManager
                     // Handle errors
                     Console.WriteLine($"Error uninstalling package from engine: {ex.Message}");
                 }
+                checkInstallation();
             }
         }
         private void CheckDeletedPackages()
@@ -555,7 +769,7 @@ namespace UnrealEnginePackageManager
                     foreach (var kvp in packageNames)
                     {
                         
-                        string packageFolderPath = Path.Combine(PrefencesData["PackageCreationDirectory"], kvp.Value);
+                        string packageFolderPath = Path.Combine(PrefencesData["ContentCreationDirectory"], kvp.Value);
 
                         // Check if the package folder exists
                         if (!Directory.Exists(packageFolderPath))
@@ -578,7 +792,7 @@ namespace UnrealEnginePackageManager
                     // Remove the deleted packages from the package manifests
                     foreach (string packageNumber in packagesToRemove)
                     {
-                        Book_Files.RemovePackage(packageNames, int.Parse(packageNumber), packageFolderPath);
+                        Book_Files.RemovePackage(packageNames, int.Parse(packageNumber), ContentFolderPath);
                     }
 
                     Console.WriteLine("Package list updated.");
@@ -613,9 +827,9 @@ namespace UnrealEnginePackageManager
                     Dictionary<string, string> packageNames = Book_Files.LoadParameters(packageListFilePath);
 
                     // Remove the deleted package from the package list if selectedPackage is not null
-                    if (selectedPackage != null && packageNames.ContainsKey(selectedPackage.Name))
+                    if (SelectedContent != null && packageNames.ContainsKey(SelectedContent.Name))
                     {
-                        packageNames.Remove(selectedPackage.Name);
+                        packageNames.Remove(SelectedContent.Name);
                         // Write the updated package list back to the file
                         Book_Files.WriteParameters(packageNames, packageListFilePath);
                         Console.WriteLine("Package list updated.");
@@ -664,7 +878,7 @@ namespace UnrealEnginePackageManager
         }
     }
 
-    public class Package
+    public class Content
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -675,6 +889,11 @@ namespace UnrealEnginePackageManager
         public string DevName{ get; set; }
         public string DevWebsite { get; set; }
         // Add more properties as needed
+    }
+
+    public class Package
+    {
+        public string Name { get; set; }
     }
 
 

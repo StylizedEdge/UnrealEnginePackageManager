@@ -277,22 +277,46 @@ namespace UnrealEnginePackageManager
             return unrealEnginePaths;
         }
 
-        public static long GetPackageSize(string folderPath)
+
+
+
+        public static long GetFolderSize(string folderPath)
         {
-            DirectoryInfo directory = new DirectoryInfo(folderPath);
-            long packageSize = directory.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(file => file.Length);
-            return packageSize;
+            try
+            {
+                if (Directory.Exists(folderPath))
+                {
+                    DirectoryInfo directory = new DirectoryInfo(folderPath);
+                    long packageSize = directory.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(file => file.Length);
+                    return packageSize;
+                }
+                else
+                {
+                    Console.WriteLine($"Directory not found: {folderPath}");
+                    return 0; // or throw a custom exception if appropriate
+                }
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                Console.WriteLine($"Directory not found: {ex.Message}");
+                return 0; // or rethrow the exception or handle it as necessary
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return 0; // or handle other potential exceptions
+            }
         }
 
-        public static double GetPackageSizeInMegabytes(string folderPath)
+        public static double GetFolderSizeInMegabytes(string folderPath)
         {
-            long packageSize = GetPackageSize(folderPath);
+            long packageSize = GetFolderSize(folderPath);
             return Math.Round(packageSize / (1024.0 * 1024.0), 1); // Convert bytes to megabytes and round to 1 decimal place
         }
 
-        public static double GetPackageSizeInGigabytes(string folderPath)
+        public static double GetFolderSizeInGigabytes(string folderPath)
         {
-            double packageSizeInMegabytes = GetPackageSizeInMegabytes(folderPath);
+            double packageSizeInMegabytes = GetFolderSizeInMegabytes(folderPath);
             return Math.Round(packageSizeInMegabytes / 1024.0, 1); // Convert megabytes to gigabytes and round to 1 decimal place
         }
 
@@ -313,6 +337,9 @@ namespace UnrealEnginePackageManager
             double fileSizeInMegabytes = GetFileSizeInMegabytes(filePath);
             return Math.Round(fileSizeInMegabytes / 1024.0, 1); // Convert megabytes to gigabytes and round to 1 decimal place
         }
+
+
+
 
         public static void SaveParameters(string filePath, Dictionary<string, string> parameters)
         {
@@ -473,7 +500,7 @@ namespace UnrealEnginePackageManager
             SaveManifestJson(manifestFilePath, manifestJson);
         }
 
-        public static void AddPackage(Dictionary<string, string> packageNames, string packageName, string PackageListPath, string packageFolderPath)
+        public static void AddContent(Dictionary<string, string> packageNames, string packageName, string PackageListPath, string packageFolderPath)
         {
             // Find the next available package number
             int nextPackageNumber = 1;
@@ -490,6 +517,20 @@ namespace UnrealEnginePackageManager
             UpdatePackageManifest(nextPackageNumber, packageName, packageFolderPath);
         }
 
+        public static void AddPackage(Dictionary<string, string> packageNames, string packageName, string PackageListPath)
+        {
+            // Find the next available package number
+            int nextPackageNumber = 1;
+            if (packageNames.Count > 0)
+            {
+                nextPackageNumber = packageNames.Keys.Select(key => int.Parse(key)).Max() + 1;
+            }
+
+            // Add the new package to the package list
+            packageNames[nextPackageNumber.ToString()] = packageName;
+            SaveParameters(PackageListPath, packageNames);
+
+        }
         public static void RemovePackage(Dictionary<string, string> packageNames, int packageNumber, string packageFolderPath)
         {
             // Remove the package from the package list

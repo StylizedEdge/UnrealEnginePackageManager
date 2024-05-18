@@ -50,12 +50,14 @@ namespace UnrealEnginePackageManager
 
 
         #region Files Transfer
+
+        private bool isBatFileExecuted = false; // Flag to check if .bat file is executed
+
         private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             var worker = sender as BackgroundWorker;
             CopyFolderWithProgress(worker, SourceFiles, SamplesFilesPathContent, 4);
         }
-        
 
         private void BackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -63,31 +65,40 @@ namespace UnrealEnginePackageManager
             this.copyPercentageLabel.Text = $"Copy progress: {e.ProgressPercentage}%";
             this.currentFileLabel.Text = $"Current file: {e.UserState}";
 
+            // Launch UnrealEngine Path
+            string CMDcommand = $"\"{preferenceRawData["EnginesPath"]}\\{preferenceRawData["SelectedVersionPath"]}\\Engine\\Binaries\\Win64\\UnrealPak.exe\" -Create=\"{selectedPath}\\{packnameText.Text}\\ContentToPack.txt\" \"{selectedPath}\\{packnameText.Text}\\FeaturePacks\\{packnameText.Text}.upack\"\n@pause";
 
-                //LauchUnrealEngine Path
-                string CMDcommand = $"\"{preferenceRawData["EnginesPath"]}\\{preferenceRawData["SelectedVersionPath"]}\\Engine\\Binaries\\Win64\\UnrealPak.exe\" -Create=\"{selectedPath}\\{packnameText.Text}\\ContentToPack.txt\" \"{selectedPath}\\{packnameText.Text}\\FeaturePacks\\{packnameText.Text}.upack\"\n@pause";
-                if (e.ProgressPercentage >= 96)
+            if (e.ProgressPercentage >= 96 && !isBatFileExecuted)
+            {
+                isBatFileExecuted = true; // Set flag to true
+
+                File.WriteAllText(Path.Combine(selectedPath, packnameText.Text, "UnrealComand.bat"), CMDcommand);
+
+                if (File.Exists(Path.Combine(selectedPath, packnameText.Text, "UnrealComand.bat")))
                 {
-                    File.WriteAllText(Path.Combine(selectedPath, packnameText.Text, "UnrealComand.bat"), CMDcommand);
                     Process.Start(Path.Combine(selectedPath, packnameText.Text, "UnrealComand.bat"));
-                    MessageBox.Show("AssetPack Created!");
-                    Close();
                 }
-                Book_Files.UpdatePackageInstallationState(packnameText.Text, false);
-                if (AreFilesDoneCopying(SourceFiles, SamplesFilesPathContent) == true)
-                {
-                    Console.WriteLine("Files Done Copying");
-                }
+                MessageBox.Show("AssetPack Created!");
+                Close();
+            }
 
+            Book_Files.UpdatePackageInstallationState(packnameText.Text, false);
+
+            if (AreFilesDoneCopying(SourceFiles, SamplesFilesPathContent) == true)
+            {
+                Console.WriteLine("Files Done Copying");
+            }
         }
 
         private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             this.copyPercentageLabel.Text = "Copy completed.";
             this.currentFileLabel.Text = string.Empty;
+            isBatFileExecuted = false; // Reset flag for next operation
         }
 
         #endregion
+
 
         #region Extract ContentPack from Resource Folder
         private void AssignPackageCreationPath(object sender, EventArgs e)
@@ -128,16 +139,15 @@ namespace UnrealEnginePackageManager
         #region Package Creation
         private void CreateContentAndpackAllFiles(object sender, EventArgs e)
         {
-
             if (Directory.Exists(Path.Combine(preferenceRawData["EnginesPath"], preferenceRawData["SelectedVersionPath"])))
             {
                 string packageListFilePath = Book_Files.GetFileInFolder("ContentList.txt", Book_Files.ImportantFolders.Packages);
                 Dictionary<string, string> packageNames = Book_Files.LoadParameters(packageListFilePath);
 
-                AddPackage(packageNames, packnameText.Text, packageListFilePath, preferenceRawData["PackageCreationDirectory"]);
+                AddContent(packageNames, packnameText.Text, packageListFilePath, preferenceRawData["ContentCreationDirectory"]);
 
                 //Create the pack
-                CreatePack();
+                CreateContent();
             }
             else
             {
@@ -147,7 +157,7 @@ namespace UnrealEnginePackageManager
         }
 
         //PackCreationFunction
-        void CreatePack()
+        void CreateContent()
         {
             AssignPackageDestinationName();
         }

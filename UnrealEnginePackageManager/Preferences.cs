@@ -26,15 +26,15 @@ namespace UnrealEnginePackageManager
             Console.WriteLine("Preferences Loaded from file!");
 
             EnginesPath.Text = loadedParameters["EnginesPath"];
-            pkgCreationDir.Text = loadedParameters["PKGCreationDirectory"];
+            PackageDirectory.Text = loadedParameters["PackageCreationDirectory"];
             UESelectedVersion.SelectedItem = loadedParameters["SelectedVersionPath"];
-            if (loadedParameters["PackageCreationDirectory"] != null)
+            if (loadedParameters["ContentCreationDirectory"] != null)
             {
-                CntCreationDir.Text = loadedParameters["PackageCreationDirectory"];
+                ContentDirectory.Text = loadedParameters["ContentCreationDirectory"];
             }
             else
             {
-                CntCreationDir.Text = DefaultPackageCreationDirectory;
+                ContentDirectory.Text = DefaultPackageCreationDirectory;
             }
             Autopkg.Checked = Convert.ToBoolean(loadedParameters["AutoInstallPackages"]);
         }
@@ -48,8 +48,8 @@ namespace UnrealEnginePackageManager
                 {"EnginesPath","C:\\Program Files\\Epic Games\\" },
             { "SelectedVersionPath", UESelectedVersion.Text },
             { "AutoInstallPackages", Autopkg.Checked.ToString() },
-            { "PackageCreationDirectory", CntCreationDir.Text },
-            { "PKGCreationDirectory", pkgCreationDir.Text }
+            { "ContentCreationDirectory", ContentDirectory.Text },
+            { "PackageCreationDirectory", PackageDirectory.Text }
         };
 
             // Save the parameters to the text file
@@ -76,7 +76,7 @@ namespace UnrealEnginePackageManager
 
                     if (Directory.Exists(selectedPath))
                     {
-                        CntCreationDir.Text = selectedPath;
+                        ContentDirectory.Text = selectedPath;
                     }
                 }
             }
@@ -100,7 +100,7 @@ namespace UnrealEnginePackageManager
 
                     if (Directory.Exists(selectedPath))
                     {
-                        pkgCreationDir.Text = selectedPath;
+                        PackageDirectory.Text = selectedPath;
                     }
                 }
             }

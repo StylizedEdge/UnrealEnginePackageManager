@@ -34,7 +34,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.Autopkg = new System.Windows.Forms.CheckBox();
-            this.CntCreationDir = new System.Windows.Forms.TextBox();
+            this.ContentDirectory = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.EnginesPath = new System.Windows.Forms.TextBox();
@@ -46,7 +46,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.pkgCreationDir = new System.Windows.Forms.TextBox();
+            this.PackageDirectory = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -88,13 +88,13 @@
             this.Autopkg.TabIndex = 8;
             this.Autopkg.UseVisualStyleBackColor = true;
             // 
-            // CntCreationDir
+            // ContentDirectory
             // 
-            this.CntCreationDir.Location = new System.Drawing.Point(187, 83);
-            this.CntCreationDir.Name = "CntCreationDir";
-            this.CntCreationDir.ReadOnly = true;
-            this.CntCreationDir.Size = new System.Drawing.Size(352, 20);
-            this.CntCreationDir.TabIndex = 12;
+            this.ContentDirectory.Location = new System.Drawing.Point(187, 83);
+            this.ContentDirectory.Name = "ContentDirectory";
+            this.ContentDirectory.ReadOnly = true;
+            this.ContentDirectory.Size = new System.Drawing.Size(352, 20);
+            this.ContentDirectory.TabIndex = 12;
             // 
             // button3
             // 
@@ -204,13 +204,13 @@
             this.label7.TabIndex = 20;
             this.label7.Text = "Packaging";
             // 
-            // pkgCreationDir
+            // PackageDirectory
             // 
-            this.pkgCreationDir.Location = new System.Drawing.Point(187, 109);
-            this.pkgCreationDir.Name = "pkgCreationDir";
-            this.pkgCreationDir.ReadOnly = true;
-            this.pkgCreationDir.Size = new System.Drawing.Size(352, 20);
-            this.pkgCreationDir.TabIndex = 23;
+            this.PackageDirectory.Location = new System.Drawing.Point(187, 109);
+            this.PackageDirectory.Name = "PackageDirectory";
+            this.PackageDirectory.ReadOnly = true;
+            this.PackageDirectory.Size = new System.Drawing.Size(352, 20);
+            this.PackageDirectory.TabIndex = 23;
             // 
             // button1
             // 
@@ -236,7 +236,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(609, 548);
-            this.Controls.Add(this.pkgCreationDir);
+            this.Controls.Add(this.PackageDirectory);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
@@ -247,7 +247,7 @@
             this.Controls.Add(this.EnginesPath);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.CntCreationDir);
+            this.Controls.Add(this.ContentDirectory);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.Autopkg);
@@ -270,7 +270,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox Autopkg;
-        private System.Windows.Forms.TextBox CntCreationDir;
+        private System.Windows.Forms.TextBox ContentDirectory;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox EnginesPath;
@@ -282,7 +282,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox pkgCreationDir;
+        private System.Windows.Forms.TextBox PackageDirectory;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label8;
     }

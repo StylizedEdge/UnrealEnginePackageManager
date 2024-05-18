@@ -45,19 +45,18 @@
             this.devSupportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.button3 = new System.Windows.Forms.Button();
-            this.InstallPackageContent = new System.Windows.Forms.Button();
+            this.InstallButton = new System.Windows.Forms.Button();
             this.pkgName = new System.Windows.Forms.Label();
             this.PackageOption = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deletePackageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openInFileExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.devCheckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.button2 = new System.Windows.Forms.Button();
+            this.UninstallButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.UnrealContent = new System.Windows.Forms.TableLayoutPanel();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.UnreaPackage = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -75,6 +74,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.FilesInThePack = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.UnrealPackage = new System.Windows.Forms.TableLayoutPanel();
             this.menuStrip1.SuspendLayout();
             this.PackageOption.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -108,7 +108,7 @@
             this.createContentPackToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_new_button_192px;
             this.createContentPackToolStripMenuItem.Name = "createContentPackToolStripMenuItem";
             this.createContentPackToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.createContentPackToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.createContentPackToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.createContentPackToolStripMenuItem.Text = "New";
             // 
             // uContentToolStripMenuItem
@@ -134,7 +134,7 @@
             this.installToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.uContentToolStripMenuItem1});
             this.installToolStripMenuItem.Name = "installToolStripMenuItem";
-            this.installToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.installToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.installToolStripMenuItem.Text = "Install";
             // 
             // uContentToolStripMenuItem1
@@ -149,7 +149,7 @@
             this.managePacksToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_counterclockwise_arrows_192px_1;
             this.managePacksToolStripMenuItem.Name = "managePacksToolStripMenuItem";
             this.managePacksToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.managePacksToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.managePacksToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.managePacksToolStripMenuItem.Text = "Refrensh List";
             this.managePacksToolStripMenuItem.Click += new System.EventHandler(this.managePacksToolStripMenuItem_Click);
             // 
@@ -158,7 +158,7 @@
             this.closeToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_cl_button_192px;
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
             this.closeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -230,17 +230,18 @@
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // InstallPackageContent
+            // InstallButton
             // 
-            this.InstallPackageContent.BackColor = System.Drawing.Color.White;
-            this.InstallPackageContent.ForeColor = System.Drawing.Color.Black;
-            this.InstallPackageContent.Location = new System.Drawing.Point(376, 3);
-            this.InstallPackageContent.Name = "InstallPackageContent";
-            this.InstallPackageContent.Size = new System.Drawing.Size(294, 27);
-            this.InstallPackageContent.TabIndex = 10;
-            this.InstallPackageContent.Text = "Install";
-            this.InstallPackageContent.UseVisualStyleBackColor = false;
-            this.InstallPackageContent.Click += new System.EventHandler(this.InstallPackageContent_Click);
+            this.InstallButton.BackColor = System.Drawing.Color.White;
+            this.InstallButton.Enabled = false;
+            this.InstallButton.ForeColor = System.Drawing.Color.Black;
+            this.InstallButton.Location = new System.Drawing.Point(376, 3);
+            this.InstallButton.Name = "InstallButton";
+            this.InstallButton.Size = new System.Drawing.Size(294, 27);
+            this.InstallButton.TabIndex = 10;
+            this.InstallButton.Text = "Install";
+            this.InstallButton.UseVisualStyleBackColor = false;
+            this.InstallButton.Click += new System.EventHandler(this.InstallPackageContent_Click);
             // 
             // pkgName
             // 
@@ -281,17 +282,18 @@
             this.devCheckToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.devCheckToolStripMenuItem.Text = "Dev Check";
             // 
-            // button2
+            // UninstallButton
             // 
-            this.button2.BackColor = System.Drawing.SystemColors.Control;
-            this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Location = new System.Drawing.Point(274, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(96, 27);
-            this.button2.TabIndex = 11;
-            this.button2.Text = "Unistall";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.UninstallButton.BackColor = System.Drawing.SystemColors.Control;
+            this.UninstallButton.Enabled = false;
+            this.UninstallButton.ForeColor = System.Drawing.Color.Black;
+            this.UninstallButton.Location = new System.Drawing.Point(274, 3);
+            this.UninstallButton.Name = "UninstallButton";
+            this.UninstallButton.Size = new System.Drawing.Size(96, 27);
+            this.UninstallButton.TabIndex = 11;
+            this.UninstallButton.Text = "Unistall";
+            this.UninstallButton.UseVisualStyleBackColor = false;
+            this.UninstallButton.Click += new System.EventHandler(this.button2_Click);
             // 
             // panel1
             // 
@@ -345,7 +347,7 @@
             // tabPage5
             // 
             this.tabPage5.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.tabPage5.Controls.Add(this.UnreaPackage);
+            this.tabPage5.Controls.Add(this.UnrealPackage);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
@@ -353,25 +355,10 @@
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "Unreal packages";
             // 
-            // UnreaPackage
-            // 
-            this.UnreaPackage.AutoScroll = true;
-            this.UnreaPackage.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.UnreaPackage.ColumnCount = 1;
-            this.UnreaPackage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.45045F));
-            this.UnreaPackage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.UnreaPackage.Location = new System.Drawing.Point(3, 3);
-            this.UnreaPackage.Name = "UnreaPackage";
-            this.UnreaPackage.RowCount = 1;
-            this.UnreaPackage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.UnreaPackage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 614F));
-            this.UnreaPackage.Size = new System.Drawing.Size(484, 614);
-            this.UnreaPackage.TabIndex = 17;
-            // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Controls.Add(this.InstallPackageContent);
-            this.flowLayoutPanel1.Controls.Add(this.button2);
+            this.flowLayoutPanel1.Controls.Add(this.InstallButton);
+            this.flowLayoutPanel1.Controls.Add(this.UninstallButton);
             this.flowLayoutPanel1.Controls.Add(this.button3);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
@@ -546,6 +533,21 @@
             this.FilesInThePack.TabIndex = 0;
             this.FilesInThePack.Text = "";
             // 
+            // UnrealPackage
+            // 
+            this.UnrealPackage.AutoScroll = true;
+            this.UnrealPackage.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.UnrealPackage.ColumnCount = 1;
+            this.UnrealPackage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.45045F));
+            this.UnrealPackage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.UnrealPackage.Location = new System.Drawing.Point(3, 3);
+            this.UnrealPackage.Name = "UnrealPackage";
+            this.UnrealPackage.RowCount = 1;
+            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 614F));
+            this.UnrealPackage.Size = new System.Drawing.Size(484, 614);
+            this.UnrealPackage.TabIndex = 16;
+            // 
             // UnrealEnginePackageManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -594,9 +596,9 @@
         private System.Windows.Forms.ToolStripMenuItem devSupportToolStripMenuItem;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button InstallPackageContent;
+        private System.Windows.Forms.Button InstallButton;
         private System.Windows.Forms.Label pkgName;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button UninstallButton;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.ContextMenuStrip PackageOption;
@@ -623,11 +625,11 @@
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabPage tabPage5;
-        private System.Windows.Forms.TableLayoutPanel UnreaPackage;
         private System.Windows.Forms.Label DevName;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.LinkLabel DevWebsite;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TableLayoutPanel UnrealPackage;
     }
 }
 

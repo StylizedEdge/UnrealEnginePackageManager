@@ -63,13 +63,30 @@ namespace UnrealEnginePackageManager
 
         private void CreatePackageButton(object sender, EventArgs e)
         {
+            if (Directory.Exists(Path.Combine(preferenceRawData["EnginesPath"], preferenceRawData["SelectedVersionPath"])))
+            {
+                string packageListFilePath = Book_Files.GetFileInFolder("PackageList.txt", Book_Files.ImportantFolders.Packages);
+                Dictionary<string, string> packageNames = Book_Files.LoadParameters(packageListFilePath);
+
+                Book_Files.AddPackage(packageNames, packnameText.Text, packageListFilePath);
+                CreatePackage();
+            }
+            else
+            {
+                MessageBox.Show("Unreal Engine version Selected \nisn't installed, Check the settings");
+                Close();
+            }
+        }
+
+        private void CreatePackage()
+        {
             if (!string.IsNullOrEmpty(filespackText.Text) && !string.IsNullOrEmpty(PackagePathText.Text))
             {
-                string zipFilePath = Path.Combine(preferenceRawData["PKGCreationDirectory"], "test.Unrealpackage");
+                string zipFilePath = Path.Combine(preferenceRawData["PackageCreationDirectory"], packnameText.Text +".UnrealPackage");
                 Book_Rar.CompressFilesWithPassword(new string[] { SourceFiles }, zipFilePath);
 
                 // Wait until all files are extracted
-                while (!Book_Rar.AreAllFilesExtracted(zipFilePath, preferenceRawData["PKGCreationDirectory"]))
+                while (!Book_Rar.AreAllFilesExtracted(zipFilePath, preferenceRawData["PackageCreationDirectory"]))
                 {
                     // You can optionally add a delay here to avoid excessive CPU usage
                     // Thread.Sleep(100); // Sleep for 100 milliseconds
@@ -85,7 +102,7 @@ namespace UnrealEnginePackageManager
         {
             if (File.Exists(PreferenceData))
             {
-                PackagePathText.Text = preferenceRawData["PKGCreationDirectory"];
+                PackagePathText.Text = preferenceRawData["PackageCreationDirectory"];
             }
         }
 

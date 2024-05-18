@@ -2,6 +2,7 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <RunAsAdmin>true</RunAsAdmin>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7BCACD39-EA07-4BA8-84DD-9627F8F00C43}</ProjectGuid>
@@ -49,7 +50,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>UPackageIcon_256 copy.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -210,7 +212,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="UnrealEnginePackageManager_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -249,8 +250,6 @@
     <None Include="Resources\icons8_donate_480px.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="icons8_unreal_engine.ico" />
-    <Content Include="UPackageIcon_256 copy.ico" />
     <None Include="Resources\icons8_software_installer_50px.png" />
   </ItemGroup>
   <ItemGroup>
