@@ -350,7 +350,7 @@ namespace UnrealEnginePackageManager
             Dictionary<string, string> ExtractedPreferences = Book_Files.LoadParameters(PreferenceData);
             if (File.Exists(PreferenceData))
             {
-                packageFolderPath = Path.Combine(ExtractedPreferences["PackageCreationDirectory"], packnameText.Text);
+                packageFolderPath = Path.Combine(ExtractedPreferences["ContentCreationDirectory"], packnameText.Text);
 
                 // Delete Samples folder
                 if (Directory.Exists(packageFolderPath))
@@ -436,8 +436,8 @@ namespace UnrealEnginePackageManager
 
             if (File.Exists(PreferenceData))
             {
-                PackagePathText.Text = ExtractedPreferences["PackageCreationDirectory"];
-                selectedPath = ExtractedPreferences["PackageCreationDirectory"];
+                PackagePathText.Text = ExtractedPreferences["ContentCreationDirectory"];
+                selectedPath = ExtractedPreferences["ContentCreationDirectory"];
                 Fullpath.Text = PackagePathText.Text;
 
                 if (Directory.Exists(selectedPath))

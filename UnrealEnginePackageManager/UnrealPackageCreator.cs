@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,6 +17,9 @@ namespace UnrealEnginePackageManager
     {
         string PreferenceData;
         Dictionary<string, string> preferenceRawData;
+
+
+        private BackgroundWorker backgroundWorker;
         public UnrealPackageCreator()
         {
             InitializeComponent();
@@ -23,6 +27,14 @@ namespace UnrealEnginePackageManager
 
             PreferenceData = Book_Files.GetFileInFolder("Preferences.dll", Book_Files.ImportantFolders.Resources);
             preferenceRawData = Book_Files.LoadParameters(PreferenceData);
+
+
+            // Initialize the background worker
+            backgroundWorker = new BackgroundWorker();
+            backgroundWorker.WorkerReportsProgress = true;
+            backgroundWorker.DoWork += BackgroundWorker_DoWork;
+            backgroundWorker.ProgressChanged += BackgroundWorker_ProgressChanged;
+            backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
         }
 
 
@@ -82,20 +94,63 @@ namespace UnrealEnginePackageManager
         {
             if (!string.IsNullOrEmpty(filespackText.Text) && !string.IsNullOrEmpty(PackagePathText.Text))
             {
-                string zipFilePath = Path.Combine(preferenceRawData["PackageCreationDirectory"], packnameText.Text +".UnrealPackage");
-                Book_Rar.CompressFilesWithPassword(new string[] { SourceFiles }, zipFilePath);
+                // Start the background worker
+                backgroundWorker.RunWorkerAsync();
+            }
+        }
 
-                // Wait until all files are extracted
-                while (!Book_Rar.AreAllFilesExtracted(zipFilePath, preferenceRawData["PackageCreationDirectory"]))
+        private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            int totalDuration = 10000; // Total duration in milliseconds (example: 10 seconds)
+            int interval = 100; // Interval in milliseconds for each progress update
+            string zipFilePath = Path.Combine(preferenceRawData["PackageCreationDirectory"], packnameText.Text + ".UnrealPackage");
+
+            // Simulate the file creation if it doesn't already exist
+            if (!File.Exists(zipFilePath))
+            {
+                Book_Rar.CompressFilesWithPassword(new string[] { SourceFiles }, zipFilePath);
+            }
+
+            int elapsed = 0;
+            while (elapsed < totalDuration)
+            {
+                // Calculate progress percentage
+                int progress = (int)((elapsed / (float)totalDuration) * 100);
+                backgroundWorker.ReportProgress(progress);
+
+                // Check if the file exists
+                if (File.Exists(zipFilePath))
                 {
-                    // You can optionally add a delay here to avoid excessive CPU usage
-                    // Thread.Sleep(100); // Sleep for 100 milliseconds
+                    // Report progress as 100% if the file exists and break the loop
+                    backgroundWorker.ReportProgress(100);
+                    break;
                 }
 
-                // All files have been extracted
-                MessageBox.Show("Extraction completed!");
-                Close();
+                // Wait for the interval
+                Thread.Sleep(interval);
+                elapsed += interval;
             }
+
+            // Ensure the progress reaches 100% at the end
+            if (elapsed >= totalDuration)
+            {
+                backgroundWorker.ReportProgress(100);
+            }
+
+            // Store the result
+            e.Result = "Package creation completed!";
+        }
+
+        private void BackgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar.Value = e.ProgressPercentage;
+            this.copyPercentageLabel.Text = $"Progress: {e.ProgressPercentage}%";
+        }
+
+        private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            MessageBox.Show(e.Result.ToString());
+            Close();
         }
 
         private void button4_Click(object sender, EventArgs e)

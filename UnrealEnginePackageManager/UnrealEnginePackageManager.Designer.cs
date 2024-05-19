@@ -57,6 +57,7 @@
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.UnrealContent = new System.Windows.Forms.TableLayoutPanel();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.UnrealPackage = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -74,7 +75,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.FilesInThePack = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.UnrealPackage = new System.Windows.Forms.TableLayoutPanel();
             this.menuStrip1.SuspendLayout();
             this.PackageOption.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -108,7 +108,7 @@
             this.createContentPackToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_new_button_192px;
             this.createContentPackToolStripMenuItem.Name = "createContentPackToolStripMenuItem";
             this.createContentPackToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.createContentPackToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.createContentPackToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.createContentPackToolStripMenuItem.Text = "New";
             // 
             // uContentToolStripMenuItem
@@ -134,7 +134,7 @@
             this.installToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.uContentToolStripMenuItem1});
             this.installToolStripMenuItem.Name = "installToolStripMenuItem";
-            this.installToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.installToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.installToolStripMenuItem.Text = "Install";
             // 
             // uContentToolStripMenuItem1
@@ -149,7 +149,7 @@
             this.managePacksToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_counterclockwise_arrows_192px_1;
             this.managePacksToolStripMenuItem.Name = "managePacksToolStripMenuItem";
             this.managePacksToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.managePacksToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.managePacksToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.managePacksToolStripMenuItem.Text = "Refrensh List";
             this.managePacksToolStripMenuItem.Click += new System.EventHandler(this.managePacksToolStripMenuItem_Click);
             // 
@@ -158,7 +158,7 @@
             this.closeToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_cl_button_192px;
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
             this.closeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -355,6 +355,21 @@
             this.tabPage5.TabIndex = 1;
             this.tabPage5.Text = "Unreal packages";
             // 
+            // UnrealPackage
+            // 
+            this.UnrealPackage.AutoScroll = true;
+            this.UnrealPackage.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.UnrealPackage.ColumnCount = 1;
+            this.UnrealPackage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.45045F));
+            this.UnrealPackage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.UnrealPackage.Location = new System.Drawing.Point(3, 3);
+            this.UnrealPackage.Name = "UnrealPackage";
+            this.UnrealPackage.RowCount = 1;
+            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 614F));
+            this.UnrealPackage.Size = new System.Drawing.Size(484, 614);
+            this.UnrealPackage.TabIndex = 16;
+            // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.InstallButton);
@@ -532,21 +547,6 @@
             this.FilesInThePack.Size = new System.Drawing.Size(665, 566);
             this.FilesInThePack.TabIndex = 0;
             this.FilesInThePack.Text = "";
-            // 
-            // UnrealPackage
-            // 
-            this.UnrealPackage.AutoScroll = true;
-            this.UnrealPackage.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.UnrealPackage.ColumnCount = 1;
-            this.UnrealPackage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.45045F));
-            this.UnrealPackage.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.UnrealPackage.Location = new System.Drawing.Point(3, 3);
-            this.UnrealPackage.Name = "UnrealPackage";
-            this.UnrealPackage.RowCount = 1;
-            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 614F));
-            this.UnrealPackage.Size = new System.Drawing.Size(484, 614);
-            this.UnrealPackage.TabIndex = 16;
             // 
             // UnrealEnginePackageManager
             // 
