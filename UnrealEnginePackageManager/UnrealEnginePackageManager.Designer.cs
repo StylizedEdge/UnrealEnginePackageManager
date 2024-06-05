@@ -75,6 +75,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.FilesInThePack = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.ContentOption = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.refreshListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getFreePackagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stylizedEdgeDevFreeAssetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.kenneyAssetsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.PackageOption.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -87,6 +92,7 @@
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.ContentOption.SuspendLayout();
             this.SuspendLayout();
             // 
             // filesToolStripMenuItem
@@ -95,6 +101,7 @@
             this.createContentPackToolStripMenuItem,
             this.installToolStripMenuItem,
             this.managePacksToolStripMenuItem,
+            this.getFreePackagesToolStripMenuItem,
             this.closeToolStripMenuItem});
             this.filesToolStripMenuItem.Name = "filesToolStripMenuItem";
             this.filesToolStripMenuItem.Size = new System.Drawing.Size(42, 20);
@@ -108,7 +115,7 @@
             this.createContentPackToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_new_button_192px;
             this.createContentPackToolStripMenuItem.Name = "createContentPackToolStripMenuItem";
             this.createContentPackToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.createContentPackToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.createContentPackToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.createContentPackToolStripMenuItem.Text = "New";
             // 
             // uContentToolStripMenuItem
@@ -134,7 +141,7 @@
             this.installToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.uContentToolStripMenuItem1});
             this.installToolStripMenuItem.Name = "installToolStripMenuItem";
-            this.installToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.installToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.installToolStripMenuItem.Text = "Install";
             // 
             // uContentToolStripMenuItem1
@@ -149,7 +156,7 @@
             this.managePacksToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_counterclockwise_arrows_192px_1;
             this.managePacksToolStripMenuItem.Name = "managePacksToolStripMenuItem";
             this.managePacksToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.managePacksToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.managePacksToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.managePacksToolStripMenuItem.Text = "Refrensh List";
             this.managePacksToolStripMenuItem.Click += new System.EventHandler(this.managePacksToolStripMenuItem_Click);
             // 
@@ -158,7 +165,7 @@
             this.closeToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_cl_button_192px;
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
             this.closeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -335,6 +342,7 @@
             this.UnrealContent.BackColor = System.Drawing.Color.WhiteSmoke;
             this.UnrealContent.ColumnCount = 1;
             this.UnrealContent.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.45045F));
+            this.UnrealContent.ContextMenuStrip = this.ContentOption;
             this.UnrealContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.UnrealContent.Location = new System.Drawing.Point(3, 3);
             this.UnrealContent.Name = "UnrealContent";
@@ -361,6 +369,7 @@
             this.UnrealPackage.BackColor = System.Drawing.Color.WhiteSmoke;
             this.UnrealPackage.ColumnCount = 1;
             this.UnrealPackage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.45045F));
+            this.UnrealPackage.ContextMenuStrip = this.ContentOption;
             this.UnrealPackage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.UnrealPackage.Location = new System.Drawing.Point(3, 3);
             this.UnrealPackage.Name = "UnrealPackage";
@@ -548,6 +557,43 @@
             this.FilesInThePack.TabIndex = 0;
             this.FilesInThePack.Text = "";
             // 
+            // ContentOption
+            // 
+            this.ContentOption.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.refreshListToolStripMenuItem});
+            this.ContentOption.Name = "ContentOption";
+            this.ContentOption.Size = new System.Drawing.Size(135, 26);
+            this.ContentOption.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // refreshListToolStripMenuItem
+            // 
+            this.refreshListToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_counterclockwise_arrows_192px_1;
+            this.refreshListToolStripMenuItem.Name = "refreshListToolStripMenuItem";
+            this.refreshListToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.refreshListToolStripMenuItem.Text = "Refresh List";
+            // 
+            // getFreePackagesToolStripMenuItem
+            // 
+            this.getFreePackagesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.stylizedEdgeDevFreeAssetsToolStripMenuItem,
+            this.kenneyAssetsToolStripMenuItem});
+            this.getFreePackagesToolStripMenuItem.Name = "getFreePackagesToolStripMenuItem";
+            this.getFreePackagesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.getFreePackagesToolStripMenuItem.Text = "Get Free Packages";
+            // 
+            // stylizedEdgeDevFreeAssetsToolStripMenuItem
+            // 
+            this.stylizedEdgeDevFreeAssetsToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources._64x64;
+            this.stylizedEdgeDevFreeAssetsToolStripMenuItem.Name = "stylizedEdgeDevFreeAssetsToolStripMenuItem";
+            this.stylizedEdgeDevFreeAssetsToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.stylizedEdgeDevFreeAssetsToolStripMenuItem.Text = "StylizedEdge Dev Free Assets";
+            // 
+            // kenneyAssetsToolStripMenuItem
+            // 
+            this.kenneyAssetsToolStripMenuItem.Name = "kenneyAssetsToolStripMenuItem";
+            this.kenneyAssetsToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.kenneyAssetsToolStripMenuItem.Text = "Kenney Assets";
+            // 
             // UnrealEnginePackageManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -578,6 +624,7 @@
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.ContentOption.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -630,6 +677,11 @@
         private System.Windows.Forms.LinkLabel DevWebsite;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TableLayoutPanel UnrealPackage;
+        private System.Windows.Forms.ContextMenuStrip ContentOption;
+        private System.Windows.Forms.ToolStripMenuItem refreshListToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem getFreePackagesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stylizedEdgeDevFreeAssetsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem kenneyAssetsToolStripMenuItem;
     }
 }
 
