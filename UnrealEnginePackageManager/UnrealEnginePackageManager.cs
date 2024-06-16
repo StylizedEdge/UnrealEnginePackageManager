@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Nevron.Nov.Chart;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,16 +14,16 @@ namespace UnrealEnginePackageManager
     {
         string UEpath;
         private Dictionary<string, string> PrefencesData;
-        string ContentFolderPath;
-        string PackageFolderPath;
+        public string ContentFolderPath;
+        public string PackageFolderPath;
         List<Content> contents = new List<Content>();
         List<Package> packages = new List<Package>();
 
 
         Content SelectedContent;
         Package SelectedPackage;
-        
 
+        string UEPackageExtension = ".UnrealPackage";
         public UnrealEnginePackageManager()
         {
             InitializeComponent();
@@ -42,6 +43,9 @@ namespace UnrealEnginePackageManager
             // Load Package List
             LoadContents();
             LoadPackages();
+
+            RefreshPackageButtons();
+            RefreshContentButtons();
         }
 
         #region Content
@@ -160,15 +164,14 @@ namespace UnrealEnginePackageManager
                     button.ForeColor = System.Drawing.SystemColors.ControlText;
                     button.Location = new System.Drawing.Point(3, 3);
                     button.Name = content.Name;
-                    button.Size = new System.Drawing.Size(400, 50);
+                    button.Size = new System.Drawing.Size(400, 100);
                     button.TabIndex = 0;
                     button.Text = content.Name;
-                    button.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
                     button.UseVisualStyleBackColor = false;
                     button.Dock = DockStyle.Top;
                     button.Name = content.Name; // Assign the package name to the button name
                     button.Text = content.Name;
-                    button.TextAlign = ContentAlignment.BottomCenter;
+                    button.TextAlign = ContentAlignment.MiddleRight;
                     button.UseVisualStyleBackColor = true;
 
 
@@ -269,7 +272,7 @@ namespace UnrealEnginePackageManager
 
         private void CreatePackageButtons()
         {
-            if (contents.Count != 0)
+            if (packages.Count != 0)
             {
                 foreach (var package in packages)
                 {
@@ -290,7 +293,7 @@ namespace UnrealEnginePackageManager
                     button.Dock = DockStyle.Top;
                     button.Name = package.Name; // Assign the package name to the button name
                     button.Text = package.Name;
-                    button.TextAlign = ContentAlignment.BottomCenter;
+                    button.TextAlign = ContentAlignment.MiddleCenter;
                     button.UseVisualStyleBackColor = true;
 
 
@@ -372,13 +375,16 @@ namespace UnrealEnginePackageManager
         }
 
         private void aboutUEPackageManagerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("UnrealEPC Version 1.0 \n" +
-                "Hey there, i'm happy you using this small tool\n" +
-                "It was just annoying to always migrate my files with 2 big\n" +
-                "projects hanging there since it be cossuming my PC strenght 😭\n" +
-                "Check my Artstation for more Update\n" +
-                "Thanks");
+        {   
+            DialogResult result = MessageBox.Show("Unreal Engine Package Manager \n" +
+                "Version 0.3 BETA \n" +
+                "Follow me on Artstation to get Updates \n" +
+                "Get Update", "Version Info", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if(result == DialogResult.Yes)
+            {
+                Process.Start("https://www.artstation.com/stylizededge/store?tab=digital_product");
+            }
         }
 
 
@@ -403,13 +409,18 @@ namespace UnrealEnginePackageManager
             }
         }
 
-        private void RefreshPackageButtons()
+        private void RefreshContentButtons()
         {
             UnrealContent.Controls.Clear();
-            UnrealPackage.Controls.Clear();
+
             // Load Content List
             LoadContents();
             CreateContentButtons();
+        }
+
+        private void RefreshPackageButtons()
+        {
+            UnrealPackage.Controls.Clear();
 
             // Load Package List
             LoadPackages();
@@ -642,7 +653,7 @@ namespace UnrealEnginePackageManager
 
                         // Remove the package from the list and update UI
                         contents.Remove(SelectedContent);
-                        RefreshPackageButtons();
+                        RefreshContentButtons();
                         UpdateContentList();
                     }
                     catch (IOException ex)
@@ -681,7 +692,7 @@ namespace UnrealEnginePackageManager
 
                         // Remove the package from the list and update UI
                         packages.Remove(SelectedPackage);
-                        RefreshPackageButtons();
+                        RefreshContentButtons();
                         UpdatePackageList();
                     }
                     catch (IOException ex)
@@ -818,6 +829,7 @@ namespace UnrealEnginePackageManager
 
         private void managePacksToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            RefreshContentButtons();
             RefreshPackageButtons();
         }
 
@@ -1172,11 +1184,65 @@ namespace UnrealEnginePackageManager
 
         private void DevWebsite_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(DevWebsite.Text);
+            if (DevWebsite.Text.Contains("https"))
+            {
+                Process.Start(DevWebsite.Text);
+            }
+            else
+            {
+                Process.Start("https://" + DevWebsite.Text);
+            }
         }
 
         private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
+
+        }
+
+        private void getFreePackagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Free_Assets free_Assets = new Free_Assets();
+            free_Assets.Show();
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            RefreshPackageButtons();
+        }
+
+        private void refreshListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RefreshContentButtons();
+        }
+
+        private void openInFileExplorerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (SelectedContent !=null)
+            {
+                string fPath = Path.Combine(ContentFolderPath, SelectedContent.Name.ToString());
+                if (Directory.Exists(Path.Combine(ContentFolderPath, SelectedContent.Name)))
+                {
+                    Process.Start("explorer.exe", "/select,\"" + fPath + "\"");
+                }
+            }
+
+            if (SelectedPackage!= null)
+            {
+                string fPath = Path.Combine(PackageFolderPath , SelectedPackage.Name.ToString() + UEPackageExtension);
+                if (File.Exists(Path.Combine(PackageFolderPath, SelectedPackage.Name+ UEPackageExtension))){
+                Process.Start("explorer.exe", "/select,\"" + fPath + "\"");
+                }
+            }
+        }
+
+        private void installToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (SelectedPackage != null)
+            {
+            UPackageInstaller uPackageInstaller = new UPackageInstaller();
+            uPackageInstaller.Show();
+            uPackageInstaller.QUickInstallation(Path.Combine(PackageFolderPath, SelectedPackage.Name.ToString() + UEPackageExtension));
+            }
 
         }
     }

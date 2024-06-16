@@ -123,6 +123,16 @@ namespace UnrealEnginePackageManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap icons8_free_button_64px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_free_button_64px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap icons8_Image_File_Add_50px {
             get {
                 object obj = ResourceManager.GetObject("icons8_Image_File_Add_50px", resourceCulture);
@@ -186,6 +196,16 @@ namespace UnrealEnginePackageManager.Properties {
         public static System.Drawing.Bitmap kenneyIcon {
             get {
                 object obj = ResourceManager.GetObject("kenneyIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap Small {
+            get {
+                object obj = ResourceManager.GetObject("Small", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

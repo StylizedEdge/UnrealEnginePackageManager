@@ -17,13 +17,14 @@
     <PublishUrl>C:\Users\kims\Documents\BIG PROJECTS\Unreal Engine Package Manager\Published\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <UpdateUrl>http://localhost/UnrealEnginePackageManager/</UpdateUrl>
     <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
@@ -144,6 +145,12 @@
     <Compile Include="Book_Images.cs" />
     <Compile Include="Book_Unreal.cs" />
     <Compile Include="Book_Rar.cs" />
+    <Compile Include="Free Assets.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Free Assets.Designer.cs">
+      <DependentUpon>Free Assets.cs</DependentUpon>
+    </Compile>
     <Compile Include="Preferences.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,6 +184,9 @@
     <Compile Include="UPackageInstaller.Designer.cs">
       <DependentUpon>UPackageInstaller.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Free Assets.resx">
+      <DependentUpon>Free Assets.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Preferences.resx">
       <DependentUpon>Preferences.cs</DependentUpon>
     </EmbeddedResource>
@@ -203,6 +213,9 @@
       <DependentUpon>UPackageInstaller.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <AdditionalFiles Include="Packages\Packages\.validator">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -217,42 +230,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icons8_Image_File_Add_50px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\64x64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\400x200.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_wastebasket_192px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\64x641.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_counterclockwise_arrows_192px_1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_cl_button_192px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_new_button_192px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_settings_400px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_question_mark_192px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_donate_480px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8_software_installer_50px.png" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
@@ -264,5 +241,20 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="Packages\ContentList.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="Packages\PackageList.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="Resources\ContentPack.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AdditionalFiles>
+    <AdditionalFiles Include="Resources\Preferences.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AdditionalFiles>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

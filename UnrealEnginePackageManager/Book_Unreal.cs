@@ -7,6 +7,8 @@
 
     public class Book_Unreal
     {
+
+        //Still gotta fix this here
         public static string GetUnrealEngineProjectPath()
         {
             // Array of potential Unreal Engine process names
@@ -45,6 +47,9 @@
             var commandLine = GetCommandLine(process);
             return commandLine.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
         }
+
+
+
 
 
         public static string GetCommandLine(Process process)

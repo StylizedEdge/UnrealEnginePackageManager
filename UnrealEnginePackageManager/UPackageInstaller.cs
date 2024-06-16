@@ -9,12 +9,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace UnrealEnginePackageManager
 {
     public partial class UPackageInstaller : Form
     {
+        UnrealEnginePackageManager manager;
         public UPackageInstaller()
         {
             InitializeComponent();
@@ -24,6 +24,9 @@ namespace UnrealEnginePackageManager
 
             this.button2.DragDrop += new DragEventHandler(button2_DragDrop);
             this.button2.DragDrop += new DragEventHandler(button2_DragEnter);
+
+
+            manager = new UnrealEnginePackageManager();
         }
 
         private void button2_DragEnter(object sender, DragEventArgs e)
@@ -85,6 +88,7 @@ namespace UnrealEnginePackageManager
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "UnrealPackage files (*.UnrealPackage)|*.UnrealPackage|All files (*.*)|*.*";
             openFileDialog.FilterIndex = 1;
+            openFileDialog.InitialDirectory = manager.PackageFolderPath;
             openFileDialog.RestoreDirectory = true;
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -99,6 +103,13 @@ namespace UnrealEnginePackageManager
                     button1.Text = Path.GetFileNameWithoutExtension(filePath);
                 }
             }
+        }
+
+        public void QUickInstallation(string fPath)
+        {
+            double size = Book_Files.GetFileSizeInMegabytes(fPath);
+            pkgSize.Text = "Package Size :" + size + "MB";
+            button1.Text = Path.GetFileNameWithoutExtension(fPath);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -129,6 +140,11 @@ namespace UnrealEnginePackageManager
 
         private void button4_Click(object sender, EventArgs e)
         {
+            DetectOpennedEditor();
+        }
+
+        private void DetectOpennedEditor()
+        {
             var processes = Process.GetProcessesByName("UE4Editor");
             foreach (var process in processes)
             {
@@ -141,7 +157,6 @@ namespace UnrealEnginePackageManager
                 {
                     // Derive the content directory path from the .uproject path
                     string contentPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(projectPath), "Content");
-
                     // Display the results
                     MessageBox.Show($"Unreal Engine project path: {projectPath}\nContent directory: {contentPath}", "Project Path Detected");
                     // Use dialog.SelectedPath to access the selected folder path
@@ -153,7 +168,11 @@ namespace UnrealEnginePackageManager
                     break; // Stop after finding the first valid project path
                 }
             }
+
+            if (processes == null)
+            {
+                MessageBox.Show("Open an Unreal project then try again!");
+            }
         }
-        
     }
 }
