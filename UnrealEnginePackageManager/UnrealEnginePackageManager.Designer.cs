@@ -124,7 +124,7 @@
             this.createContentPackToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_new_button_192px;
             this.createContentPackToolStripMenuItem.Name = "createContentPackToolStripMenuItem";
             this.createContentPackToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.createContentPackToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.createContentPackToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.createContentPackToolStripMenuItem.Text = "New";
             // 
             // uContentToolStripMenuItem
@@ -132,7 +132,7 @@
             this.uContentToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.uContentToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.uContentToolStripMenuItem.Name = "uContentToolStripMenuItem";
-            this.uContentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.uContentToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.uContentToolStripMenuItem.Text = ".UContent";
             this.uContentToolStripMenuItem.ToolTipText = "packages that the user will install in his engine and will always remain in his F" +
     "eature Content ";
@@ -143,7 +143,7 @@
             this.unrealPackageToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.unrealPackageToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.unrealPackageToolStripMenuItem.Name = "unrealPackageToolStripMenuItem";
-            this.unrealPackageToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.unrealPackageToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.unrealPackageToolStripMenuItem.Text = ".UnrealPackage";
             this.unrealPackageToolStripMenuItem.ToolTipText = "package that the user will click on it from the file explorer and it will be inst" +
     "alled directly in the projects.";
@@ -156,7 +156,7 @@
             this.uContentToolStripMenuItem1});
             this.installToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.installToolStripMenuItem.Name = "installToolStripMenuItem";
-            this.installToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.installToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.installToolStripMenuItem.Text = "Install";
             // 
             // uContentToolStripMenuItem1
@@ -164,7 +164,7 @@
             this.uContentToolStripMenuItem1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.uContentToolStripMenuItem1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.uContentToolStripMenuItem1.Name = "uContentToolStripMenuItem1";
-            this.uContentToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.uContentToolStripMenuItem1.Size = new System.Drawing.Size(155, 22);
             this.uContentToolStripMenuItem1.Text = ".UnrealPackage";
             this.uContentToolStripMenuItem1.Click += new System.EventHandler(this.uContentToolStripMenuItem1_Click);
             // 
@@ -175,7 +175,7 @@
             this.managePacksToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_counterclockwise_arrows_192px_1;
             this.managePacksToolStripMenuItem.Name = "managePacksToolStripMenuItem";
             this.managePacksToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.managePacksToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.managePacksToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.managePacksToolStripMenuItem.Text = "Refrensh List";
             this.managePacksToolStripMenuItem.Click += new System.EventHandler(this.managePacksToolStripMenuItem_Click);
             // 
@@ -184,7 +184,7 @@
             this.toolStripSeparator2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.toolStripSeparator2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(166, 6);
             // 
             // getFreePackagesToolStripMenuItem
             // 
@@ -192,7 +192,7 @@
             this.getFreePackagesToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.getFreePackagesToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_free_button_64px;
             this.getFreePackagesToolStripMenuItem.Name = "getFreePackagesToolStripMenuItem";
-            this.getFreePackagesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.getFreePackagesToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.getFreePackagesToolStripMenuItem.Text = "Get Free Packages";
             this.getFreePackagesToolStripMenuItem.Click += new System.EventHandler(this.getFreePackagesToolStripMenuItem_Click);
             // 
@@ -201,7 +201,7 @@
             this.toolStripSeparator1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.toolStripSeparator1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
             // 
             // closeToolStripMenuItem
             // 
@@ -210,7 +210,7 @@
             this.closeToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_cl_button_192px;
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
             this.closeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -230,7 +230,7 @@
             this.preferencesToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.preferencesToolStripMenuItem.Image = global::UnrealEnginePackageManager.Properties.Resources.icons8_settings_400px;
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
             this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
@@ -412,7 +412,7 @@
             this.UnrealPackage.Name = "UnrealPackage";
             this.UnrealPackage.RowCount = 1;
             this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 614F));
+            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 610F));
             this.UnrealPackage.Size = new System.Drawing.Size(484, 610);
             this.UnrealPackage.TabIndex = 16;
             // 
@@ -459,7 +459,7 @@
             this.UnrealContent.Name = "UnrealContent";
             this.UnrealContent.RowCount = 1;
             this.UnrealContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.UnrealContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 614F));
+            this.UnrealContent.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 610F));
             this.UnrealContent.Size = new System.Drawing.Size(484, 610);
             this.UnrealContent.TabIndex = 15;
             // 

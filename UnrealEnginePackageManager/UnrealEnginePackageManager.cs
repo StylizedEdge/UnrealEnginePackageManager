@@ -1238,11 +1238,11 @@ namespace UnrealEnginePackageManager
         {
             if (SelectedPackage != null)
             {
-            UPackageInstaller uPackageInstaller = new UPackageInstaller();
-            uPackageInstaller.Show();
-            uPackageInstaller.QUickInstallation(Path.Combine(PackageFolderPath, SelectedPackage.Name.ToString() + UEPackageExtension));
+                UPackageInstaller uPackageInstaller = new UPackageInstaller();
+                uPackageInstaller.Show();
+                uPackageInstaller.QuickInstallation(Path.Combine(PackageFolderPath, SelectedPackage.Name.ToString() + UEPackageExtension));
+                Console.WriteLine(Path.Combine(PackageFolderPath, SelectedPackage.Name.ToString() + UEPackageExtension));
             }
-
         }
     }
 
@@ -1250,7 +1250,6 @@ namespace UnrealEnginePackageManager
     {
         public string Name { get; set; }
         public string Description { get; set; }
-
         public string Thumbnail { get; set; }
         public string Version { get; set; }
         public string UEVersion { get; set; }

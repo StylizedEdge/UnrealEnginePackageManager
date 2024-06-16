@@ -14,7 +14,13 @@ namespace UnrealEnginePackageManager
 {
     public partial class UPackageInstaller : Form
     {
+        //Variables
         UnrealEnginePackageManager manager;
+        string filePath = "";
+        string DesPAth = "";
+
+
+
         public UPackageInstaller()
         {
             InitializeComponent();
@@ -78,9 +84,7 @@ namespace UnrealEnginePackageManager
             }
         }
 
-        string filePath = "";
-
-        string DesPAth = "";
+        
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -105,8 +109,9 @@ namespace UnrealEnginePackageManager
             }
         }
 
-        public void QUickInstallation(string fPath)
+        public void QuickInstallation(string fPath)
         {
+            filePath = fPath;
             double size = Book_Files.GetFileSizeInMegabytes(fPath);
             pkgSize.Text = "Package Size :" + size + "MB";
             button1.Text = Path.GetFileNameWithoutExtension(fPath);
@@ -162,9 +167,11 @@ namespace UnrealEnginePackageManager
                     // Use dialog.SelectedPath to access the selected folder path
                     string selectedFolderPath = contentPath;
                     button2.Text = Path.GetFileNameWithoutExtension(contentPath);
-                    DesPAth = contentPath;
                     des.Text = "Destination :" + contentPath;
+                    DesPAth = contentPath;
 
+
+                    Console.Write(contentPath);
                     break; // Stop after finding the first valid project path
                 }
             }
@@ -173,6 +180,16 @@ namespace UnrealEnginePackageManager
             {
                 MessageBox.Show("Open an Unreal project then try again!");
             }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine(filePath);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine(DesPAth);
         }
     }
 }
