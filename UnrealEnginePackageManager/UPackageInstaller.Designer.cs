@@ -50,7 +50,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 31);
+            this.label1.Location = new System.Drawing.Point(12, 33);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(221, 25);
             this.label1.TabIndex = 0;
@@ -60,9 +60,10 @@
             // 
             this.button1.AllowDrop = true;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(26, 71);
+            this.button1.ForeColor = System.Drawing.Color.Black;
+            this.button1.Location = new System.Drawing.Point(26, 76);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(236, 139);
+            this.button1.Size = new System.Drawing.Size(236, 150);
             this.button1.TabIndex = 1;
             this.button1.Text = "Get Package";
             this.button1.UseVisualStyleBackColor = true;
@@ -74,9 +75,10 @@
             // 
             this.button2.AllowDrop = true;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(552, 71);
+            this.button2.ForeColor = System.Drawing.Color.Black;
+            this.button2.Location = new System.Drawing.Point(552, 76);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(236, 139);
+            this.button2.Size = new System.Drawing.Size(236, 150);
             this.button2.TabIndex = 2;
             this.button2.Text = "Project Directory";
             this.button2.UseVisualStyleBackColor = true;
@@ -87,26 +89,27 @@
             // pkgSize
             // 
             this.pkgSize.AutoSize = true;
-            this.pkgSize.Location = new System.Drawing.Point(26, 217);
+            this.pkgSize.Location = new System.Drawing.Point(26, 234);
             this.pkgSize.Name = "pkgSize";
-            this.pkgSize.Size = new System.Drawing.Size(13, 13);
+            this.pkgSize.Size = new System.Drawing.Size(12, 14);
             this.pkgSize.TabIndex = 3;
             this.pkgSize.Text = "_";
             // 
             // des
             // 
             this.des.AutoSize = true;
-            this.des.Location = new System.Drawing.Point(441, 217);
+            this.des.Location = new System.Drawing.Point(441, 234);
             this.des.Name = "des";
-            this.des.Size = new System.Drawing.Size(13, 13);
+            this.des.Size = new System.Drawing.Size(12, 14);
             this.des.TabIndex = 4;
             this.des.Text = "_";
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(253, 350);
+            this.button3.ForeColor = System.Drawing.Color.Black;
+            this.button3.Location = new System.Drawing.Point(253, 377);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(289, 74);
+            this.button3.Size = new System.Drawing.Size(289, 80);
             this.button3.TabIndex = 5;
             this.button3.Text = "Import";
             this.button3.UseVisualStyleBackColor = true;
@@ -115,26 +118,27 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(65, 186);
+            this.label2.Location = new System.Drawing.Point(65, 200);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(132, 13);
+            this.label2.Size = new System.Drawing.Size(141, 14);
             this.label2.TabIndex = 6;
             this.label2.Text = "Drag or Click to get the file";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(603, 186);
+            this.label3.Location = new System.Drawing.Point(603, 200);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(132, 13);
+            this.label3.Size = new System.Drawing.Size(141, 14);
             this.label3.TabIndex = 7;
             this.label3.Text = "Drag or Click to get the file";
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(606, 276);
+            this.button4.ForeColor = System.Drawing.Color.Black;
+            this.button4.Location = new System.Drawing.Point(606, 297);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(140, 23);
+            this.button4.Size = new System.Drawing.Size(140, 25);
             this.button4.TabIndex = 8;
             this.button4.Text = "Detect UE";
             this.button4.UseVisualStyleBackColor = true;
@@ -143,41 +147,47 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(663, 260);
+            this.label4.Location = new System.Drawing.Point(663, 280);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(18, 13);
+            this.label4.Size = new System.Drawing.Size(19, 14);
             this.label4.TabIndex = 9;
             this.label4.Text = "Or";
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.Color.Transparent;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(800, 25);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // helpToolStripMenuItem
             // 
+            this.helpToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.howToUseToolStripMenuItem});
+            this.helpToolStripMenuItem.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(46, 21);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // howToUseToolStripMenuItem
             // 
+            this.howToUseToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
+            this.howToUseToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
             this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.howToUseToolStripMenuItem.Text = "How to Use";
             // 
             // UPackageInstaller
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
+            this.ClientSize = new System.Drawing.Size(800, 485);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label3);
@@ -189,10 +199,12 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
+            this.Font = new System.Drawing.Font("Roboto", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MaximumSize = new System.Drawing.Size(816, 489);
-            this.MinimumSize = new System.Drawing.Size(816, 489);
+            this.MaximumSize = new System.Drawing.Size(816, 524);
+            this.MinimumSize = new System.Drawing.Size(816, 524);
             this.Name = "UPackageInstaller";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "UPackageInstaller";
