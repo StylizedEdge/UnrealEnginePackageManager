@@ -241,7 +241,7 @@ namespace UnrealEnginePackageManager
             System.Console.WriteLine($"File copied to '{destinationFilePath}'.");
         }
 
-        public static void OpenGetPath(string path)
+        public static void copyGetPath(string path)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {

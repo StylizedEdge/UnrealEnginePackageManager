@@ -278,18 +278,16 @@ namespace UnrealEnginePackageManager
                     Button button = new Button();
                     button.BackColor = System.Drawing.Color.Silver;
                     button.Cursor = System.Windows.Forms.Cursors.Hand;
-                    button.Dock = System.Windows.Forms.DockStyle.Top;
                     button.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
                     button.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                     button.ForeColor = System.Drawing.SystemColors.ControlText;
                     button.Location = new System.Drawing.Point(3, 3);
                     button.Name = package.Name;
-                    button.Size = new System.Drawing.Size(400, 50);
+                    button.Size = new System.Drawing.Size(150, 200);
                     button.TabIndex = 0;
                     button.Text = package.Name;
                     button.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
                     button.UseVisualStyleBackColor = false;
-                    button.Dock = DockStyle.Top;
                     button.Name = package.Name; // Assign the package name to the button name
                     button.Text = package.Name;
                     button.TextAlign = ContentAlignment.MiddleCenter;
@@ -1243,6 +1241,11 @@ namespace UnrealEnginePackageManager
                 uPackageInstaller.QuickInstallation(Path.Combine(PackageFolderPath, SelectedPackage.Name.ToString() + UEPackageExtension));
                 Console.WriteLine(Path.Combine(PackageFolderPath, SelectedPackage.Name.ToString() + UEPackageExtension));
             }
+        }
+
+        private void UnrealPackage_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 

@@ -284,9 +284,9 @@
             this.button3.BackColor = System.Drawing.SystemColors.Control;
             this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button3.ForeColor = System.Drawing.Color.Black;
-            this.button3.Location = new System.Drawing.Point(174, 3);
+            this.button3.Location = new System.Drawing.Point(112, 3);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(94, 27);
+            this.button3.Size = new System.Drawing.Size(140, 27);
             this.button3.TabIndex = 12;
             this.button3.Text = "Delete from disk";
             this.button3.UseVisualStyleBackColor = false;
@@ -297,7 +297,7 @@
             this.InstallButton.BackColor = System.Drawing.Color.White;
             this.InstallButton.Enabled = false;
             this.InstallButton.ForeColor = System.Drawing.Color.Black;
-            this.InstallButton.Location = new System.Drawing.Point(376, 3);
+            this.InstallButton.Location = new System.Drawing.Point(360, 3);
             this.InstallButton.Name = "InstallButton";
             this.InstallButton.Size = new System.Drawing.Size(294, 27);
             this.InstallButton.TabIndex = 10;
@@ -357,7 +357,7 @@
             this.UninstallButton.BackColor = System.Drawing.Color.Maroon;
             this.UninstallButton.Enabled = false;
             this.UninstallButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
-            this.UninstallButton.Location = new System.Drawing.Point(274, 3);
+            this.UninstallButton.Location = new System.Drawing.Point(258, 3);
             this.UninstallButton.Name = "UninstallButton";
             this.UninstallButton.Size = new System.Drawing.Size(96, 27);
             this.UninstallButton.TabIndex = 11;
@@ -374,7 +374,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(498, 646);
+            this.panel1.Size = new System.Drawing.Size(514, 646);
             this.panel1.TabIndex = 16;
             // 
             // tabControl2
@@ -385,7 +385,7 @@
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(498, 646);
+            this.tabControl2.Size = new System.Drawing.Size(514, 646);
             this.tabControl2.TabIndex = 16;
             // 
             // UnrealEnginePackageTab
@@ -396,7 +396,7 @@
             this.UnrealEnginePackageTab.Location = new System.Drawing.Point(4, 26);
             this.UnrealEnginePackageTab.Name = "UnrealEnginePackageTab";
             this.UnrealEnginePackageTab.Padding = new System.Windows.Forms.Padding(3);
-            this.UnrealEnginePackageTab.Size = new System.Drawing.Size(490, 616);
+            this.UnrealEnginePackageTab.Size = new System.Drawing.Size(506, 616);
             this.UnrealEnginePackageTab.TabIndex = 1;
             this.UnrealEnginePackageTab.Text = "Unreal packages";
             // 
@@ -404,17 +404,24 @@
             // 
             this.UnrealPackage.AutoScroll = true;
             this.UnrealPackage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-            this.UnrealPackage.ColumnCount = 1;
-            this.UnrealPackage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.45045F));
+            this.UnrealPackage.ColumnCount = 4;
+            this.UnrealPackage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.UnrealPackage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.UnrealPackage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.UnrealPackage.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.UnrealPackage.ContextMenuStrip = this.ContentPanelOption;
             this.UnrealPackage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.UnrealPackage.Location = new System.Drawing.Point(3, 3);
             this.UnrealPackage.Name = "UnrealPackage";
-            this.UnrealPackage.RowCount = 1;
-            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 610F));
-            this.UnrealPackage.Size = new System.Drawing.Size(484, 610);
+            this.UnrealPackage.RowCount = 5;
+            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.UnrealPackage.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.UnrealPackage.Size = new System.Drawing.Size(500, 610);
             this.UnrealPackage.TabIndex = 16;
+            this.UnrealPackage.Paint += new System.Windows.Forms.PaintEventHandler(this.UnrealPackage_Paint);
             // 
             // ContentPanelOption
             // 
@@ -473,7 +480,7 @@
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 612);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(673, 34);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(657, 34);
             this.flowLayoutPanel1.TabIndex = 14;
             // 
             // panel2
@@ -483,9 +490,9 @@
             this.panel2.Controls.Add(this.pkgName);
             this.panel2.Controls.Add(this.flowLayoutPanel1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(498, 24);
+            this.panel2.Location = new System.Drawing.Point(514, 24);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(673, 646);
+            this.panel2.Size = new System.Drawing.Size(657, 646);
             this.panel2.TabIndex = 17;
             // 
             // tabControl1
@@ -497,7 +504,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 20);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(673, 592);
+            this.tabControl1.Size = new System.Drawing.Size(657, 592);
             this.tabControl1.TabIndex = 15;
             // 
             // tabPage1
@@ -506,7 +513,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 26);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(665, 562);
+            this.tabPage1.Size = new System.Drawing.Size(649, 562);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Description";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -520,7 +527,7 @@
             this.pkgDescription.Location = new System.Drawing.Point(3, 3);
             this.pkgDescription.Name = "pkgDescription";
             this.pkgDescription.ReadOnly = true;
-            this.pkgDescription.Size = new System.Drawing.Size(659, 556);
+            this.pkgDescription.Size = new System.Drawing.Size(643, 556);
             this.pkgDescription.TabIndex = 11;
             this.pkgDescription.Text = "";
             // 
@@ -674,6 +681,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.ClientSize = new System.Drawing.Size(1171, 670);
             this.Controls.Add(this.panel2);
@@ -681,7 +689,6 @@
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Roboto", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
