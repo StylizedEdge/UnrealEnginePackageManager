@@ -65,7 +65,7 @@
             // 
             this.button2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.button2.Location = new System.Drawing.Point(285, 591);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(88, 26);
             this.button2.TabIndex = 3;
@@ -87,7 +87,7 @@
             // 
             this.Autopkg.AutoSize = true;
             this.Autopkg.Location = new System.Drawing.Point(223, 237);
-            this.Autopkg.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Autopkg.Margin = new System.Windows.Forms.Padding(4);
             this.Autopkg.Name = "Autopkg";
             this.Autopkg.Size = new System.Drawing.Size(15, 14);
             this.Autopkg.TabIndex = 8;
@@ -96,7 +96,7 @@
             // ContentDirectory
             // 
             this.ContentDirectory.Location = new System.Drawing.Point(218, 95);
-            this.ContentDirectory.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ContentDirectory.Margin = new System.Windows.Forms.Padding(4);
             this.ContentDirectory.Name = "ContentDirectory";
             this.ContentDirectory.ReadOnly = true;
             this.ContentDirectory.Size = new System.Drawing.Size(410, 22);
@@ -106,7 +106,7 @@
             // 
             this.button3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.button3.Location = new System.Drawing.Point(636, 92);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(61, 26);
             this.button3.TabIndex = 11;
@@ -129,7 +129,7 @@
             this.EnginesPath.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.EnginesPath.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.EnginesPath.Location = new System.Drawing.Point(218, 29);
-            this.EnginesPath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.EnginesPath.Margin = new System.Windows.Forms.Padding(4);
             this.EnginesPath.Name = "EnginesPath";
             this.EnginesPath.ReadOnly = true;
             this.EnginesPath.Size = new System.Drawing.Size(410, 22);
@@ -140,12 +140,13 @@
             // 
             this.button4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.button4.Location = new System.Drawing.Point(636, 26);
-            this.button4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button4.Margin = new System.Windows.Forms.Padding(4);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(61, 26);
             this.button4.TabIndex = 14;
             this.button4.Text = "Get";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // label4
             // 
@@ -173,7 +174,7 @@
             "UE_5.3",
             "UE_5.4"});
             this.UESelectedVersion.Location = new System.Drawing.Point(218, 64);
-            this.UESelectedVersion.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.UESelectedVersion.Margin = new System.Windows.Forms.Padding(4);
             this.UESelectedVersion.Name = "UESelectedVersion";
             this.UESelectedVersion.Size = new System.Drawing.Size(478, 23);
             this.UESelectedVersion.TabIndex = 16;
@@ -191,7 +192,7 @@
             "UE_5.3",
             "UE_5.4"});
             this.comboBox2.Location = new System.Drawing.Point(218, 205);
-            this.comboBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBox2.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(478, 23);
             this.comboBox2.TabIndex = 18;
@@ -229,7 +230,7 @@
             // PackageDirectory
             // 
             this.PackageDirectory.Location = new System.Drawing.Point(218, 125);
-            this.PackageDirectory.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PackageDirectory.Margin = new System.Windows.Forms.Padding(4);
             this.PackageDirectory.Name = "PackageDirectory";
             this.PackageDirectory.ReadOnly = true;
             this.PackageDirectory.Size = new System.Drawing.Size(410, 22);
@@ -239,7 +240,7 @@
             // 
             this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.button1.Location = new System.Drawing.Point(636, 122);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(61, 26);
             this.button1.TabIndex = 22;
@@ -262,7 +263,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-            this.ClientSize = new System.Drawing.Size(710, 632);
+            this.ClientSize = new System.Drawing.Size(720, 642);
             this.Controls.Add(this.PackageDirectory);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label8);
@@ -285,7 +286,7 @@
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximumSize = new System.Drawing.Size(726, 671);
             this.MinimumSize = new System.Drawing.Size(726, 671);
             this.Name = "Preferences";
