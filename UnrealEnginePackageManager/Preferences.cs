@@ -52,6 +52,18 @@ namespace UnrealEnginePackageManager
             { "PackageCreationDirectory", PackageDirectory.Text }
         };
 
+
+            Properties.Settings.Default.AppTheme = themeCombo.SelectedItem.ToString();
+            Properties.Settings.Default.Save();
+
+            // Apply live to ALL open forms
+            bool isDark = themeCombo.SelectedItem.ToString() == "Dark";
+            foreach (Form form in Application.OpenForms)
+            {
+                ThemeManager.ApplyTheme(form, isDark);
+            }
+
+
             // Save the parameters to the text file
             Book_Files.SaveParameters(Book_Files.GetFileInFolder(PreferencePath, Book_Files.ImportantFolders.Resources), parametersToSave);
             Close();
@@ -109,6 +121,14 @@ namespace UnrealEnginePackageManager
         private void button4_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void Preferences_Load(object sender, EventArgs e)
+        {
+            themeCombo.Items.AddRange(new[] { "Dark", "Light" });
+            themeCombo.SelectedItem = Properties.Settings.Default.AppTheme ?? "Dark";
+
+            ThemeManager.InitializeTheme(this);
         }
     }
 }

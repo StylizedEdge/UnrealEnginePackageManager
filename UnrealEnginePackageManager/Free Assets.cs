@@ -32,5 +32,10 @@ namespace UnrealEnginePackageManager
         {
             Process.Start("https://www.artstation.com/stylizededge/store?tab=digital_product");
         }
+
+        private void Free_Assets_Load(object sender, EventArgs e)
+        {
+            ThemeManager.InitializeTheme(this);
+        }
     }
 }

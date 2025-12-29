@@ -153,6 +153,7 @@
     <Compile Include="Preferences.Designer.cs">
       <DependentUpon>Preferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="ThemeManager.cs" />
     <Compile Include="UnrealEnginePackageManager.cs">
       <SubType>Form</SubType>
     </Compile>

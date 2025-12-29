@@ -408,6 +408,9 @@
             // 
             this.UEVersions.FormattingEnabled = true;
             this.UEVersions.Items.AddRange(new object[] {
+            "UE_5.7",
+            "UE_5.6",
+            "UE_5.5",
             "UE_5.4",
             "UE_5.3",
             "UE_5.2",
@@ -516,7 +519,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
-            this.ClientSize = new System.Drawing.Size(608, 750);
+            this.ClientSize = new System.Drawing.Size(616, 754);
             this.Controls.Add(this.DevWebsite);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.DevName);
@@ -569,6 +572,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Create Unreal Content";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.UnrealContentCreator_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ScreenshotImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailImage)).EndInit();
             this.ResumeLayout(false);

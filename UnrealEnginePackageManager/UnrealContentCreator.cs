@@ -460,5 +460,10 @@ namespace UnrealEnginePackageManager
                 }
             }
         }
+
+        private void UnrealContentCreator_Load(object sender, EventArgs e)
+        {
+            ThemeManager.InitializeTheme(this);
+        }
     }
 }

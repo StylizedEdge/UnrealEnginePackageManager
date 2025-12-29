@@ -156,6 +156,9 @@
             // 
             this.UEVersions.FormattingEnabled = true;
             this.UEVersions.Items.AddRange(new object[] {
+            "UE_5.7",
+            "UE_5.6",
+            "UE_5.5",
             "UE_5.4",
             "UE_5.3",
             "UE_5.2",
@@ -346,7 +349,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(621, 500);
+            this.ClientSize = new System.Drawing.Size(629, 504);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label5);
@@ -381,6 +384,7 @@
             this.MinimumSize = new System.Drawing.Size(637, 539);
             this.Name = "UnrealPackageCreator";
             this.Text = "Unreal Package Creator";
+            this.Load += new System.EventHandler(this.UnrealPackageCreator_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

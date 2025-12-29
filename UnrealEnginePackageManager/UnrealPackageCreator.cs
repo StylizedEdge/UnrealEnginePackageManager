@@ -165,5 +165,10 @@ namespace UnrealEnginePackageManager
         {
             Close();
         }
+
+        private void UnrealPackageCreator_Load(object sender, EventArgs e)
+        {
+            ThemeManager.InitializeTheme(this);
+        }
     }
 }

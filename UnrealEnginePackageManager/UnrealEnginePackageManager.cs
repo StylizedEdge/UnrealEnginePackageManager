@@ -1247,6 +1247,11 @@ namespace UnrealEnginePackageManager
         {
 
         }
+
+        private void UnrealEnginePackageManager_Load(object sender, EventArgs e)
+        {
+            ThemeManager.InitializeTheme(this);
+        }
     }
 
     public class Content

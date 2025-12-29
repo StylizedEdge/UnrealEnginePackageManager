@@ -49,6 +49,8 @@
             this.PackageDirectory = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
+            this.themeCombo = new System.Windows.Forms.ComboBox();
+            this.themeLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -258,12 +260,36 @@
             this.label8.TabIndex = 21;
             this.label8.Text = "Packages Creation Directory";
             // 
+            // themeCombo
+            // 
+            this.themeCombo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
+            this.themeCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.themeCombo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
+            this.themeCombo.FormattingEnabled = true;
+            this.themeCombo.Location = new System.Drawing.Point(219, 288);
+            this.themeCombo.Margin = new System.Windows.Forms.Padding(4);
+            this.themeCombo.Name = "themeCombo";
+            this.themeCombo.Size = new System.Drawing.Size(478, 23);
+            this.themeCombo.TabIndex = 25;
+            // 
+            // themeLabel
+            // 
+            this.themeLabel.AutoSize = true;
+            this.themeLabel.Location = new System.Drawing.Point(16, 295);
+            this.themeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.themeLabel.Name = "themeLabel";
+            this.themeLabel.Size = new System.Drawing.Size(57, 15);
+            this.themeLabel.TabIndex = 24;
+            this.themeLabel.Text = "UI Theme";
+            // 
             // Preferences
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(62)))), ((int)(((byte)(62)))));
             this.ClientSize = new System.Drawing.Size(720, 642);
+            this.Controls.Add(this.themeCombo);
+            this.Controls.Add(this.themeLabel);
             this.Controls.Add(this.PackageDirectory);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label8);
@@ -291,6 +317,7 @@
             this.MinimumSize = new System.Drawing.Size(726, 671);
             this.Name = "Preferences";
             this.Text = "Preferences";
+            this.Load += new System.EventHandler(this.Preferences_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -317,5 +344,7 @@
         private System.Windows.Forms.TextBox PackageDirectory;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox themeCombo;
+        private System.Windows.Forms.Label themeLabel;
     }
 }

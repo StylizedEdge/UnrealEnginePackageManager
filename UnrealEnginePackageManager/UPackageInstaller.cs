@@ -191,5 +191,10 @@ namespace UnrealEnginePackageManager
         {
             Console.WriteLine(DesPAth);
         }
+
+        private void UPackageInstaller_Load(object sender, EventArgs e)
+        {
+            ThemeManager.InitializeTheme(this);
+        }
     }
 }
