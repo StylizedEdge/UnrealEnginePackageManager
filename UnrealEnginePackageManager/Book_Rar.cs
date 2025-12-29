@@ -1,42 +1,43 @@
 ﻿// Ignore Spelling: Rar Json
-
 namespace UnrealEnginePackageManager
 {
-    using Ionic.Zip;
-    using SharpCompress.Archives.Zip;
+    using ICSharpCode.SharpZipLib.Zip;
+    using ICSharpCode.SharpZipLib.Core;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
 
-    public class Book_Rar
+    public class Book_Rar  // Keep the name or rename to Book_Zip if you want 😏
     {
+        private const string FixedPassword = "181944841827";
+
         public static void ExtractRar(string rarFilePath, string destinationPath)
         {
-            // Ensure the destination directory exists
             if (!Directory.Exists(destinationPath))
-            {
                 Directory.CreateDirectory(destinationPath);
-            }
 
-            // Open the RAR archive and extract all entries
-            using (var archive = ZipFile.Read(rarFilePath))
+            string fullDest = Path.GetFullPath(destinationPath);
+
+            using (ZipFile zip = new ZipFile(rarFilePath))
             {
-                foreach (var entry in archive)
+                foreach (ZipEntry entry in zip)
                 {
-                    if (entry.IsDirectory)
+                    if (entry.IsFile)
                     {
-                        // Create empty directories in the destination path
-                        string dirPath = Path.Combine(destinationPath, entry.FileName);
-                        Directory.CreateDirectory(dirPath);
-                    }
-                    else
-                    {
-                        // Extract files and ensure parent directories are created
-                        string outputFilePath = Path.Combine(destinationPath, entry.FileName);
-                        Directory.CreateDirectory(Path.GetDirectoryName(outputFilePath));
+                        string targetPath = Path.Combine(destinationPath, entry.Name);
+                        string fullTarget = Path.GetFullPath(targetPath);
 
-                        entry.Extract(destinationPath, ExtractExistingFileAction.OverwriteSilently);
+                        if (!fullTarget.StartsWith(fullDest + Path.DirectorySeparatorChar))
+                            throw new IOException($"Zip slip blocked: {entry.Name}");
+
+                        Directory.CreateDirectory(Path.GetDirectoryName(fullTarget));
+
+                        using (Stream input = zip.GetInputStream(entry))
+                        using (FileStream output = File.Create(fullTarget))
+                        {
+                            input.CopyTo(output);
+                        }
                     }
                 }
             }
@@ -44,72 +45,69 @@ namespace UnrealEnginePackageManager
 
         public static void CreateZip(string[] sourcePaths, string zipFilePath)
         {
-            using (ZipFile zip = new ZipFile())
+            using (FileStream fs = File.Create(zipFilePath))
+            using (ZipOutputStream zip = new ZipOutputStream(fs))
             {
+                zip.SetLevel(9);
+                byte[] buffer = new byte[4096];
+
                 foreach (var sourcePath in sourcePaths)
                 {
-                    // Ensure the source directory exists
                     if (!Directory.Exists(sourcePath))
-                    {
                         throw new DirectoryNotFoundException($"Source directory not found: {sourcePath}");
-                    }
 
-                    // Add all files and directories from the source path to the ZIP archive
                     foreach (var file in Directory.EnumerateFiles(sourcePath, "*", SearchOption.AllDirectories))
                     {
                         try
                         {
-                            // Check if the file is in use by another process
-                            using (FileStream fs = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.None))
-                            {
-                                // If the file is not in use, add it to the ZIP archive
-                                string relativePath = Book_Files.GetRelativePath(sourcePath, file);
-                                zip.AddFile(file, relativePath);
-                            }
+                            using (FileStream test = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.None)) { }
                         }
-                        catch (IOException ex)
+                        catch (IOException)
                         {
-                            // Handle the case where the file is in use by another process
-                            Console.WriteLine($"Error: Unable to add '{file}' to the ZIP archive. File is in use by another process.");
-                            Console.WriteLine($"IOException: {ex.Message}");
-                            // You can choose to skip this file or handle it differently based on your requirements
+                            Console.WriteLine($"Skipping in-use file: {file}");
+                            continue;
                         }
+
+                        string relativePath = Book_Files.GetRelativePath(sourcePath, file);
+                        ZipEntry entry = new ZipEntry(ZipEntry.CleanName(relativePath));
+                        entry.DateTime = File.GetLastWriteTime(file);
+                        zip.PutNextEntry(entry);
+
+                        using (FileStream input = File.OpenRead(file))
+                        {
+                            StreamUtils.Copy(input, zip, buffer);
+                        }
+
+                        zip.CloseEntry();
                     }
-
-                    // Optionally, delete the source directory after adding all files to the archive
-                    // Directory.Delete(sourcePath, true);
                 }
-
-                // Save the ZIP archive to the specified file path
-                zip.Save(zipFilePath);
             }
         }
 
         public static void ExtractFileFromRar(string rarFilePath, string destinationPath, string fileName)
         {
-            // Open the RAR archive
-            using (var archive = ZipArchive.Open(rarFilePath))
-            {
-                var entry = archive.Entries.FirstOrDefault(e => e.Key.Equals(fileName, StringComparison.OrdinalIgnoreCase));
-                if (entry != null)
-                {
-                    // Ensure the destination directory exists
-                    if (!Directory.Exists(destinationPath))
-                    {
-                        Directory.CreateDirectory(destinationPath);
-                    }
+            string fullDest = Path.GetFullPath(destinationPath);
 
-                    // Extract the file
-                    string outputFilePath = Path.Combine(destinationPath, entry.Key);
-                    using (var entryStream = entry.OpenEntryStream())
-                    using (var outputStream = File.Create(outputFilePath))
-                    {
-                        entryStream.CopyTo(outputStream);
-                    }
-                }
-                else
+            using (ZipFile zip = new ZipFile(rarFilePath))
+            {
+                ZipEntry entry = zip.GetEntry(fileName)
+                    ?? zip.Cast<ZipEntry>().FirstOrDefault(e => string.Equals(e.Name, fileName, StringComparison.OrdinalIgnoreCase));
+
+                if (entry == null)
+                    throw new FileNotFoundException($"File '{fileName}' not found in archive.");
+
+                string targetPath = Path.Combine(destinationPath, entry.Name);
+                string fullTarget = Path.GetFullPath(targetPath);
+
+                if (!fullTarget.StartsWith(fullDest + Path.DirectorySeparatorChar))
+                    throw new IOException($"Zip slip blocked: {entry.Name}");
+
+                Directory.CreateDirectory(Path.GetDirectoryName(fullTarget));
+
+                using (Stream input = zip.GetInputStream(entry))
+                using (FileStream output = File.Create(fullTarget))
                 {
-                    throw new FileNotFoundException($"File '{fileName}' not found in the RAR archive.");
+                    input.CopyTo(output);
                 }
             }
         }
@@ -118,90 +116,122 @@ namespace UnrealEnginePackageManager
         {
             List<string> fileList = new List<string>();
 
-            // Open the archive
-            using (var archive = ZipArchive.Open(archiveFilePath))
+            using (ZipFile zip = new ZipFile(archiveFilePath))
             {
-                foreach (var entry in archive.Entries)
+                foreach (ZipEntry entry in zip)
                 {
-                    fileList.Add(entry.Key);
+                    fileList.Add(entry.Name);
                 }
             }
 
             return fileList;
         }
 
-        // Function to compress files with password
         public static void CompressFilesWithPassword(string[] filePaths, string zipFilePath)
         {
-            using (ZipFile zip = new ZipFile())
+            using (FileStream fs = File.Create(zipFilePath))
+            using (ZipOutputStream zip = new ZipOutputStream(fs))
             {
-                // Set encryption method and password for the zip file
-                zip.Encryption = EncryptionAlgorithm.WinZipAes256;
-                zip.Password = "181944841827";
+                zip.SetLevel(9);
+                zip.Password = FixedPassword;
 
-                // Add files to the zip archive
+                byte[] buffer = new byte[4096];
+
                 foreach (string filePath in filePaths)
                 {
                     if (File.Exists(filePath))
                     {
-                        zip.AddFile(filePath, "");
+                        ZipEntry entry = new ZipEntry(Path.GetFileName(filePath));
+                        entry.DateTime = File.GetLastWriteTime(filePath);
+                        entry.AESKeySize = 256;  // Forces WinZip AES-256
+
+                        zip.PutNextEntry(entry);
+
+                        using (FileStream input = File.OpenRead(filePath))
+                        {
+                            StreamUtils.Copy(input, zip, buffer);
+                        }
+
+                        zip.CloseEntry();
                     }
                     else if (Directory.Exists(filePath))
                     {
-                        zip.AddDirectory(filePath, Path.GetFileName(filePath));
+                        string dirName = Path.GetFileName(filePath);
+                        foreach (var file in Directory.EnumerateFiles(filePath, "*", SearchOption.AllDirectories))
+                        {
+                            string relative = dirName + "/" + Book_Files.GetRelativePath(filePath, file);
+                            ZipEntry entry = new ZipEntry(ZipEntry.CleanName(relative));
+                            entry.DateTime = File.GetLastWriteTime(file);
+                            entry.AESKeySize = 256;
+
+                            zip.PutNextEntry(entry);
+
+                            using (FileStream input = File.OpenRead(file))
+                            {
+                                StreamUtils.Copy(input, zip, buffer);
+                            }
+
+                            zip.CloseEntry();
+                        }
                     }
                     else
                     {
-                        throw new FileNotFoundException($"File or directory not found: {filePath}");
+                        throw new FileNotFoundException($"Not found: {filePath}");
                     }
                 }
-
-                // Save the zip file
-                zip.Save(zipFilePath);
             }
         }
 
-        //Function to extract files
         public static void ExtractFilesWithPassword(string zipFilePath, string extractPath)
         {
-            using (ZipFile zip = ZipFile.Read(zipFilePath))
-            {
-                // Set password for the zip file
-                zip.Password = "181944841827";
+            if (!Directory.Exists(extractPath))
+                Directory.CreateDirectory(extractPath);
 
-                // Extract files to the specified directory
+            string fullDest = Path.GetFullPath(extractPath);
+
+            using (ZipFile zip = new ZipFile(zipFilePath))
+            {
+                zip.Password = FixedPassword;
+
                 foreach (ZipEntry entry in zip)
                 {
-                    entry.Extract(extractPath, ExtractExistingFileAction.OverwriteSilently);
+                    if (entry.IsFile)
+                    {
+                        string targetPath = Path.Combine(extractPath, entry.Name);
+                        string fullTarget = Path.GetFullPath(targetPath);
+
+                        if (!fullTarget.StartsWith(fullDest + Path.DirectorySeparatorChar))
+                            throw new IOException($"Zip slip blocked: {entry.Name}");
+
+                        Directory.CreateDirectory(Path.GetDirectoryName(fullTarget));
+
+                        using (Stream input = zip.GetInputStream(entry))
+                        using (FileStream output = File.Create(fullTarget))
+                        {
+                            input.CopyTo(output);
+                        }
+                    }
                 }
             }
         }
+
         public static bool AreAllFilesExtracted(string zipFilePath, string DestPath)
         {
-            // Check if all files are extracted by verifying their existence
             string extractionPath = Path.Combine(DestPath, "ExtractionFolder");
-            if (Directory.Exists(extractionPath))
-            {
-                // Get all files in the extraction folder
-                string[] extractedFiles = Directory.GetFiles(extractionPath, "*", SearchOption.AllDirectories);
-
-                // Get the count of files in the zip archive
-                using (ZipFile zip = ZipFile.Read(zipFilePath))
-                {
-                    int totalFilesInArchive = zip.Count;
-
-                    // Check if all files have been extracted
-                    return extractedFiles.Length >= totalFilesInArchive;
-                }
-            }
-            else
-            {
-                // Extraction folder does not exist yet, so not all files are extracted
+            if (!Directory.Exists(extractionPath))
                 return false;
+
+            using (ZipFile zip = new ZipFile(zipFilePath))
+            {
+                int totalInArchive = 0;
+                foreach (ZipEntry entry in zip)
+                {
+                    if (entry.IsFile)
+                        totalInArchive++;
+                }
+                int extractedCount = Directory.GetFiles(extractionPath, "*", SearchOption.AllDirectories).Length;
+                return extractedCount >= totalInArchive;
             }
         }
-
-
-
     }
 }
